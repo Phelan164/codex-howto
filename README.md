@@ -39,8 +39,9 @@ You will learn how to:
 - **13 progressive modules** covering safety, prompting, `AGENTS.md`, skills,
   MCP, subagents, orchestration, context efficiency, automation, and
   troubleshooting.
-- **7 installable engineering skills** for frontend, backend, DevOps, testing,
-  code review, security review, and orchestration.
+- **8 installable engineering skills** for the end-to-end engineering loop,
+  frontend, backend, DevOps, testing, code review, security review, and
+  orchestration.
 - **Copy-ready examples** for project configuration, custom agents, prompts,
   hooks, MCP, and local plugins.
 - **A dependency-free playground** with seeded defects for practicing the full
@@ -107,6 +108,7 @@ This repository includes installable starter skills:
 
 | Skill | Purpose |
 |---|---|
+| [`engineering-loop`](skills/engineering-loop/SKILL.md) | Drive a change through baseline, implementation, testing, review, and evidence |
 | [`build-frontend`](skills/build-frontend/SKILL.md) | Implement accessible UI changes with visual and behavioral verification |
 | [`build-backend`](skills/build-backend/SKILL.md) | Change APIs, services, persistence, and contracts safely |
 | [`operate-devops`](skills/operate-devops/SKILL.md) | Modify delivery and infrastructure with rollback-aware validation |
@@ -129,6 +131,15 @@ it explicitly:
 ```text
 $review-code Review this branch against main. Lead with consequential findings
 and list checks you could not run.
+```
+
+For a complete local develop–test–review cycle, install the relevant specialist
+skills and start with:
+
+```text
+$engineering-loop Implement this change end to end. Continue through focused
+tests, required checks, diff review, and verified fixes. Stop on missing
+authority or an ambiguous test environment.
 ```
 
 ## The orchestration rule

@@ -24,6 +24,8 @@ Done when:
 
 ## Before editing
 
+- Invoke `$engineering-loop` when the task should continue through
+  implementation, testing, review, and verified fixes.
 - Confirm the repository and active branch.
 - Inspect applicable `AGENTS.md` files.
 - Check the working tree for user changes.

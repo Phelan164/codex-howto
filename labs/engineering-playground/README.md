@@ -48,21 +48,18 @@ seeded boundary defect.
 
 ## Lab 1: backend regression
 
-Install `test-software` and `build-backend` as described in
+Install `engineering-loop`, `test-software`, and `build-backend` as described in
 [Module 05](../../modules/05-engineering-skills/README.md), then ask:
 
 ```text
-$test-software Inspect the inventory reservation contract. Add the smallest
-regression test for an uncovered input boundary. Prove it fails for the current
-implementation. Work only in this disposable playground.
+$engineering-loop $build-backend $test-software Inspect the inventory
+reservation contract, reproduce an uncovered input-boundary defect, add the
+smallest regression test, implement the fix, run the required checks, and
+review the final diff. Work only in this disposable playground.
 ```
 
-After observing the failing test:
-
-```text
-$build-backend Fix the reproduced inventory boundary bug without changing the
-valid reservation behavior. Run the focused suite and inspect the diff.
-```
+Confirm that the loop records the failing regression before it changes the
+implementation.
 
 ## Lab 2: frontend behavior and accessibility
 

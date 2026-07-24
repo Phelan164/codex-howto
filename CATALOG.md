@@ -22,6 +22,7 @@
 
 | Skill | Bundled reference |
 |---|---|
+| [engineering-loop](skills/engineering-loop/SKILL.md) | `references/loop-contract.md` |
 | [build-frontend](skills/build-frontend/SKILL.md) | `references/verification.md` |
 | [build-backend](skills/build-backend/SKILL.md) | `references/contracts-and-data.md` |
 | [operate-devops](skills/operate-devops/SKILL.md) | `references/change-safety.md` |

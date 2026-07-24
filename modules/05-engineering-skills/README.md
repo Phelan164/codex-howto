@@ -112,10 +112,15 @@ The first request should use the skill. The unrelated request should not select 
 ## Lab C: use the engineering skill set
 
 Copy the [engineering playground](../../labs/engineering-playground/README.md)
-to a disposable directory. Its staged exercises use every bundled skill across
-backend, frontend, infrastructure, testing, code review, security review, and
-orchestration. Start with one relevant skill; add orchestration only for the
-final comparison.
+to a disposable directory. Its staged exercises use the engineering lifecycle
+and specialist skills across backend, frontend, infrastructure, testing, code
+review, security review, and orchestration. Start with one relevant specialist
+skill; add orchestration only for the final comparison.
+
+Use [`engineering-loop`](../../skills/engineering-loop/SKILL.md) when one
+implementation task should continue through baseline, regression proof,
+focused and broader checks, final diff review, and evidence reporting. It
+coordinates the lifecycle while the narrower skills supply domain decisions.
 
 ## Verify
 
