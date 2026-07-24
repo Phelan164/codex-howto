@@ -1,0 +1,20 @@
+{
+  "name": "codex-howto-lab",
+  "interface": {
+    "displayName": "Codex How To Lab"
+  },
+  "plugins": [
+    {
+      "name": "engineering-review",
+      "source": {
+        "source": "local",
+        "path": "./plugins/engineering-review"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

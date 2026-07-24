@@ -1,0 +1,6 @@
+{
+  "name": "engineering-review",
+  "version": "0.1.0",
+  "description": "A minimal local plugin used by the Codex How To packaging lab.",
+  "skills": "./skills/"
+}

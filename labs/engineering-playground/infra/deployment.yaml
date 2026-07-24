@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inventory-api-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: inventory-api-lab
+  template:
+    metadata:
+      labels:
+        app: inventory-api-lab
+    spec:
+      containers:
+        - name: api
+          image: example.invalid/inventory-api:latest
+          securityContext:
+            runAsUser: 0
+            allowPrivilegeEscalation: true
+          env:
+            - name: DEBUG
+              value: "true"
+          ports:
+            - containerPort: 8080

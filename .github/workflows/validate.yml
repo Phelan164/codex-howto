@@ -1,0 +1,40 @@
+name: Validate
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  repository:
+    name: Repository and playground
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Validate guide structure and local links
+        run: python3 scripts/validate_repo.py
+
+      - name: Run playground tests
+        run: >-
+          python3 -m unittest discover
+          -s labs/engineering-playground/backend
+          -p "test_*.py"
+
+      - name: Compile Python examples
+        run: >-
+          python3 -m compileall -q
+          scripts
+          labs/engineering-playground/backend

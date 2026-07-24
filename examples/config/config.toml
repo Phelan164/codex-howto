@@ -1,0 +1,15 @@
+# Conservative project defaults. Verify keys against the current official
+# configuration reference before adopting this file.
+
+sandbox_mode = "workspace-write"
+approval_policy = "on-request"
+
+[sandbox_workspace_write]
+network_access = false
+
+[agents]
+enabled = true
+max_concurrent_threads_per_session = 4
+
+# Keep model selection inherited unless the team has measured a reason to pin it.
+# Add MCP servers only with least-privilege credentials and documented ownership.

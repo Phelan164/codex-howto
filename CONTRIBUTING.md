@@ -1,0 +1,72 @@
+# Contributing
+
+Thank you for improving Codex How To.
+
+## Before you start
+
+- Search existing issues and pull requests for overlapping work.
+- Keep changes focused on one learning outcome or reusable workflow.
+- Open an issue first for major curriculum changes or new product surfaces.
+- Never include private repository content, credentials, or production data.
+
+## Local validation
+
+The repository validator uses only the Python standard library:
+
+```bash
+python3 scripts/validate_repo.py
+python3 -m unittest discover \
+  -s labs/engineering-playground/backend \
+  -p "test_*.py"
+```
+
+For a changed skill, also run the official `quick_validate.py` bundled with the
+Codex skill creator.
+
+## Content standard
+
+Every tutorial contribution must include:
+
+1. a concrete learner outcome;
+2. prerequisites;
+3. an exercise that avoids production credentials and destructive actions;
+4. a verification step;
+5. links to authoritative sources for product behavior;
+6. a “last verified” date for version-sensitive claims.
+
+Prefer runnable examples over broad advice. Label community conventions as opinions rather than product guarantees.
+
+## Skill standard
+
+Each skill must:
+
+- use a lowercase, hyphenated folder name;
+- contain `SKILL.md` with only `name` and `description` in frontmatter;
+- use an imperative workflow;
+- define scope, guardrails, and acceptance criteria;
+- keep detailed variants in one-level-deep `references/`;
+- avoid embedded secrets, credentials, or destructive defaults;
+- pass the repository validator and the official skill validator.
+
+Do not add a README inside a skill folder.
+
+## Pull request checklist
+
+- [ ] Product claims are linked to official documentation.
+- [ ] Examples are safe to copy into a test repository.
+- [ ] New links are relative where possible.
+- [ ] `python3 scripts/validate_repo.py` passes.
+- [ ] Changed skills pass `quick_validate.py`.
+- [ ] The change is described in plain language.
+- [ ] The final diff contains no generated caches or unrelated edits.
+
+## Style
+
+- Use short paragraphs and descriptive headings.
+- Explain why a workflow exists before showing configuration.
+- Separate stable principles from version-sensitive commands.
+- Use “Codex can” only when supported by official documentation.
+- Avoid unverified productivity multipliers.
+
+By contributing, you agree that your contribution is licensed under this
+repository's [MIT License](LICENSE).

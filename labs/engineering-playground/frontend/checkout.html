@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Inventory checkout lab</title>
+  </head>
+  <body>
+    <main>
+      <h1>Reserve inventory</h1>
+      <form id="checkout">
+        <input id="customer" name="customer" placeholder="Customer name">
+        <label for="quantity">Quantity</label>
+        <input id="quantity" name="quantity" type="number" value="1">
+        <button>Reserve</button>
+      </form>
+      <p id="error"></p>
+      <p id="summary"></p>
+    </main>
+    <script>
+      const form = document.querySelector("#checkout");
+      const customer = document.querySelector("#customer");
+      const quantity = document.querySelector("#quantity");
+      const error = document.querySelector("#error");
+      const summary = document.querySelector("#summary");
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        error.textContent = "";
+        if (!customer.value || Number(quantity.value) < 1) {
+          error.textContent = "Enter a customer and positive quantity.";
+          return;
+        }
+        summary.innerHTML =
+          "Reserved <strong>" + quantity.value + "</strong> for " + customer.value;
+      });
+    </script>
+  </body>
+</html>
