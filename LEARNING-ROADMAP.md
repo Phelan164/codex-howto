@@ -17,7 +17,7 @@ Choose the shortest track that produces the capability you need. Completing ever
 Complete Track A, then:
 
 1. [Engineering skills](modules/05-engineering-skills/README.md)
-2. Install either `build-frontend` or `build-backend`.
+2. Install `engineering-loop` and either `build-frontend` or `build-backend`.
 3. [Testing and review](modules/07-testing-and-review/README.md)
 4. Install `test-software`, `review-code`, and `review-security`.
 5. Complete the relevant parts of the

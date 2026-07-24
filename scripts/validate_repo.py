@@ -44,6 +44,7 @@ REQUIRED_MODULES = {
     "12-troubleshooting",
 }
 REQUIRED_SKILLS = {
+    "engineering-loop",
     "build-frontend",
     "build-backend",
     "operate-devops",

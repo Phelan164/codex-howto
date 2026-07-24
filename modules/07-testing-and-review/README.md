@@ -12,6 +12,10 @@ reproduce → implement → focused test → required checks → inspect diff �
 
 Do not accept “implemented” as completion. Define the commands and behaviors that prove the requested outcome.
 
+Install [`engineering-loop`](../../skills/engineering-loop/SKILL.md) to make
+this lifecycle reusable for end-to-end implementation tasks. The build, test,
+review, and security skills remain narrower specialist guidance.
+
 ## Test by risk
 
 Prioritize:
