@@ -131,7 +131,10 @@ Record:
 Do not claim that skills or multiple agents are more efficient from one run.
 Look for fewer failed loops, better evidence, and more predictable completion
 across repeated comparable tasks. Use the
-[token-efficiency scorecard](resources/token-efficiency-scorecard.md).
+[engineering-loop measurement protocol](resources/engineering-loop-measurement.md)
+for paired runs and the
+[token-efficiency scorecard](resources/token-efficiency-scorecard.md) to audit
+context practices.
 
 ## Copy-ready announcement
 

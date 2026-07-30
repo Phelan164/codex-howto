@@ -68,7 +68,12 @@ When a command fails twice for the same reason, stop and diagnose the environmen
 
 ## Exercise
 
-Complete the [token-efficiency scorecard](../../resources/token-efficiency-scorecard.md) for one real task. Rewrite the prompt and routing instructions, then compare retries and context noise—not only raw token counts.
+Complete the [token-efficiency scorecard](../../resources/token-efficiency-scorecard.md)
+for one real task. To evaluate whether the engineering loop changes outcomes,
+run the
+[paired measurement protocol](../../resources/engineering-loop-measurement.md).
+Compare quality gates before retries, context noise, elapsed time, or raw token
+counts.
 
 ## Verify
 

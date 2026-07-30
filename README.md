@@ -14,6 +14,7 @@ DevOps, security, and multi-agent orchestration.
 [Browse skills](#engineering-skill-catalog) ·
 [Try the playground](labs/engineering-playground/README.md) ·
 [Use the quick reference](QUICK_REFERENCE.md) ·
+[Measure the loop](resources/engineering-loop-measurement.md) ·
 [Present this guide](PRESENTING.md)
 
 > **Status:** community preview. Content was checked against official Codex
@@ -71,6 +72,9 @@ review the final diff. Work only in this disposable playground.
 
 Watch for four proof points: a failing regression before the fix, a small
 implementation diff, passing focused checks, and a final evidence report.
+Then use the
+[measurement protocol](resources/engineering-loop-measurement.md) to compare
+paired ad hoc and engineering-loop runs without treating one demo as proof.
 Use [PRESENTING.md](PRESENTING.md) for a 15-minute talk track, demo checklist,
 and copy-ready announcement.
 

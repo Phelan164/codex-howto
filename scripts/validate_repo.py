@@ -68,6 +68,12 @@ REQUIRED_LAB_FILES = {
     "labs/engineering-playground/infra/deployment.yaml",
     "labs/engineering-playground/rubric.md",
 }
+REQUIRED_MEASUREMENT_FILES = {
+    "examples/measurements/engineering-loop-runs.csv",
+    "resources/engineering-loop-measurement.md",
+    "scripts/summarize_engineering_loop.py",
+    "scripts/tests/test_summarize_engineering_loop.py",
+}
 REQUIRED_JSON = {
     ".codex-plugin/plugin.json",
     "examples/hooks/validate-on-stop/hooks.json",
@@ -83,6 +89,9 @@ def check_required(errors: list[str]) -> None:
     for name in sorted(REQUIRED_LAB_FILES):
         if not (ROOT / name).is_file():
             errors.append(f"missing required engineering lab file: {name}")
+    for name in sorted(REQUIRED_MEASUREMENT_FILES):
+        if not (ROOT / name).is_file():
+            errors.append(f"missing required measurement artifact: {name}")
 
 
 def check_json_examples(errors: list[str]) -> None:

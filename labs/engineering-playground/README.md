@@ -124,6 +124,30 @@ Use the [token-efficiency scorecard](../../resources/token-efficiency-scorecard.
 to compare the runs. Parallel work is not a token-saving claim; measure total
 cost and useful evidence.
 
+## Lab 6: measure the engineering loop
+
+Follow the
+[engineering-loop measurement protocol](../../resources/engineering-loop-measurement.md)
+with two fresh playground copies. Give the `ad_hoc` variant the backend task
+contract without skill names or prescribed stages. Give the
+`engineering_loop` variant the same contract with `$engineering-loop`,
+`$build-backend`, and `$test-software`.
+
+Record both runs in a copy of
+[`engineering-loop-runs.csv`](../../examples/measurements/engineering-loop-runs.csv).
+From the original `codex-howto` repository root, copy the record to a writable
+location and summarize it:
+
+```bash
+cp examples/measurements/engineering-loop-runs.csv \
+  /tmp/engineering-loop-runs.csv
+python3 scripts/summarize_engineering_loop.py \
+  /tmp/engineering-loop-runs.csv
+```
+
+Repeat with the frontend and infrastructure tasks before drawing a directional
+conclusion. Do not read the rubric between paired runs.
+
 ## Completion check
 
 - A new test fails before the backend fix and passes afterward.
@@ -133,4 +157,6 @@ cost and useful evidence.
 - Code and security reviews contain evidence-backed findings or explicitly say
   none were verified.
 - The orchestration decision names selected and skipped roles.
+- The engineering-loop comparison uses paired fresh copies and quality gates
+  before efficiency measures.
 - No command targeted a real environment or external service.
