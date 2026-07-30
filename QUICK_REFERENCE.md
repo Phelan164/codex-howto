@@ -24,6 +24,8 @@ Done when:
 
 ## Before editing
 
+- Invoke `$choose-engineering-flow` when you do not know which workflow should
+  own the task.
 - Invoke `$engineering-loop` when the task should continue through
   implementation, testing, review, and verified fixes.
 - Confirm the repository and active branch.
@@ -34,7 +36,8 @@ Done when:
 
 ## Before delegating
 
-- Invoke `$orchestrate-engineering` for a complex task with independent workstreams.
+- Invoke `$orchestrate-engineering` explicitly for a complex task with
+  independent workstreams.
 - Is the task genuinely independent?
 - Does the worker have a bounded input and output?
 - Can it stay read-only?

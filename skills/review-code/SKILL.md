@@ -16,6 +16,12 @@ description: Review code changes for correctness defects, regressions, security 
 6. Remove duplicates and unsupported speculation.
 7. Return findings first, followed by open questions and a short change summary.
 
+Use correctness as the default lens. For large, risky, or requirement-heavy
+changes, add the standards and specification lenses in
+[references/review-lenses.md](references/review-lenses.md). Keep each finding
+tied to its source; documented rules and acceptance criteria outrank personal
+preference.
+
 ## Finding standard
 
 Each finding must include:
@@ -53,6 +59,8 @@ If there are no actionable findings, say so directly and name residual unverifie
 ## Acceptance criteria
 
 - Every finding is actionable and evidenced.
+- Standards and specification findings cite the violated rule or unmet
+  requirement.
 - Severity reflects realistic impact.
 - Line ranges are tight.
 - Missing tests are tied to a concrete risk.

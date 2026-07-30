@@ -39,11 +39,12 @@ You will learn how to:
 - **13 progressive modules** covering safety, prompting, `AGENTS.md`, skills,
   MCP, subagents, orchestration, context efficiency, automation, and
   troubleshooting.
-- **8 installable engineering skills** for the end-to-end engineering loop,
-  frontend, backend, DevOps, testing, code review, security review, and
-  orchestration.
+- **9 installable engineering skills** including a lightweight workflow router,
+  the end-to-end engineering loop, frontend, backend, DevOps, testing, code
+  review, security review, and orchestration.
 - **Copy-ready examples** for project configuration, custom agents, prompts,
-  hooks, MCP, and local plugins.
+  engineering specifications, dependency-aware tickets, handoffs, hooks, MCP,
+  and local plugins.
 - **A dependency-free playground** with seeded defects for practicing the full
   implement–test–review loop safely.
 
@@ -108,6 +109,7 @@ This repository includes installable starter skills:
 
 | Skill | Purpose |
 |---|---|
+| [`choose-engineering-flow`](skills/choose-engineering-flow/SKILL.md) | Recommend the smallest useful skill sequence without executing the task |
 | [`engineering-loop`](skills/engineering-loop/SKILL.md) | Drive a change through baseline, implementation, testing, review, and evidence |
 | [`build-frontend`](skills/build-frontend/SKILL.md) | Implement accessible UI changes with visual and behavioral verification |
 | [`build-backend`](skills/build-backend/SKILL.md) | Change APIs, services, persistence, and contracts safely |
@@ -132,6 +134,16 @@ it explicitly:
 $review-code Review this branch against main. Lead with consequential findings
 and list checks you could not run.
 ```
+
+If you are unsure where to start, install the router and invoke it explicitly:
+
+```text
+$choose-engineering-flow Route this task: add an authenticated settings page
+and its API endpoint, then verify the complete change.
+```
+
+The router and orchestrator are explicit-only so that they do not add planning
+or multi-agent overhead to unrelated tasks.
 
 For a complete local develop–test–review cycle, install the relevant specialist
 skills and start with:
@@ -167,6 +179,7 @@ Parallel agents often improve elapsed time and protect the main thread from nois
 ```text
 codex-howto/
 ├── .github/                 # Validation workflow and PR template
+├── .codex-plugin/           # Plugin manifest over the existing skill catalog
 ├── modules/                 # Progressive tutorials and labs
 ├── skills/                  # Installable engineering skills
 ├── labs/
@@ -198,6 +211,11 @@ orchestration workflows against its seeded defects.
 ## Inspiration and related work
 
 The progressive-module idea was inspired by [luongnv89/claude-howto](https://github.com/luongnv89/claude-howto). This repository is an original Codex-focused curriculum and does not copy its tutorial text or templates.
+
+The skill-system refinements were inspired by the original
+[mattpocock/skills](https://github.com/mattpocock/skills) repository. Its
+invocation, routing, debugging, and review ideas were adapted to Codex without
+copying its skills.
 
 Useful related community projects:
 

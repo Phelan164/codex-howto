@@ -39,6 +39,22 @@ The description is the trigger. Put both capability and usage context there.
 
 Invoke explicitly with `$skill-name`, or let Codex match the description.
 
+Use `policy.allow_implicit_invocation: false` in `agents/openai.yaml` for a
+router, orchestrator, or other workflow that should run only when named:
+
+```yaml
+interface:
+  display_name: "Choose Engineering Flow"
+  short_description: "Select the smallest useful engineering workflow"
+  default_prompt: "Use $choose-engineering-flow to route this task."
+policy:
+  allow_implicit_invocation: false
+```
+
+Keep normal domain skills implicitly discoverable. Explicit-only policy is for
+workflows whose accidental selection would add coordination or routing
+overhead.
+
 Example repository installation:
 
 ```bash
@@ -122,6 +138,11 @@ implementation task should continue through baseline, regression proof,
 focused and broader checks, final diff review, and evidence reporting. It
 coordinates the lifecycle while the narrower skills supply domain decisions.
 
+If the right entry skill is unclear, invoke
+[`choose-engineering-flow`](../../skills/choose-engineering-flow/SKILL.md).
+It recommends from the existing catalog and does not execute the task. Keeping
+routing separate avoids another all-purpose engineering skill.
+
 ## Verify
 
 - The skill triggers for intended requests and not adjacent requests.
@@ -130,9 +151,11 @@ coordinates the lifecycle while the narrower skills supply domain decisions.
 - Optional details are one reference hop away.
 - Acceptance criteria produce observable evidence.
 - The skill contains no environment-specific secret or destructive default.
+- A router or orchestrator that must be user-invoked declares explicit-only
+  policy.
 
 ## Official source
 
 - [Build and use skills](https://developers.openai.com/codex/skills)
 
-Last verified: 2026-07-24.
+Last verified: 2026-07-30.

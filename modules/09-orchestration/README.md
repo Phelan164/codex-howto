@@ -16,6 +16,12 @@ The main agent should retain:
 
 Workers should receive bounded tasks and return compact evidence.
 
+Use the
+[dependency-aware ticket template](../../examples/templates/dependency-aware-tickets.md)
+when work must survive across tasks or agents. Each ticket should own one
+vertical slice, name its dependencies, and include a focused verification
+command.
+
 ## Three useful patterns
 
 ### Fan-out / fan-in
@@ -95,6 +101,8 @@ Measure:
 - The integrated result satisfies the original acceptance criteria.
 - Any efficiency claim is tied to measured quality, elapsed time, context
   clarity, retries, or total cost.
+- Durable tickets preserve dependencies, ownership, and verification without
+  copying the full specification into every worker context.
 
 ## Official sources
 

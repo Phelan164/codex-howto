@@ -19,6 +19,7 @@ UI_FIELD_RE = re.compile(r'^  ([a-z_]+):\s+("(?:[^"\\]|\\.)*")\s*$')
 REQUIRED_ROOT = {
     ".github/pull_request_template.md",
     ".github/workflows/validate.yml",
+    ".codex-plugin/plugin.json",
     "README.md",
     "LEARNING-ROADMAP.md",
     "CATALOG.md",
@@ -52,6 +53,11 @@ REQUIRED_SKILLS = {
     "test-software",
     "review-security",
     "orchestrate-engineering",
+    "choose-engineering-flow",
+}
+EXPLICIT_ONLY_SKILLS = {
+    "choose-engineering-flow",
+    "orchestrate-engineering",
 }
 REQUIRED_LAB_FILES = {
     "labs/engineering-playground/README.md",
@@ -63,6 +69,7 @@ REQUIRED_LAB_FILES = {
     "labs/engineering-playground/rubric.md",
 }
 REQUIRED_JSON = {
+    ".codex-plugin/plugin.json",
     "examples/hooks/validate-on-stop/hooks.json",
     "examples/plugin-marketplace/.agents/plugins/marketplace.json",
     "examples/plugin-marketplace/plugins/engineering-review/.codex-plugin/plugin.json",
@@ -209,8 +216,9 @@ def check_ui_metadata(path: Path, skill_name: str, errors: list[str]) -> None:
         errors.append(f"invalid UI metadata root: {path.relative_to(ROOT)}")
         return
 
+    policy_index = lines.index("policy:") if "policy:" in lines else len(lines)
     values: dict[str, str] = {}
-    for line in lines[1:]:
+    for line in lines[1:policy_index]:
         match = UI_FIELD_RE.fullmatch(line)
         if not match:
             errors.append(f"invalid UI metadata YAML: {path.relative_to(ROOT)}")
@@ -234,6 +242,16 @@ def check_ui_metadata(path: Path, skill_name: str, errors: list[str]) -> None:
     if f"${skill_name}" not in values["default_prompt"]:
         errors.append(
             f"default_prompt must mention ${skill_name}: {path.relative_to(ROOT)}"
+        )
+
+    policy_lines = lines[policy_index:]
+    expected_policy = ["policy:", "  allow_implicit_invocation: false"]
+    if policy_lines and policy_lines != expected_policy:
+        errors.append(f"invalid invocation policy: {path.relative_to(ROOT)}")
+    if skill_name in EXPLICIT_ONLY_SKILLS and policy_lines != expected_policy:
+        errors.append(
+            f"{skill_name} must disable implicit invocation: "
+            f"{path.relative_to(ROOT)}"
         )
 
 
