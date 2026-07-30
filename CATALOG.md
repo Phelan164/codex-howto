@@ -55,6 +55,8 @@
 - [Engineering playground](labs/engineering-playground/README.md) — a
   dependency-free frontend, backend, and deployment fixture with seeded defects
   for the end-to-end loop and its specialist workflows.
+- [Developer presentation guide](PRESENTING.md) — a 15-minute talk track,
+  live-demo script, measurement plan, and copy-ready announcement.
 
 ## Official references
 
