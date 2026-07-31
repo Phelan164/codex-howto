@@ -66,6 +66,7 @@
 - [Model-adaptive skill guide](resources/model-adaptive-skills.md)
 - [Community launch kit](resources/community-launch-kit.md)
 - [Verified distribution shortlist](resources/distribution-shortlist.md)
+- [v0.3.0 release notes](resources/release-notes-v0.3.0.md)
 - [v0.2.0 release notes](resources/release-notes-v0.2.0.md)
 
 ## Hands-on lab

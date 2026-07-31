@@ -22,7 +22,7 @@ DevOps, security, and multi-agent orchestration.
 [Join the community](COMMUNITY.md)
 
 > **Status:** community preview. Content was checked against official Codex
-> documentation on 2026-07-24. Codex changes quickly; verify settings and
+> documentation on 2026-07-31. Codex changes quickly; verify settings and
 > commands through the links marked **Official source**.
 
 ## See the engineering loop
