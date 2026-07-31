@@ -83,6 +83,7 @@
       "kind": "repository",
       "path": "resources/model-adaptive-skills.md",
       "last_verified": "2026-07-31",
+      "revision": "5a7d3b325f714bb0cbc1b645ad61c7884ba533a9",
       "affected_pages": [
         "knowledge/topics/model-adaptive-skills.md"
       ]
@@ -93,6 +94,7 @@
       "kind": "experiment",
       "path": "resources/engineering-loop-measurement.md",
       "last_verified": "2026-07-31",
+      "revision": "5a7d3b325f714bb0cbc1b645ad61c7884ba533a9",
       "affected_pages": [
         "knowledge/topics/engineering-loop-evidence.md",
         "knowledge/experiments/wiki-efficiency-baseline.md"
@@ -104,6 +106,7 @@
       "kind": "repository",
       "path": "resources/orchestration-decision-matrix.md",
       "last_verified": "2026-07-31",
+      "revision": "5a7d3b325f714bb0cbc1b645ad61c7884ba533a9",
       "affected_pages": [
         "knowledge/topics/orchestration-efficiency.md"
       ]

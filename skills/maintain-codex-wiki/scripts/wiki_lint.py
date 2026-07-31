@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import subprocess
 import sys
@@ -14,6 +15,7 @@ from urllib.parse import unquote, urlparse
 
 
 SOURCE_ID_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+OBJECT_ID_RE = re.compile(r"^[0-9a-f]+$", re.IGNORECASE)
 LINK_RE = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
 SOURCE_REF_RE = re.compile(r"`([a-z0-9]+(?:-[a-z0-9]+)*)`")
 STATUS_RE = re.compile(r"^>\s*Status:\s*(\S+)\s*$", re.IGNORECASE)
@@ -45,6 +47,13 @@ SENSITIVE_PATH_NAMES = {
 SENSITIVE_PATH_SUFFIXES = (".key", ".kdbx", ".p12", ".pem", ".pfx")
 
 
+def run_git(args: list[str], **kwargs: object) -> subprocess.CompletedProcess:
+    env = os.environ.copy()
+    env["GIT_NO_LAZY_FETCH"] = "1"
+    env["GIT_NO_REPLACE_OBJECTS"] = "1"
+    return subprocess.run(args, env=env, **kwargs)
+
+
 def parse_date(value: str, label: str, errors: list[str]) -> None:
     try:
         date.fromisoformat(value)
@@ -68,6 +77,17 @@ def confined_regular_file(
     if not resolved.is_relative_to(root.resolve()):
         errors.append(f"{label}: file escapes the project root")
         return False
+    try:
+        relative = path.relative_to(root)
+    except ValueError:
+        errors.append(f"{label}: file escapes the project root")
+        return False
+    candidate = root
+    for part in relative.parts:
+        candidate /= part
+        if candidate.is_symlink():
+            errors.append(f"{label}: path or parent is a symlink")
+            return False
     if not resolved.is_file():
         errors.append(f"{label}: expected a regular file")
         return False
@@ -86,24 +106,168 @@ def sensitive_repository_path(relative: PurePosixPath) -> bool:
     )
 
 
-def git_tracks(root: Path, relative: str) -> bool:
-    if not (root / ".git").exists():
-        return False
-    completed = subprocess.run(
+def git_tree_entry(root: Path, revision: str, relative: str) -> tuple[str, str] | None:
+    completed = run_git(
         [
             "git",
             "-C",
             str(root),
-            "ls-files",
-            "--error-unmatch",
+            "ls-tree",
+            "-z",
+            "--full-tree",
+            revision,
             "--",
             relative,
+        ],
+        capture_output=True,
+        check=False,
+    )
+    if completed.returncode != 0 or not completed.stdout:
+        return None
+    metadata, separator, returned_path = completed.stdout.partition(b"\t")
+    fields = metadata.split()
+    if separator != b"\t" or len(fields) != 3:
+        return None
+    try:
+        decoded_path = returned_path.removesuffix(b"\0").decode("utf-8")
+        mode = fields[0].decode("ascii")
+        object_type = fields[1].decode("ascii")
+    except UnicodeDecodeError:
+        return None
+    if decoded_path != relative:
+        return None
+    return mode, object_type
+
+
+def git_trusted_refs(root: Path) -> list[str]:
+    configured = run_git(
+        ["git", "-C", str(root), "config", "--get-all", "codex.wikiTrustedRef"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    refs = [
+        value.strip()
+        for value in configured.stdout.splitlines()
+        if value.strip().startswith(("refs/heads/", "refs/remotes/"))
+    ]
+    if refs:
+        return refs
+
+    default_remote = run_git(
+        [
+            "git",
+            "-C",
+            str(root),
+            "symbolic-ref",
+            "--quiet",
+            "refs/remotes/origin/HEAD",
+        ],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if default_remote.returncode == 0 and default_remote.stdout.strip():
+        return [default_remote.stdout.strip()]
+    return []
+
+
+def git_revision_is_trusted(root: Path, revision: str, refs: list[str]) -> bool:
+    return any(
+        run_git(
+            [
+                "git",
+                "-C",
+                str(root),
+                "merge-base",
+                "--is-ancestor",
+                revision,
+                ref,
+            ],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            check=False,
+        ).returncode
+        == 0
+        for ref in refs
+    )
+
+
+def git_revision_exists(root: Path, revision: str) -> bool:
+    completed = run_git(
+        [
+            "git",
+            "-C",
+            str(root),
+            "cat-file",
+            "-e",
+            f"{revision}^{{commit}}",
         ],
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
         check=False,
     )
     return completed.returncode == 0
+
+
+def git_blob_exists(root: Path, revision: str, relative: str) -> bool:
+    completed = run_git(
+        [
+            "git",
+            "-C",
+            str(root),
+            "cat-file",
+            "-e",
+            f"{revision}:{relative}",
+        ],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    )
+    return completed.returncode == 0
+
+
+def git_repository_is_shallow(root: Path) -> bool:
+    completed = run_git(
+        ["git", "-C", str(root), "rev-parse", "--is-shallow-repository"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    return completed.returncode == 0 and completed.stdout.strip() == "true"
+
+
+def git_repository_is_partial(root: Path) -> bool:
+    completed = run_git(
+        [
+            "git",
+            "-C",
+            str(root),
+            "config",
+            "--get-regexp",
+            r"^remote\..*\.promisor$",
+        ],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    return completed.returncode == 0 and any(
+        line.rsplit(maxsplit=1)[-1].casefold() == "true"
+        for line in completed.stdout.splitlines()
+        if line.split()
+    )
+
+
+def git_object_id_length(root: Path) -> int | None:
+    completed = run_git(
+        ["git", "-C", str(root), "rev-parse", "--show-object-format"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if completed.returncode != 0:
+        return None
+    return {"sha1": 40, "sha256": 64}.get(completed.stdout.strip())
 
 
 def load_sources(root: Path, errors: list[str]) -> dict[str, dict[str, object]]:
@@ -208,18 +372,87 @@ def load_sources(root: Path, errors: list[str]) -> dict[str, dict[str, object]]:
             if sensitive_repository_path(local_path):
                 errors.append(f"{label}: sensitive repository path is not allowed")
                 continue
-            confined_regular_file(
-                root / local,
-                root,
-                f"{label} path",
-                errors,
-                missing_message=f"{label}: local source does not exist: {local}",
-            )
-            if not git_tracks(root, local):
+            object_id_length = git_object_id_length(root)
+            if object_id_length is None:
                 errors.append(
-                    f"{label}: repository evidence must be version-controlled: "
-                    f"{local}"
+                    f"{label}: cannot determine repository Git object format"
                 )
+            elif (
+                not isinstance(revision, str)
+                or len(revision) != object_id_length
+                or not OBJECT_ID_RE.fullmatch(revision)
+            ):
+                errors.append(
+                    f"{label}: repository evidence requires a full "
+                    f"{object_id_length}-character Git revision"
+                )
+            else:
+                trusted_refs = git_trusted_refs(root)
+                revision_exists = git_revision_exists(root, revision)
+                revision_is_trusted = bool(
+                    trusted_refs
+                    and revision_exists
+                    and git_revision_is_trusted(root, revision, trusted_refs)
+                )
+                incomplete_shallow_history = git_repository_is_shallow(root) and (
+                    not revision_exists or not revision_is_trusted
+                )
+                incomplete_partial_clone = git_repository_is_partial(root) and (
+                    not revision_exists or not revision_is_trusted
+                )
+                if not trusted_refs:
+                    errors.append(
+                        f"{label}: repository trusted refs are not configured"
+                    )
+                elif incomplete_shallow_history:
+                    errors.append(
+                        f"{label}: shallow repository history cannot verify "
+                        f"revision against trusted refs: {revision}"
+                    )
+                elif incomplete_partial_clone:
+                    errors.append(
+                        f"{label}: partial clone is missing objects required to "
+                        f"verify revision against trusted refs: {revision}"
+                    )
+                elif not revision_is_trusted:
+                    errors.append(
+                        f"{label}: repository revision is not reachable from "
+                        f"trusted refs: {revision}"
+                    )
+            if (
+                isinstance(revision, str)
+                and len(revision) == object_id_length
+                and OBJECT_ID_RE.fullmatch(revision)
+                and not (
+                    (
+                        git_repository_is_shallow(root)
+                        or git_repository_is_partial(root)
+                    )
+                    and not git_revision_exists(root, revision)
+                )
+            ):
+                entry = git_tree_entry(root, revision, local)
+                if entry is None:
+                    errors.append(
+                        f"{label}: repository evidence does not exist at revision: "
+                        f"{revision}:{local}"
+                    )
+                elif entry[0] not in {"100644", "100755"} or entry[1] != "blob":
+                    errors.append(
+                        f"{label}: repository evidence must be a regular file at "
+                        f"revision: {revision}:{local}"
+                    )
+                elif not git_blob_exists(root, revision, local):
+                    if git_repository_is_partial(root):
+                        errors.append(
+                            f"{label}: partial clone is missing the repository "
+                            f"evidence blob: {revision}:{local}"
+                        )
+                    else:
+                        errors.append(
+                            f"{label}: repository evidence blob is unavailable: "
+                            f"{revision}:{local}"
+                        )
     return sources
 
 

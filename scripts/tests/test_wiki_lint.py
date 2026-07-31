@@ -1,9 +1,11 @@
 import importlib.util
 import json
+import os
 import subprocess
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -30,7 +32,7 @@ class WikiLintTests(unittest.TestCase):
                     "kind": "repository",
                     "path": "evidence.md",
                     "last_verified": "2026-07-31",
-                    "revision": "abc123",
+                    "revision": "0000000000000000000000000000000000000000",
                     "affected_pages": ["knowledge/topics/example.md"],
                 }
             ]
@@ -64,6 +66,56 @@ See the [index](../index.md).
             ["git", "-C", str(self.root), "add", "."],
             check=True,
         )
+        subprocess.run(
+            [
+                "git",
+                "-C",
+                str(self.root),
+                "-c",
+                "user.name=Wiki Lint Tests",
+                "-c",
+                "user.email=wiki-lint@example.invalid",
+                "commit",
+                "-qm",
+                "fixture",
+            ],
+            check=True,
+        )
+        revision = subprocess.run(
+            ["git", "-C", str(self.root), "rev-parse", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        subprocess.run(
+            [
+                "git",
+                "-C",
+                str(self.root),
+                "update-ref",
+                "refs/remotes/origin/main",
+                revision,
+            ],
+            check=True,
+        )
+        subprocess.run(
+            [
+                "git",
+                "-C",
+                str(self.root),
+                "symbolic-ref",
+                "refs/remotes/origin/HEAD",
+                "refs/remotes/origin/main",
+            ],
+            check=True,
+        )
+        registry = json.loads(
+            (self.root / "knowledge" / "sources.json").read_text(encoding="utf-8")
+        )
+        registry["sources"][0]["revision"] = revision
+        (self.root / "knowledge" / "sources.json").write_text(
+            json.dumps(registry), encoding="utf-8"
+        )
 
     def tearDown(self):
         self.temp.cleanup()
@@ -76,6 +128,20 @@ See the [index](../index.md).
 
     def validate(self):
         return WIKI_LINT.validate(self.root)
+
+    def test_git_commands_disable_lazy_fetching(self):
+        with patch.object(WIKI_LINT.subprocess, "run") as run:
+            run.return_value = subprocess.CompletedProcess(
+                args=["git", "rev-parse", "--show-object-format"],
+                returncode=0,
+                stdout="sha1\n",
+            )
+
+            WIKI_LINT.git_object_id_length(self.root)
+
+        env = run.call_args.kwargs["env"]
+        self.assertEqual("1", env["GIT_NO_LAZY_FETCH"])
+        self.assertEqual("1", env["GIT_NO_REPLACE_OBJECTS"])
 
     def test_valid_wiki_passes(self):
         errors, warnings = self.validate()
@@ -100,16 +166,20 @@ See the [index](../index.md).
         errors, _ = self.validate()
         self.assertTrue(any("missing page topics/example.md" in error for error in errors))
 
-    def test_missing_local_source_is_rejected(self):
+    def test_missing_worktree_source_is_valid_when_pinned_blob_exists(self):
         (self.root / "evidence.md").unlink()
         errors, _ = self.validate()
-        self.assertTrue(
-            any("local source does not exist: evidence.md" in error for error in errors)
-        )
+        self.assertEqual([], errors)
 
-    def test_untracked_repository_source_is_rejected(self):
+    def test_source_absent_from_recorded_tree_is_rejected(self):
         untracked = self.root / "untracked.md"
         untracked.write_text("# Untracked\n", encoding="utf-8")
+        revision = subprocess.run(
+            ["git", "-C", str(self.root), "rev-parse", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
         self.write_registry(
             [
                 {
@@ -118,13 +188,184 @@ See the [index](../index.md).
                     "kind": "repository",
                     "path": "untracked.md",
                     "last_verified": "2026-07-31",
+                    "revision": revision,
                 }
             ]
         )
         errors, _ = self.validate()
         self.assertTrue(
             any(
-                "repository evidence must be version-controlled" in error
+                "repository evidence does not exist at revision" in error
+                for error in errors
+            )
+        )
+
+    def test_historical_source_survives_later_committed_rename(self):
+        registry = json.loads(
+            (self.root / "knowledge" / "sources.json").read_text(encoding="utf-8")
+        )
+        recorded_revision = registry["sources"][0]["revision"]
+        (self.root / "evidence.md").rename(self.root / "renamed-evidence.md")
+        subprocess.run(
+            ["git", "-C", str(self.root), "add", "-A"],
+            check=True,
+        )
+        subprocess.run(
+            [
+                "git",
+                "-C",
+                str(self.root),
+                "-c",
+                "user.name=Wiki Lint Tests",
+                "-c",
+                "user.email=wiki-lint@example.invalid",
+                "commit",
+                "-qm",
+                "rename evidence",
+            ],
+            check=True,
+        )
+        current_revision = subprocess.run(
+            ["git", "-C", str(self.root), "rev-parse", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        subprocess.run(
+            [
+                "git",
+                "-C",
+                str(self.root),
+                "update-ref",
+                "refs/remotes/origin/main",
+                current_revision,
+            ],
+            check=True,
+        )
+        errors, _ = self.validate()
+        self.assertEqual([], errors)
+        self.assertEqual(
+            ("100644", "blob"),
+            WIKI_LINT.git_tree_entry(
+                self.root, recorded_revision, "evidence.md"
+            ),
+        )
+
+    def test_replacement_commit_cannot_substitute_pinned_evidence(self):
+        registry = json.loads(
+            (self.root / "knowledge" / "sources.json").read_text(encoding="utf-8")
+        )
+        recorded_revision = registry["sources"][0]["revision"]
+        (self.root / "evidence.md").unlink()
+        subprocess.run(
+            ["git", "-C", str(self.root), "add", "-A"],
+            check=True,
+        )
+        subprocess.run(
+            [
+                "git",
+                "-C",
+                str(self.root),
+                "-c",
+                "user.name=Wiki Lint Tests",
+                "-c",
+                "user.email=wiki-lint@example.invalid",
+                "commit",
+                "-qm",
+                "delete evidence",
+            ],
+            check=True,
+        )
+        replacement_revision = subprocess.run(
+            ["git", "-C", str(self.root), "rev-parse", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        subprocess.run(
+            [
+                "git",
+                "-C",
+                str(self.root),
+                "update-ref",
+                "refs/remotes/origin/main",
+                replacement_revision,
+            ],
+            check=True,
+        )
+        subprocess.run(
+            [
+                "git",
+                "-C",
+                str(self.root),
+                "replace",
+                recorded_revision,
+                replacement_revision,
+            ],
+            check=True,
+        )
+
+        errors, _ = self.validate()
+
+        self.assertEqual([], errors)
+
+    def test_symlink_at_recorded_revision_is_rejected(self):
+        target = self.root / "target.md"
+        target.write_text("# Target\n", encoding="utf-8")
+        linked = self.root / "linked-evidence.md"
+        linked.symlink_to(target.name)
+        subprocess.run(
+            ["git", "-C", str(self.root), "add", "target.md", "linked-evidence.md"],
+            check=True,
+        )
+        subprocess.run(
+            [
+                "git",
+                "-C",
+                str(self.root),
+                "-c",
+                "user.name=Wiki Lint Tests",
+                "-c",
+                "user.email=wiki-lint@example.invalid",
+                "commit",
+                "-qm",
+                "add linked evidence",
+            ],
+            check=True,
+        )
+        revision = subprocess.run(
+            ["git", "-C", str(self.root), "rev-parse", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        subprocess.run(
+            [
+                "git",
+                "-C",
+                str(self.root),
+                "update-ref",
+                "refs/remotes/origin/main",
+                revision,
+            ],
+            check=True,
+        )
+        self.write_registry(
+            [
+                {
+                    "id": "linked-evidence",
+                    "title": "Linked evidence",
+                    "kind": "repository",
+                    "path": "linked-evidence.md",
+                    "last_verified": "2026-07-31",
+                    "revision": revision,
+                }
+            ]
+        )
+        errors, _ = self.validate()
+        self.assertTrue(
+            any(
+                "repository evidence must be a regular file at revision" in error
                 for error in errors
             )
         )
@@ -249,6 +490,35 @@ See the [index](../index.md).
         finally:
             outside.unlink(missing_ok=True)
 
+    def test_index_symlink_inside_project_root_is_rejected(self):
+        index = self.root / "knowledge" / "index.md"
+        index.unlink()
+        index.symlink_to("log.md")
+
+        errors, _ = self.validate()
+
+        self.assertTrue(
+            any(
+                "knowledge/index.md: path or parent is a symlink" in error
+                for error in errors
+            )
+        )
+
+    def test_wiki_page_with_symlinked_parent_is_rejected(self):
+        topics = self.root / "knowledge" / "topics"
+        actual_topics = self.root / "knowledge" / "actual-topics"
+        topics.rename(actual_topics)
+        topics.symlink_to(actual_topics.name)
+
+        errors, _ = self.validate()
+
+        self.assertTrue(
+            any(
+                "knowledge/topics/example.md: path or parent is a symlink" in error
+                for error in errors
+            )
+        )
+
     def test_empty_page_reports_errors_without_crashing(self):
         self.page.write_text("", encoding="utf-8")
         errors, _ = self.validate()
@@ -269,6 +539,288 @@ See the [index](../index.md).
         )
         errors, _ = self.validate()
         self.assertTrue(any("revision must be a non-empty string" in e for e in errors))
+
+    def test_repository_source_requires_full_object_id(self):
+        self.write_registry(
+            [
+                {
+                    "id": "local-evidence",
+                    "title": "Local evidence",
+                    "kind": "repository",
+                    "path": "evidence.md",
+                    "last_verified": "2026-07-31",
+                    "revision": "abc123",
+                }
+            ]
+        )
+        errors, _ = self.validate()
+        self.assertTrue(
+            any(
+                "repository evidence requires a full 40-character Git revision"
+                in error
+                for error in errors
+            )
+        )
+
+    def test_sha256_repository_uses_64_character_object_ids(self):
+        sha256_root = self.root / "sha256-repository"
+        completed = subprocess.run(
+            ["git", "init", "-q", "--object-format=sha256", str(sha256_root)],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        if completed.returncode != 0:
+            self.skipTest("installed Git does not support SHA-256 repositories")
+        self.assertEqual(64, WIKI_LINT.git_object_id_length(sha256_root))
+
+    def test_repository_source_must_exist_at_revision(self):
+        self.write_registry(
+            [
+                {
+                    "id": "local-evidence",
+                    "title": "Local evidence",
+                    "kind": "repository",
+                    "path": "evidence.md",
+                    "last_verified": "2026-07-31",
+                    "revision": "f" * 40,
+                }
+            ]
+        )
+        errors, _ = self.validate()
+        self.assertTrue(
+            any(
+                "repository evidence does not exist at revision" in error
+                for error in errors
+            )
+        )
+
+    def test_repository_revision_must_be_reachable_from_trusted_ref(self):
+        detached = subprocess.run(
+            [
+                "git",
+                "-C",
+                str(self.root),
+                "commit-tree",
+                subprocess.run(
+                    ["git", "-C", str(self.root), "write-tree"],
+                    check=True,
+                    capture_output=True,
+                    text=True,
+                ).stdout.strip(),
+                "-m",
+                "untrusted evidence",
+            ],
+            check=True,
+            capture_output=True,
+            text=True,
+            env={
+                **os.environ,
+                "GIT_AUTHOR_NAME": "Wiki Lint Tests",
+                "GIT_AUTHOR_EMAIL": "wiki-lint@example.invalid",
+                "GIT_COMMITTER_NAME": "Wiki Lint Tests",
+                "GIT_COMMITTER_EMAIL": "wiki-lint@example.invalid",
+            },
+        ).stdout.strip()
+        self.write_registry(
+            [
+                {
+                    "id": "local-evidence",
+                    "title": "Local evidence",
+                    "kind": "repository",
+                    "path": "evidence.md",
+                    "last_verified": "2026-07-31",
+                    "revision": detached,
+                }
+            ]
+        )
+        errors, _ = self.validate()
+        self.assertTrue(
+            any(
+                "repository revision is not reachable from trusted refs" in error
+                for error in errors
+            )
+        )
+
+    def test_repository_source_requires_configured_trusted_ref(self):
+        subprocess.run(
+            [
+                "git",
+                "-C",
+                str(self.root),
+                "symbolic-ref",
+                "--delete",
+                "refs/remotes/origin/HEAD",
+            ],
+            check=True,
+        )
+        errors, _ = self.validate()
+        self.assertTrue(
+            any(
+                "repository trusted refs are not configured" in error
+                for error in errors
+            )
+        )
+
+    def test_repository_tag_cannot_be_configured_as_trusted_history(self):
+        revision = subprocess.run(
+            ["git", "-C", str(self.root), "rev-parse", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        subprocess.run(
+            ["git", "-C", str(self.root), "tag", "evidence-release", revision],
+            check=True,
+        )
+        subprocess.run(
+            [
+                "git",
+                "-C",
+                str(self.root),
+                "symbolic-ref",
+                "--delete",
+                "refs/remotes/origin/HEAD",
+            ],
+            check=True,
+        )
+        subprocess.run(
+            [
+                "git",
+                "-C",
+                str(self.root),
+                "config",
+                "--add",
+                "codex.wikiTrustedRef",
+                "refs/tags/evidence-release",
+            ],
+            check=True,
+        )
+        errors, _ = self.validate()
+        self.assertTrue(
+            any(
+                "repository trusted refs are not configured" in error
+                for error in errors
+            )
+        )
+
+    def test_shallow_history_reports_incomplete_checkout_for_missing_revision(self):
+        current_revision = subprocess.run(
+            ["git", "-C", str(self.root), "rev-parse", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        (self.root / ".git" / "shallow").write_text(
+            f"{current_revision}\n", encoding="ascii"
+        )
+        registry = json.loads(
+            (self.root / "knowledge" / "sources.json").read_text(encoding="utf-8")
+        )
+        registry["sources"][0]["revision"] = "f" * 40
+        (self.root / "knowledge" / "sources.json").write_text(
+            json.dumps(registry), encoding="utf-8"
+        )
+
+        errors, _ = self.validate()
+
+        self.assertTrue(
+            any(
+                "shallow repository history cannot verify revision" in error
+                for error in errors
+            )
+        )
+        self.assertFalse(
+            any(
+                "repository revision is not reachable from trusted refs" in error
+                or "repository evidence does not exist at revision" in error
+                for error in errors
+            )
+        )
+
+    def test_shallow_history_accepts_available_trusted_revision(self):
+        current_revision = subprocess.run(
+            ["git", "-C", str(self.root), "rev-parse", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        (self.root / ".git" / "shallow").write_text(
+            f"{current_revision}\n", encoding="ascii"
+        )
+
+        errors, _ = self.validate()
+
+        self.assertEqual([], errors)
+
+    def test_partial_clone_reports_incomplete_checkout_for_missing_revision(self):
+        subprocess.run(
+            [
+                "git",
+                "-C",
+                str(self.root),
+                "config",
+                "remote.origin.promisor",
+                "true",
+            ],
+            check=True,
+        )
+        registry = json.loads(
+            (self.root / "knowledge" / "sources.json").read_text(encoding="utf-8")
+        )
+        registry["sources"][0]["revision"] = "f" * 40
+        (self.root / "knowledge" / "sources.json").write_text(
+            json.dumps(registry), encoding="utf-8"
+        )
+
+        errors, _ = self.validate()
+
+        self.assertTrue(
+            any(
+                "partial clone is missing objects required to verify revision"
+                in error
+                for error in errors
+            )
+        )
+        self.assertFalse(
+            any(
+                "repository revision is not reachable from trusted refs" in error
+                or "repository evidence does not exist at revision" in error
+                for error in errors
+            )
+        )
+
+    def test_partial_clone_reports_missing_evidence_blob_without_lazy_fetch(self):
+        subprocess.run(
+            [
+                "git",
+                "-C",
+                str(self.root),
+                "config",
+                "remote.origin.promisor",
+                "true",
+            ],
+            check=True,
+        )
+        blob = subprocess.run(
+            ["git", "-C", str(self.root), "rev-parse", "HEAD:evidence.md"],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        (self.root / ".git" / "objects" / blob[:2] / blob[2:]).unlink()
+
+        errors, _ = self.validate()
+
+        self.assertTrue(
+            any(
+                "partial clone is missing the repository evidence blob" in error
+                for error in errors
+            )
+        )
+        self.assertFalse(
+            any("repository evidence does not exist at revision" in error for error in errors)
+        )
 
     def test_unknown_superseded_source_is_rejected(self):
         self.write_registry(
