@@ -30,7 +30,7 @@ class WikiLintTests(unittest.TestCase):
                     "kind": "repository",
                     "path": "evidence.md",
                     "last_verified": "2026-07-31",
-                    "revision": "abc123",
+                    "revision": "0000000000000000000000000000000000000000",
                     "affected_pages": ["knowledge/topics/example.md"],
                 }
             ]
@@ -63,6 +63,34 @@ See the [index](../index.md).
         subprocess.run(
             ["git", "-C", str(self.root), "add", "."],
             check=True,
+        )
+        subprocess.run(
+            [
+                "git",
+                "-C",
+                str(self.root),
+                "-c",
+                "user.name=Wiki Lint Tests",
+                "-c",
+                "user.email=wiki-lint@example.invalid",
+                "commit",
+                "-qm",
+                "fixture",
+            ],
+            check=True,
+        )
+        revision = subprocess.run(
+            ["git", "-C", str(self.root), "rev-parse", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        registry = json.loads(
+            (self.root / "knowledge" / "sources.json").read_text(encoding="utf-8")
+        )
+        registry["sources"][0]["revision"] = revision
+        (self.root / "knowledge" / "sources.json").write_text(
+            json.dumps(registry), encoding="utf-8"
         )
 
     def tearDown(self):
@@ -269,6 +297,49 @@ See the [index](../index.md).
         )
         errors, _ = self.validate()
         self.assertTrue(any("revision must be a non-empty string" in e for e in errors))
+
+    def test_repository_source_requires_full_revision(self):
+        self.write_registry(
+            [
+                {
+                    "id": "local-evidence",
+                    "title": "Local evidence",
+                    "kind": "repository",
+                    "path": "evidence.md",
+                    "last_verified": "2026-07-31",
+                    "revision": "abc123",
+                }
+            ]
+        )
+        errors, _ = self.validate()
+        self.assertTrue(
+            any(
+                "repository evidence requires a full 40-character Git revision"
+                in error
+                for error in errors
+            )
+        )
+
+    def test_repository_source_must_exist_at_revision(self):
+        self.write_registry(
+            [
+                {
+                    "id": "local-evidence",
+                    "title": "Local evidence",
+                    "kind": "repository",
+                    "path": "evidence.md",
+                    "last_verified": "2026-07-31",
+                    "revision": "f" * 40,
+                }
+            ]
+        )
+        errors, _ = self.validate()
+        self.assertTrue(
+            any(
+                "repository evidence does not exist at revision" in error
+                for error in errors
+            )
+        )
 
     def test_unknown_superseded_source_is_rejected(self):
         self.write_registry(

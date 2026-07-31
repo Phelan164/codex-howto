@@ -57,6 +57,23 @@ secret files, and authentication configuration. Use a repository secret scanner
 when one is available without printing secret values. If safe classification
 is uncertain, do not read the file; report the source record for review.
 
+## Source access boundary
+
+Treat a registered external `url` as provenance, not permission to fetch it.
+Query must not fetch an external source unless the user explicitly requests a
+refresh or ingest. For an authorized fetch, use an approved safe-fetch tool and
+require a public HTTPS destination with no embedded credentials. Reject
+loopback, private, link-local, reserved, and cloud-metadata destinations after
+name resolution, and apply the same validation to every redirect. If the tool
+cannot enforce destination and redirect validation, do not fetch; report the
+source record instead. Keep fetched content in `.wiki-cache/`.
+
+Every registered repository `path` must include the immutable 40-character Git
+commit that contains the evidence. Read that blob through the Git object
+database at the recorded revision, never from mutable working-tree bytes. Stop
+and report unverified drift when the revision is missing or unresolved, the
+path does not exist at that commit, or the record cannot be bound to the blob.
+
 Read [source-policy.md](references/source-policy.md) before Capture, Ingest,
 Archive, or Promote.
 Read [article-template.md](references/article-template.md) when creating a page.
@@ -65,7 +82,9 @@ Read [article-template.md](references/article-template.md) when creating a page.
 
 1. Read `knowledge/index.md`.
 2. Search `knowledge/` for the subject and its common synonyms.
-3. Read only the relevant pages and their registered sources.
+3. Read only the relevant pages and revision-bound repository evidence.
+   Treat registered external URLs as citations; do not fetch them during an
+   ordinary Query.
 4. Distinguish verified guidance, community practice, experiment results, and
    unresolved claims.
 5. Answer with links to wiki pages. State when the wiki has no evidence.
@@ -78,8 +97,9 @@ Do not use model memory to silently fill a gap in the repository wiki.
 2. Identify a durable repository or experiment artifact. Do not treat chat
    prose, an unmerged proposal, or model output as evidence by itself.
 3. Search the index and full wiki before creating a page.
-4. Register or reuse the evidence source, including a stable revision when
-   available and the pages it affects.
+4. Register or reuse the evidence source, including the exact commit for
+   repository evidence and the pages it affects. Do not register uncommitted
+   working-tree content as durable evidence.
 5. Update the smallest existing page, or create an `experimental` page when
    the conclusion is not stable enough for another status.
 6. Update the index and log, run lint, and leave promotion for a separate
@@ -94,9 +114,10 @@ into durable knowledge.
    index, or log. A general research request remains read-only.
 2. Inspect `knowledge/sources.json` and reuse an existing source ID when it
    identifies the same material.
-3. For external material, store metadata in the registry and use
-   `.wiki-cache/` for temporary fetched content. Do not commit a full external
-   source unless its license and repository policy permit redistribution.
+3. For external material, apply the source access boundary, store metadata in
+   the registry, and use `.wiki-cache/` for temporary fetched content. Do not
+   commit a full external source unless its license and repository policy
+   permit redistribution.
 4. Classify the source as `official`, `community`, `repository`, or
    `experiment`.
 5. Search existing pages before creating a new page.

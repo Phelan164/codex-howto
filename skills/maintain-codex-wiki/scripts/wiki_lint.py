@@ -14,6 +14,7 @@ from urllib.parse import unquote, urlparse
 
 
 SOURCE_ID_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+COMMIT_SHA_RE = re.compile(r"^[0-9a-f]{40}$", re.IGNORECASE)
 LINK_RE = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
 SOURCE_REF_RE = re.compile(r"`([a-z0-9]+(?:-[a-z0-9]+)*)`")
 STATUS_RE = re.compile(r"^>\s*Status:\s*(\S+)\s*$", re.IGNORECASE)
@@ -98,6 +99,23 @@ def git_tracks(root: Path, relative: str) -> bool:
             "--error-unmatch",
             "--",
             relative,
+        ],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    )
+    return completed.returncode == 0
+
+
+def git_contains_blob(root: Path, revision: str, relative: str) -> bool:
+    completed = subprocess.run(
+        [
+            "git",
+            "-C",
+            str(root),
+            "cat-file",
+            "-e",
+            f"{revision}:{relative}",
         ],
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
@@ -219,6 +237,18 @@ def load_sources(root: Path, errors: list[str]) -> dict[str, dict[str, object]]:
                 errors.append(
                     f"{label}: repository evidence must be version-controlled: "
                     f"{local}"
+                )
+            if not isinstance(revision, str) or not COMMIT_SHA_RE.fullmatch(
+                revision
+            ):
+                errors.append(
+                    f"{label}: repository evidence requires a full 40-character "
+                    "Git revision"
+                )
+            elif not git_contains_blob(root, revision, local):
+                errors.append(
+                    f"{label}: repository evidence does not exist at revision: "
+                    f"{revision}:{local}"
                 )
     return sources
 

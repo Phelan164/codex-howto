@@ -35,7 +35,11 @@ identified as sensitive by repository policy or common credential names,
 including `.env*`, private keys, credential or secret files, and authentication
 configuration. Use a repository secret scanner when available without printing
 secret values. If safe classification is uncertain, do not read the file and
-report the source record for review. Use exactly one of `url` or `path`.
+report the source record for review. Require `revision` to be the immutable
+40-character Git commit containing the evidence, and read the path from that
+commit through the Git object database rather than from the working tree. If
+the commit or blob cannot be resolved, treat the evidence as unverified drift.
+Use exactly one of `url` or `path`.
 
 Source IDs are permanent. If a URL moves, update the record without changing
 the ID. `last_verified` records when a maintainer checked the source, not when
@@ -43,13 +47,21 @@ the source was published.
 
 Use optional metadata when evidence supports it:
 
-- `revision` pins a release, commit, or document revision. Do not invent one.
+- `revision` pins a release, commit, or document revision. For every repository
+  `path`, it is mandatory and must be the full immutable Git commit. Do not
+  register uncommitted working-tree content as durable evidence.
 - `supersedes` lists older registered source IDs replaced by this source.
 - `affected_pages` lists project-relative wiki pages whose claims depend on the
   source. Every listed page must cite that source ID.
 
 ## External content
 
+- A registered URL is provenance, not fetch authorization. Query does not fetch
+  external sources by default.
+- Fetch only for an explicitly requested refresh or ingest, using a tool that
+  validates a public HTTPS destination and every redirect. Reject embedded
+  credentials plus loopback, private, link-local, reserved, and cloud-metadata
+  destinations after resolution. Fail closed when these checks are unavailable.
 - Put temporary downloads and extracted text in `.wiki-cache/`.
 - Do not commit full external articles, documentation, transcripts, or images
   without redistribution permission.
