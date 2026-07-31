@@ -128,12 +128,12 @@ cost and useful evidence.
 
 Follow the
 [engineering-loop measurement protocol](../../resources/engineering-loop-measurement.md)
-with two fresh playground copies. Give the `ad_hoc` variant the backend task
-contract without skill names or prescribed stages. Give the
-`engineering_loop` variant the same contract with `$engineering-loop`,
-`$build-backend`, and `$test-software`.
+with three fresh playground copies. Give `no_skill` the backend task contract
+without installed skills. Give `full_skill` the same contract with the
+`engineering-loop` from the `v0.2.0` tag. Give `lean_skill` the same contract
+with the current `$engineering-loop`.
 
-Record both runs in a copy of
+Record all three runs in a copy of
 [`engineering-loop-runs.csv`](../../examples/measurements/engineering-loop-runs.csv).
 From the original `codex-howto` repository root, copy the record to a writable
 location and summarize it:
@@ -146,7 +146,7 @@ python3 scripts/summarize_engineering_loop.py \
 ```
 
 Repeat with the frontend and infrastructure tasks before drawing a directional
-conclusion. Do not read the rubric between paired runs.
+conclusion. Do not read the rubric between variant runs.
 
 ## Completion check
 
@@ -157,6 +157,6 @@ conclusion. Do not read the rubric between paired runs.
 - Code and security reviews contain evidence-backed findings or explicitly say
   none were verified.
 - The orchestration decision names selected and skipped roles.
-- The engineering-loop comparison uses paired fresh copies and quality gates
-  before efficiency measures.
+- The engineering-loop comparison uses three fresh copies, fixed model and
+  reasoning settings, and quality gates before efficiency measures.
 - No command targeted a real environment or external service.

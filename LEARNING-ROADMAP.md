@@ -17,9 +17,10 @@ Choose the shortest track that produces the capability you need. Completing ever
 Complete Track A, then:
 
 1. [Engineering skills](modules/05-engineering-skills/README.md)
-2. Install `engineering-loop` and either `build-frontend` or `build-backend`.
+2. Run one representative task without a skill, then compare
+   `engineering-loop` and one relevant specialist.
 3. [Testing and review](modules/07-testing-and-review/README.md)
-4. Install `test-software`, `review-code`, and `review-security`.
+4. Keep only the specialist skills that improve a measured result.
 5. Complete the relevant parts of the
    [engineering playground](labs/engineering-playground/README.md).
 

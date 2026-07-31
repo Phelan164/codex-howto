@@ -5,21 +5,11 @@ description: Design, implement, and evaluate risk-based software tests across un
 
 # Test Software
 
-## Workflow
+## Test contract
 
-1. Read repository testing guidance and identify the existing test stack.
-2. Confirm the test target, environment, fixtures, external services, and write
-   side effects before executing commands.
-3. Define the behavior, invariant, or defect the tests must prove.
-4. List risks and select the lowest test layer that observes each risk reliably.
-5. Reproduce defects before fixing them when practical.
-6. Build deterministic fixtures around public behavior.
-7. Implement the smallest high-value test set.
-8. Run focused tests repeatedly, then required broader checks.
-9. Inspect failures for product defects, test defects, and environment defects separately.
-
-## Guardrails
-
+- Define the behavior, invariant, or defect before selecting a test layer.
+- Use the lowest layer that observes the risk without hiding the integration
+  boundary under test.
 - Test behavior rather than private implementation details.
 - Avoid snapshots that hide meaningful assertions.
 - Do not mock the component whose integration contract is under test.
@@ -33,13 +23,15 @@ description: Design, implement, and evaluate risk-based software tests across un
   services without explicit authorization and a verified isolation strategy.
 - Stop when the configured test target or cleanup behavior is ambiguous.
 
-## Strategy
+## Execute and report
 
 Read [references/test-strategy.md](references/test-strategy.md) when choosing
 test layers or specialized methods, investigating flakes, or planning
 cross-service coverage.
 
-## Output
+Build deterministic fixtures, implement the smallest high-value set, and run
+focused tests repeatedly before broader required checks. Separate product,
+test, and environment failures.
 
 For a strategy request, return:
 
@@ -50,12 +42,3 @@ For a strategy request, return:
 5. coverage intentionally deferred.
 
 For implementation, report focused and broader checks separately.
-
-## Acceptance criteria
-
-- Each test maps to a meaningful behavior or invariant.
-- Failure messages make diagnosis possible.
-- Fixtures are deterministic and isolated.
-- The focused suite passes repeatedly.
-- The test would detect the intended regression.
-- Uncovered risks and unrun suites are explicit.

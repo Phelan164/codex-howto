@@ -18,9 +18,9 @@ evidence.
 Codex can generate code quickly, but production engineering also requires
 clear acceptance criteria, regression proof, repository checks, review, and a
 useful handoff. `codex-howto` packages that process into 13 progressive modules,
-9 focused skills, copy-ready templates, and a safe dependency-free playground.
-It covers frontend, backend, DevOps, testing, security, and orchestration
-without recommending that every task load every workflow or agent.
+8 runtime skills, one router example, copy-ready templates, and a safe
+dependency-free playground. It covers frontend, backend, DevOps, testing,
+security, and orchestration without recommending that every task load a skill.
 
 ## Fifteen-minute presentation
 
@@ -42,8 +42,7 @@ Before presenting:
 
 1. Clone the repository and confirm Codex is available.
 2. Copy the playground to a disposable directory.
-3. Install only `engineering-loop`, `build-backend`, and `test-software` into
-   that copy.
+3. Install only `engineering-loop` into that copy.
 4. Run the existing backend tests and confirm the baseline passes.
 5. Keep the playground rubric closed until after the review.
 6. Confirm the environment has no production connections or credentials.
@@ -54,8 +53,7 @@ Setup commands:
 demo_root="$(mktemp -d)"
 cp -R labs/engineering-playground "$demo_root/playground"
 mkdir -p "$demo_root/playground/.agents/skills"
-cp -R skills/engineering-loop skills/build-backend skills/test-software \
-  "$demo_root/playground/.agents/skills/"
+cp -R skills/engineering-loop "$demo_root/playground/.agents/skills/"
 cd "$demo_root/playground"
 git init
 git add .
@@ -68,10 +66,10 @@ The baseline tests pass because the seeded boundary behavior is uncovered.
 ## Live-demo prompt
 
 ```text
-$engineering-loop $build-backend $test-software Inspect the inventory
-reservation contract, reproduce one uncovered input-boundary defect, add the
-smallest regression test, implement the fix, run the required checks, and
-review the final diff. Work only in this disposable playground.
+$engineering-loop Inspect the inventory reservation contract, reproduce one
+uncovered input-boundary defect, add the smallest regression test, implement
+the fix, run the required checks, and review the final diff. Work only in this
+disposable playground.
 ```
 
 Narrate the evidence rather than every tool call:
@@ -113,8 +111,8 @@ matrix.
 
 ## Measurement
 
-Compare one normal task with one workflow-assisted task. Keep task, repository,
-model, and environment as similar as practical.
+Compare no-skill, v0.2 full-skill, and current lean-skill runs. Keep the task,
+repository, model, reasoning effort, tools, and environment fixed.
 
 Record:
 
@@ -132,7 +130,7 @@ Do not claim that skills or multiple agents are more efficient from one run.
 Look for fewer failed loops, better evidence, and more predictable completion
 across repeated comparable tasks. Use the
 [engineering-loop measurement protocol](resources/engineering-loop-measurement.md)
-for paired runs and the
+for three-way ablation and the
 [token-efficiency scorecard](resources/token-efficiency-scorecard.md) to audit
 context practices.
 
@@ -147,8 +145,9 @@ context practices.
 > The central workflow is a complete engineering loop: reproduce, implement,
 > test, review, fix verified findings, and report evidence.
 >
-> The repository includes 13 progressive modules, 9 focused skills, copy-ready
-> templates, and a dependency-free practice project.
+> The repository includes 13 progressive modules, 8 runtime skills, a
+> three-way skill-ablation protocol, copy-ready templates, and a
+> dependency-free practice project.
 >
 > https://github.com/Phelan164/codex-howto
 
@@ -173,8 +172,8 @@ token use.
 
 ### Why not install every skill?
 
-Overlapping instructions add discovery and context cost. Start with one
-lifecycle owner and add a specialist only when it changes domain decisions.
+Overlapping instructions add discovery and context cost. Start without a skill,
+then add one only when it changes a measured engineering outcome.
 
 ## Presentation checklist
 

@@ -7,8 +7,8 @@ unverified.
 ## Participate
 
 - **Try the playground** and report unclear steps or unexpected behavior.
-- **Measure paired runs** with the included protocol instead of relying on a
-  single impressive demo.
+- **Measure three-way runs** with the included protocol instead of relying on
+  a single impressive demo.
 - **Open an issue** for a documentation defect, missing engineering case, or
   reproducible workflow failure.
 - **Contribute a focused change** that follows the content and skill standards.
@@ -41,9 +41,9 @@ labeled.
 
 ### Measurement replication
 
-Repeat the paired-run protocol on comparable tasks, publish anonymized data,
-and explain the environment and limitations. Negative or inconclusive results
-are useful.
+Repeat the no-skill/full-skill/lean-skill protocol on comparable tasks, publish
+anonymized data, and explain the model, reasoning effort, environment, and
+limitations. Negative or inconclusive results are useful.
 
 ## Community standards
 

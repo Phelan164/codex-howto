@@ -61,10 +61,12 @@ Each skill must:
 - use a lowercase, hyphenated folder name;
 - contain `SKILL.md` with only `name` and `description` in frontmatter;
 - use an imperative workflow;
-- define scope, guardrails, and acceptance criteria;
+- define workflow boundaries and observable output;
 - keep detailed variants in one-level-deep `references/`;
 - avoid embedded secrets, credentials, or destructive defaults;
 - pass the repository validator and the official skill validator.
+- demonstrate a measured workflow, safety, domain-knowledge, output-contract,
+  or deterministic-tool advantage over a no-skill baseline.
 
 Do not add a README inside a skill folder.
 

@@ -8,6 +8,13 @@ Turn a proven engineering workflow into a discoverable, token-efficient Codex sk
 
 A skill packages instructions plus optional references, scripts, and assets. Codex sees compact metadata first, loads `SKILL.md` when the skill is selected, and reads bundled resources only when needed. This progressive disclosure keeps reusable depth available without loading all of it into every task.
 
+A capable model already knows generic software-engineering practice. Create a
+skill only for a measured workflow gap, non-generic domain knowledge, a safety
+boundary, a required evidence contract, or a deterministic reusable resource.
+Start with no skill and use
+[three-way ablation](../../resources/engineering-loop-measurement.md) before
+making a skill a team default.
+
 ## Anatomy
 
 ```text
@@ -39,14 +46,14 @@ The description is the trigger. Put both capability and usage context there.
 
 Invoke explicitly with `$skill-name`, or let Codex match the description.
 
-Use `policy.allow_implicit_invocation: false` in `agents/openai.yaml` for a
-router, orchestrator, or other workflow that should run only when named:
+Use `policy.allow_implicit_invocation: false` in `agents/openai.yaml` for an
+orchestrator or other workflow that should run only when named:
 
 ```yaml
 interface:
-  display_name: "Choose Engineering Flow"
-  short_description: "Select the smallest useful engineering workflow"
-  default_prompt: "Use $choose-engineering-flow to route this task."
+  display_name: "Orchestrate Engineering"
+  short_description: "Coordinate bounded multi-agent engineering work"
+  default_prompt: "Use $orchestrate-engineering for this complex task."
 policy:
   allow_implicit_invocation: false
 ```
@@ -128,20 +135,22 @@ The first request should use the skill. The unrelated request should not select 
 ## Lab C: use the engineering skill set
 
 Copy the [engineering playground](../../labs/engineering-playground/README.md)
-to a disposable directory. Its staged exercises use the engineering lifecycle
-and specialist skills across backend, frontend, infrastructure, testing, code
-review, security review, and orchestration. Start with one relevant specialist
-skill; add orchestration only for the final comparison.
+to three disposable directories. Run the same task with no skill, the v0.2
+full `engineering-loop`, and the current lean `engineering-loop`. Keep the
+model, reasoning effort, tools, repository state, and done conditions fixed.
+Add a specialist only in a separate comparison when its domain rules are
+material.
 
 Use [`engineering-loop`](../../skills/engineering-loop/SKILL.md) when one
 implementation task should continue through baseline, regression proof,
 focused and broader checks, final diff review, and evidence reporting. It
 coordinates the lifecycle while the narrower skills supply domain decisions.
 
-If the right entry skill is unclear, invoke
-[`choose-engineering-flow`](../../skills/choose-engineering-flow/SKILL.md).
-It recommends from the existing catalog and does not execute the task. Keeping
-routing separate avoids another all-purpose engineering skill.
+The explicit-only
+[`choose-engineering-flow`](../../examples/skills/choose-engineering-flow/SKILL.md)
+router is retained as an authoring example. Do not install it by default:
+overlapping descriptions should be fixed at their source instead of adding a
+routing turn.
 
 ## Verify
 
@@ -153,9 +162,11 @@ routing separate avoids another all-purpose engineering skill.
 - The skill contains no environment-specific secret or destructive default.
 - A router or orchestrator that must be user-invoked declares explicit-only
   policy.
+- A no-skill baseline demonstrates that the skill earns its context cost.
 
 ## Official source
 
 - [Build and use skills](https://developers.openai.com/codex/skills)
+- [GPT-5.6 prompting best practices](https://developers.openai.com/api/docs/guides/model-guidance?model=gpt-5.6#prompting-best-practices)
 
-Last verified: 2026-07-30.
+Last verified: 2026-07-31.

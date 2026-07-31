@@ -1,7 +1,7 @@
 {
   "name": "codex-howto",
-  "version": "0.2.0",
-  "description": "Engineering-first Codex workflows for implementation, testing, review, security, operations, and orchestration.",
+  "version": "0.3.0",
+  "description": "Model-adaptive Codex workflows for implementation, testing, review, security, operations, and orchestration.",
   "author": {
     "name": "Phelan164",
     "url": "https://github.com/Phelan164"

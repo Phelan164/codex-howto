@@ -23,12 +23,17 @@ class SummarizeEngineeringLoopTest(unittest.TestCase):
         temporary.close()
         return Path(temporary.name)
 
-    def test_summarizes_paired_quality_and_efficiency(self) -> None:
+    def test_summarizes_three_way_quality_and_efficiency(self) -> None:
         rows = [
             [
                 "backend",
-                "ad_hoc",
+                "no_skill",
                 "baseline-1",
+                "gpt-5.6-sol",
+                "medium",
+                "abc123",
+                "local-default",
+                "none",
                 "false",
                 "false",
                 "false",
@@ -46,8 +51,37 @@ class SummarizeEngineeringLoopTest(unittest.TestCase):
             ],
             [
                 "backend",
-                "engineering_loop",
-                "loop-1",
+                "full_skill",
+                "full-1",
+                "gpt-5.6-sol",
+                "medium",
+                "abc123",
+                "local-default",
+                "v0.2.0",
+                "true",
+                "true",
+                "true",
+                "true",
+                "true",
+                "1",
+                "0",
+                "1",
+                "0",
+                "160",
+                "1500",
+                "0.15",
+                "8",
+                "",
+            ],
+            [
+                "backend",
+                "lean_skill",
+                "lean-1",
+                "gpt-5.6-sol",
+                "medium",
+                "abc123",
+                "local-default",
+                "v0.3.0",
                 "true",
                 "true",
                 "true",
@@ -65,15 +99,21 @@ class SummarizeEngineeringLoopTest(unittest.TestCase):
             ],
         ]
         output = summarize(load_rows(self.write_csv(rows)))
-        self.assertIn("| ad_hoc | 1 | 0/1 (0%)", output)
-        self.assertIn("| engineering_loop | 1 | 1/1 (100%)", output)
-        self.assertIn("- Paired tasks: 1/1", output)
+        self.assertIn("| no_skill | 1 | 0/1 (0%)", output)
+        self.assertIn("| full_skill | 1 | 1/1 (100%)", output)
+        self.assertIn("| lean_skill | 1 | 1/1 (100%)", output)
+        self.assertIn("- Complete three-way tasks: 1/1", output)
 
     def test_rejects_unknown_variant(self) -> None:
         row = [
             "backend",
             "unknown",
             "run-1",
+            "gpt-5.6-sol",
+            "medium",
+            "abc123",
+            "local-default",
+            "none",
             "true",
             "true",
             "",
@@ -97,9 +137,88 @@ class SummarizeEngineeringLoopTest(unittest.TestCase):
         self.assertEqual(load_rows(path), [])
         self.assertEqual(summarize([]), "No measurement rows found.\n")
 
+    def test_requires_model_reasoning_and_skill_version(self) -> None:
+        row = [
+            "backend",
+            "no_skill",
+            "run-1",
+            "",
+            "medium",
+            "abc123",
+            "local-default",
+            "none",
+            "true",
+            "true",
+            "",
+            "true",
+            "true",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+        ]
+        with self.assertRaisesRegex(ValueError, "model.*required"):
+            load_rows(self.write_csv([row]))
+
+    def test_rejects_mismatched_controlled_fields(self) -> None:
+        rows = [
+            self.valid_row("no_skill", "baseline-1"),
+            self.valid_row(
+                "lean_skill", "lean-1", model="gpt-5.5", reasoning_effort="high"
+            ),
+        ]
+        with self.assertRaisesRegex(ValueError, "controlled fields must match"):
+            load_rows(self.write_csv(rows))
+
+    def test_rejects_duplicate_variant_for_task(self) -> None:
+        rows = [
+            self.valid_row("no_skill", "baseline-1"),
+            self.valid_row("no_skill", "baseline-2"),
+        ]
+        with self.assertRaisesRegex(ValueError, "duplicate variant"):
+            load_rows(self.write_csv(rows))
+
+    def valid_row(
+        self,
+        variant: str,
+        run_id: str,
+        *,
+        model: str = "gpt-5.6-sol",
+        reasoning_effort: str = "medium",
+    ) -> list[str]:
+        return [
+            "backend",
+            variant,
+            run_id,
+            model,
+            reasoning_effort,
+            "abc123",
+            "local-default",
+            "none" if variant == "no_skill" else "v0.3.0",
+            "true",
+            "true",
+            "",
+            "true",
+            "true",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+        ]
+
     def test_rejects_wrong_column_count(self) -> None:
         with self.assertRaisesRegex(ValueError, "column count"):
-            load_rows(self.write_csv([["backend", "ad_hoc"]]))
+            load_rows(self.write_csv([["backend", "no_skill"]]))
 
 
 if __name__ == "__main__":
