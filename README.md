@@ -98,6 +98,9 @@ implementation diff, passing focused checks, and a final evidence report.
 Then use the
 [measurement protocol](resources/engineering-loop-measurement.md) to compare
 no-skill, full-skill, and lean-skill runs without treating one demo as proof.
+For a larger implementation exercise, use the
+[dependency-free 2048 benchmark](labs/2048-game-benchmark/README.md) and inspect
+the [GPT-5.6-sol seed measurement](examples/measurements/gpt-5.6-sol-2048-game-2026-07-31.md).
 Use [PRESENTING.md](PRESENTING.md) for a 15-minute talk track, demo checklist,
 and copy-ready announcement.
 

@@ -91,6 +91,12 @@ REQUIRED_LAB_FILES = {
 }
 REQUIRED_MEASUREMENT_FILES = {
     "examples/measurements/engineering-loop-runs.csv",
+    "examples/measurements/gpt-5.6-sol-2048-game-2026-07-31.md",
+    "labs/2048-game-benchmark/AGENTS.md",
+    "labs/2048-game-benchmark/README.md",
+    "labs/2048-game-benchmark/TASK.md",
+    "labs/2048-game-benchmark/evaluator.mjs",
+    "labs/2048-game-benchmark/test/engine.test.mjs",
     "resources/engineering-loop-measurement.md",
     "scripts/summarize_engineering_loop.py",
     "scripts/tests/test_summarize_engineering_loop.py",
