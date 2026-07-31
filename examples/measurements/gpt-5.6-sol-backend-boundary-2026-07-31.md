@@ -39,9 +39,9 @@ not a clean “model with no instructions” ablation.
 
 | Variant | Accepted | Evidence complete | Pre-fix regression | Required checks | Retries | Elapsed | Total reported tokens |
 |---|---:|---:|---:|---:|---:|---:|---:|
-| No repository skill | yes | yes | yes | passed | 0 | 105 s | 390,144 |
-| Full skill v0.2.0 | yes | yes | yes | passed | 1 | 113 s | 418,029 |
-| Lean skill v0.4.0 | yes | yes | yes | passed | 2 | 110 s | 401,602 |
+| No repository skill | yes | yes | yes | passed | 0 | 114 s | 390,144 |
+| Full skill v0.2.0 | yes | yes | yes | passed | 1 | 125 s | 418,029 |
+| Lean skill v0.4.0 | yes | yes | yes | passed | 2 | 125 s | 401,602 |
 
 `total reported tokens` is the CLI's `input_tokens + output_tokens`; cached
 input is already included in `input_tokens` and is not added twice.
@@ -103,7 +103,8 @@ consistency, or handoff benefits that justify its context cost.
   cleanup added environment-specific work and makes retry/time differences less
   generalizable. A playground-local `.gitignore` was added after the runs to
   prevent future standalone copies from capturing this noise.
-- Elapsed time was recorded from CLI event timestamps to the nearest second.
+- Elapsed time was reconstructed from each run's first CLI timestamp through
+  the final-output file modification time and rounded to the nearest second.
 - Cost and context-noise-line measurements were unavailable and were not
   estimated.
 - The evaluator knew the variant after execution, although the resulting diffs
