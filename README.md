@@ -16,6 +16,7 @@ DevOps, security, and multi-agent orchestration.
 [Choose a track](LEARNING-ROADMAP.md) ·
 [Browse skills](#engineering-skill-catalog) ·
 [Install from skills.sh](https://skills.sh/phelan164/codex-howto) ·
+[Find verified listings on SkillStore](https://skillstore.io/search?q=phelan164) ·
 [Try the playground](labs/engineering-playground/README.md) ·
 [Use the quick reference](QUICK_REFERENCE.md) ·
 [Measure the loop](resources/engineering-loop-measurement.md) ·
@@ -254,6 +255,10 @@ Install a flagship skill through the
 npx skills add Phelan164/codex-howto --skill engineering-loop -g -a codex -y
 npx skills add Phelan164/codex-howto --skill maintain-codex-wiki -g -a codex -y
 ```
+
+The flagship skills also have independently scanned SkillStore pages:
+[Engineering Loop](https://skillstore.io/skills/phelan164-engineering-loop) and
+[Maintain Codex Wiki](https://skillstore.io/skills/phelan164-maintain-codex-wiki).
 
 List all nine skills without installing:
 
