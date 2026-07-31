@@ -26,6 +26,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Configure trusted Living Wiki history
+        run: >-
+          git config --local --add codex.wikiTrustedRef
+          refs/remotes/origin/main
+
       - name: Validate guide structure and local links
         run: python3 scripts/validate_repo.py
 

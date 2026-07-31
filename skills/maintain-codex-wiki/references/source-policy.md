@@ -42,10 +42,13 @@ hexadecimal characters for SHA-1 or 64 for SHA-256. Require the commit to be
 reachable from a repository-configured trusted ref, normally the protected
 default branch and, when explicitly allowed, signed release tags. Do not infer
 trust from the current branch, an arbitrary remote branch, or mere presence in
-the object database. Read the path from that commit through the Git object
-database rather than from the working tree. If trusted refs are unavailable,
-the commit is unreachable from them, or the commit or blob cannot be resolved,
-treat the evidence as unverified drift. Use exactly one of `url` or `path`.
+the object database. Configure additional accepted refs explicitly with
+`git config --local --add codex.wikiTrustedRef <full-ref-name>`; CI must name
+its protected default branch rather than trust the checked-out PR. Read the
+path from that commit through the Git object database rather than from the
+working tree. If trusted refs are unavailable, the commit is unreachable from
+them, or the commit or blob cannot be resolved, treat the evidence as
+unverified drift. Use exactly one of `url` or `path`.
 
 Source IDs are permanent. If a URL moves, update the record without changing
 the ID. `last_verified` records when a maintainer checked the source, not when
