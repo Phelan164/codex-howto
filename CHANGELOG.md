@@ -8,12 +8,14 @@ product compatibility.
 
 ## Unreleased
 
+## 0.3.0 - 2026-07-31
+
 - Add a review-first Codex Living Wiki with registered provenance, seeded
   evidence maps, deterministic linting, and an explicit maintenance skill.
 - Add a living-wiki learning module and a measurable wiki-efficiency baseline.
 - Add a community launch kit and structured feedback paths.
 - Add a reusable social preview asset.
-- Make the skill catalog model-adaptive: eight runtime skills and one
+- Make the skill catalog model-adaptive: nine installable skills and one
   educational router example.
 - Slim generic frontend, backend, testing, review, and engineering-loop
   instructions for GPT-5.6-era models.
