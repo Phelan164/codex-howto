@@ -6,6 +6,19 @@ activity were checked on 2026-07-31; recheck them immediately before posting.
 
 ## Priority 1: exact audience fit
 
+### skills.sh — open agent skills ecosystem
+
+- **Destination:** [Codex How To catalog](https://skills.sh/phelan164/codex-howto)
+- **Why it fits:** developers can inspect and install the repository's skills
+  directly into Codex through the public `npx skills` workflow.
+- **Verified:** the CLI detects all nine skills; `engineering-loop` and
+  `maintain-codex-wiki` have canonical catalog pages and passed an isolated
+  Codex installation smoke test.
+- **Install:** `npx skills add Phelan164/codex-howto --skill engineering-loop
+  -g -a codex -y`
+- **Measure:** catalog installs, repository referrals, and whether installers
+  complete the playground or provide benchmark evidence.
+
 ### OpenAI Codex GitHub Discussions — Show and tell
 
 - **Destination:** [Show and tell](https://github.com/openai/codex/discussions/categories/show-and-tell)
@@ -70,8 +83,8 @@ Proposed entry:
   a generic prompt collection.
 - **Share:** propose only `skills/engineering-loop`, with its loop contract and
   hard-debugging reference. Do not copy the full skill catalog into the list.
-- **Gate:** first test installation from the released repository and confirm
-  its metadata passes the official validator.
+- **Gate:** complete—the released skill passes the official validator and an
+  isolated `npx skills` Codex installation.
 
 ## Priority 2: rule-approved discovery
 

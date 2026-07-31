@@ -13,7 +13,7 @@ Use the copy below only after adapting it to the selected destination.
 
 | Window | Action | Evidence to collect |
 |---|---|---|
-| Day 0 | Publish a tagged GitHub release and social preview | Release URL and passing CI |
+| Day 0 | Publish a tagged GitHub release, verify `npx skills`, and confirm the skills.sh catalog | Release URL, passing CI, and install result |
 | Day 1 | Post a short demo on personal LinkedIn, X, or a developer fanpage | Views, repository visits, useful replies |
 | Day 2–3 | Submit to Codex GitHub Show and tell, then the OpenAI developer community | Questions, playground attempts, issues |
 | Day 4–6 | Submit one entry to Awesome Codex CLI and one skill to Awesome Codex Skills | Referral traffic, installs, accepted PRs |
@@ -260,10 +260,11 @@ Record data after 24 hours, 7 days, and 30 days:
 | YYYY-MM-DD | Example | URL | Demo | 0 | 0 | 0 | 0 | 0 | 0 | Audience questions |
 | 2026-07-31 | GitHub Traffic | [Repository](https://github.com/Phelan164/codex-howto) | 14-day baseline | 39 | 2 | 1 | 0 | — | — | 23 clones from 17 unique cloners; GitHub was the only reported referrer |
 | 2026-07-31 | GitHub Releases | [v0.3.0](https://github.com/Phelan164/codex-howto/releases/tag/v0.3.0) | Release | — | — | 1 | 0 | 0 | — | Living Wiki and model-adaptive skills released from validated `main` |
-| 2026-07-31 | OpenAI Codex GitHub Discussions | [Discussion #36262](https://github.com/openai/codex/discussions/36262) and [benchmark update](https://github.com/openai/codex/discussions/36262#discussioncomment-17850277) | Show and tell | — | — | 1 | 0 | 0 | — | Updated to v0.3.0; invites reproducible measurements |
-| 2026-07-31 | Awesome Codex CLI | [PR #172](https://github.com/RoggeOhta/awesome-codex-cli/pull/172) | Directory PR | — | — | 1 | 0 | 1 | — | Updated to the 14-module, 9-skill v0.3.0 release |
-| 2026-07-31 | Awesome Codex Skills | [PR #198](https://github.com/composio-community/awesome-codex-skills/pull/198) | Skill directory PR | — | — | 1 | 0 | 1 | — | Open and mergeable; links directly to `engineering-loop` |
-| 2026-07-31 | Awesome Codex Guide | [PR #3](https://github.com/geekjourneyx/awesome-codex-guide/pull/3) | Resource directory PR | — | — | 1 | 0 | 1 | — | Adds validated English and Chinese Living Wiki discovery metadata |
+| 2026-07-31 | skills.sh | [Codex How To catalog](https://skills.sh/phelan164/codex-howto) | Skill registry | 0 installs | — | 1 | 0 | — | 1 smoke install | `engineering-loop` and `maintain-codex-wiki` indexed; CLI detected all 9 skills |
+| 2026-07-31 | OpenAI Codex GitHub Discussions | [Discussion #36262](https://github.com/openai/codex/discussions/36262) and [benchmark update](https://github.com/openai/codex/discussions/36262#discussioncomment-17850277) | Show and tell | — | — | 1 | 0 | 0 | — | Existing post updated with the verified skills.sh install path |
+| 2026-07-31 | Awesome Codex CLI | [PR #172](https://github.com/RoggeOhta/awesome-codex-cli/pull/172) | Directory PR | — | — | 1 | 0 | 1 | — | Existing PR updated with the verified skills.sh install path |
+| 2026-07-31 | Awesome Codex Skills | [PR #198](https://github.com/composio-community/awesome-codex-skills/pull/198) | Skill directory PR | — | — | 1 | 0 | 1 | — | Open and mergeable; canonical `engineering-loop` catalog link verified |
+| 2026-07-31 | Awesome Codex Guide | [PR #3](https://github.com/geekjourneyx/awesome-codex-guide/pull/3) | Resource directory PR | — | — | 1 | 0 | 1 | — | English and Chinese discovery metadata plus the install path |
 | 2026-07-31 | GitHub contributors | [Issue #8](https://github.com/Phelan164/codex-howto/issues/8) | Community benchmark | — | — | 1 | 0 | 1 | — | Invites sanitized three-way measurements and reproducible forks |
 
 Use GitHub traffic and referral data while available. Compare channels by
