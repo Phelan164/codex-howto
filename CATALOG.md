@@ -22,7 +22,6 @@
 
 | Skill | Bundled reference |
 |---|---|
-| [choose-engineering-flow](skills/choose-engineering-flow/SKILL.md) | Explicit-only router; no bundled reference |
 | [engineering-loop](skills/engineering-loop/SKILL.md) | `references/loop-contract.md`, `references/hard-debugging.md` |
 | [build-frontend](skills/build-frontend/SKILL.md) | `references/verification.md` |
 | [build-backend](skills/build-backend/SKILL.md) | `references/contracts-and-data.md` |
@@ -48,8 +47,10 @@
 - [Engineering-loop run record](examples/measurements/engineering-loop-runs.csv)
 - [Local plugin marketplace](examples/plugin-marketplace/.agents/plugins/marketplace.json)
 - [Stop-hook example](examples/hooks/validate-on-stop/hooks.json)
+- [Explicit-only workflow router](examples/skills/choose-engineering-flow/SKILL.md)
 - [Orchestration decision matrix](resources/orchestration-decision-matrix.md)
 - [Token-efficiency scorecard](resources/token-efficiency-scorecard.md)
+- [Model-adaptive skill guide](resources/model-adaptive-skills.md)
 - [Community launch kit](resources/community-launch-kit.md)
 - [Verified distribution shortlist](resources/distribution-shortlist.md)
 - [v0.2.0 release notes](resources/release-notes-v0.2.0.md)
@@ -62,7 +63,7 @@
 - [Developer presentation guide](PRESENTING.md) — a 15-minute talk track,
   live-demo script, measurement plan, and copy-ready announcement.
 - [Engineering-loop measurement protocol](resources/engineering-loop-measurement.md)
-  — paired experiment design, quality gates, metrics, and decision rules.
+  — three-way skill ablation, quality gates, metrics, and decision rules.
 - [Community guide](COMMUNITY.md) — responsible participation, useful fork
   paths, and community standards.
 

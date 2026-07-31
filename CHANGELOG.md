@@ -10,6 +10,12 @@ product compatibility.
 
 - Add a community launch kit and structured feedback paths.
 - Add a reusable social preview asset.
+- Make the skill catalog model-adaptive: eight runtime skills and one
+  educational router example.
+- Slim generic frontend, backend, testing, review, and engineering-loop
+  instructions for GPT-5.6-era models.
+- Replace paired measurement with a no-skill/full-skill/lean-skill ablation
+  protocol that records the model, reasoning effort, and skill version.
 
 ## 0.2.0 - 2026-07-31
 

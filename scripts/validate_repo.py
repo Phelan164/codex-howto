@@ -34,7 +34,10 @@ REQUIRED_ROOT = {
     "assets/social-preview.svg",
     "resources/community-launch-kit.md",
     "resources/distribution-shortlist.md",
+    "resources/model-adaptive-skills.md",
     "resources/release-notes-v0.2.0.md",
+    "examples/skills/choose-engineering-flow/SKILL.md",
+    "examples/skills/choose-engineering-flow/agents/openai.yaml",
 }
 REQUIRED_MODULES = {
     "00-mental-model",
@@ -60,7 +63,6 @@ REQUIRED_SKILLS = {
     "test-software",
     "review-security",
     "orchestrate-engineering",
-    "choose-engineering-flow",
 }
 EXPLICIT_ONLY_SKILLS = {
     "choose-engineering-flow",
@@ -202,24 +204,34 @@ def check_skills(errors: list[str]) -> None:
         errors.append(f"missing required engineering skill: {name}")
 
     for skill_dir in skill_dirs:
-        skill_file = skill_dir / "SKILL.md"
-        ui_file = skill_dir / "agents" / "openai.yaml"
-        if not skill_file.is_file():
-            errors.append(f"missing SKILL.md: {skill_dir.name}")
-            continue
-        if not ui_file.is_file():
-            errors.append(f"missing agents/openai.yaml: {skill_dir.name}")
+        check_skill_dir(skill_dir, errors)
 
-        values = parse_frontmatter(skill_file, errors)
-        name = values.get("name", "")
-        description = values.get("description", "")
-        if name != skill_dir.name:
-            errors.append(f"skill name/folder mismatch: {skill_dir.name} vs {name}")
-        if len(description) < 80:
-            errors.append(f"skill description is too short: {skill_dir.name}")
+    example_skill = ROOT / "examples" / "skills" / "choose-engineering-flow"
+    if example_skill.is_dir():
+        check_skill_dir(example_skill, errors)
 
-        if ui_file.is_file():
-            check_ui_metadata(ui_file, skill_dir.name, errors)
+
+def check_skill_dir(skill_dir: Path, errors: list[str]) -> None:
+    skill_file = skill_dir / "SKILL.md"
+    ui_file = skill_dir / "agents" / "openai.yaml"
+    if not skill_file.is_file():
+        errors.append(f"missing SKILL.md: {skill_dir.relative_to(ROOT)}")
+        return
+    if not ui_file.is_file():
+        errors.append(
+            f"missing agents/openai.yaml: {skill_dir.relative_to(ROOT)}"
+        )
+
+    values = parse_frontmatter(skill_file, errors)
+    name = values.get("name", "")
+    description = values.get("description", "")
+    if name != skill_dir.name:
+        errors.append(f"skill name/folder mismatch: {skill_dir.name} vs {name}")
+    if len(description) < 80:
+        errors.append(f"skill description is too short: {skill_dir.name}")
+
+    if ui_file.is_file():
+        check_ui_metadata(ui_file, skill_dir.name, errors)
 
 
 def check_ui_metadata(path: Path, skill_name: str, errors: list[str]) -> None:

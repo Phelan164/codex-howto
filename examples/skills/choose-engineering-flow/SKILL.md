@@ -5,6 +5,10 @@ description: "Select the smallest useful Codex engineering workflow from this re
 
 # Choose Engineering Flow
 
+Use this explicit-only skill as an educational example of workflow routing. It
+is not part of the recommended installable catalog; prefer clear specialist
+descriptions and direct activation in normal work.
+
 Recommend one entry skill and only the supporting skills that materially change
 the work. Do not perform the requested engineering task.
 

@@ -24,15 +24,17 @@ Done when:
 
 ## Before editing
 
-- Invoke `$choose-engineering-flow` when you do not know which workflow should
-  own the task.
-- Invoke `$engineering-loop` when the task should continue through
-  implementation, testing, review, and verified fixes.
+- Start without a skill for a new task class.
+- Invoke `$engineering-loop` only when its complete lifecycle changes a
+  measured result.
 - Confirm the repository and active branch.
 - Inspect applicable `AGENTS.md` files.
 - Check the working tree for user changes.
 - Find the commands that define “done.”
 - Decide whether planning is necessary.
+
+When evaluating a reusable skill, compare no-skill, previous full-skill, and
+current lean-skill runs with the same model and reasoning effort.
 
 ## Before delegating
 

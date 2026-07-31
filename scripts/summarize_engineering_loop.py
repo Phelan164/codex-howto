@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate and summarize paired engineering-loop experiment records."""
+"""Validate and summarize engineering-loop skill-ablation records."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from collections import defaultdict
 from pathlib import Path
 
 
-VARIANTS = ("ad_hoc", "engineering_loop")
+VARIANTS = ("no_skill", "full_skill", "lean_skill")
 REQUIRED_BOOLEAN_FIELDS = (
     "accepted",
     "evidence_complete",
@@ -34,6 +34,11 @@ FIELDS = (
     "task_id",
     "variant",
     "run_id",
+    "model",
+    "reasoning_effort",
+    "starting_commit",
+    "tool_profile",
+    "skill_version",
     "accepted",
     "evidence_complete",
     "regression_before_fix",
@@ -95,8 +100,27 @@ def load_rows(path: Path) -> list[dict[str, object]]:
             task_id = raw["task_id"].strip()
             run_id = raw["run_id"].strip()
             variant = raw["variant"].strip()
-            if not task_id or not run_id:
-                raise ValueError(f"row {row_number}: task_id and run_id are required")
+            model = raw["model"].strip()
+            reasoning_effort = raw["reasoning_effort"].strip()
+            starting_commit = raw["starting_commit"].strip()
+            tool_profile = raw["tool_profile"].strip()
+            skill_version = raw["skill_version"].strip()
+            if not all(
+                (
+                    task_id,
+                    run_id,
+                    model,
+                    reasoning_effort,
+                    starting_commit,
+                    tool_profile,
+                    skill_version,
+                )
+            ):
+                raise ValueError(
+                    f"row {row_number}: task_id, run_id, model, "
+                    "reasoning_effort, starting_commit, tool_profile, and "
+                    "skill_version are required"
+                )
             if run_id in seen_run_ids:
                 raise ValueError(f"row {row_number}: duplicate run_id {run_id!r}")
             if variant not in VARIANTS:
@@ -110,6 +134,11 @@ def load_rows(path: Path) -> list[dict[str, object]]:
                 "task_id": task_id,
                 "run_id": run_id,
                 "variant": variant,
+                "model": model,
+                "reasoning_effort": reasoning_effort,
+                "starting_commit": starting_commit,
+                "tool_profile": tool_profile,
+                "skill_version": skill_version,
                 "notes": raw["notes"].strip(),
             }
             for field in REQUIRED_BOOLEAN_FIELDS:
@@ -129,7 +158,34 @@ def load_rows(path: Path) -> list[dict[str, object]]:
                     raw[field], field, row_number, float
                 )
             rows.append(parsed)
+    validate_task_sets(rows)
     return rows
+
+
+def validate_task_sets(rows: list[dict[str, object]]) -> None:
+    grouped: dict[str, list[dict[str, object]]] = defaultdict(list)
+    for row in rows:
+        grouped[str(row["task_id"])].append(row)
+
+    controlled_fields = (
+        "model",
+        "reasoning_effort",
+        "starting_commit",
+        "tool_profile",
+    )
+    for task_id, task_rows in grouped.items():
+        variants = [str(row["variant"]) for row in task_rows]
+        if len(variants) != len(set(variants)):
+            raise ValueError(f"task {task_id!r}: duplicate variant")
+
+        controls = {
+            tuple(str(row[field]) for field in controlled_fields)
+            for row in task_rows
+        }
+        if len(controls) > 1:
+            raise ValueError(
+                f"task {task_id!r}: controlled fields must match across variants"
+            )
 
 
 def rate(rows: list[dict[str, object]], field: str) -> tuple[int, int, float]:
@@ -158,7 +214,7 @@ def summarize(rows: list[dict[str, object]]) -> str:
         for variant in VARIANTS
     }
     lines = [
-        "# Engineering-loop experiment summary",
+        "# Engineering-loop skill-ablation summary",
         "",
         "## Quality gates",
         "",
@@ -208,13 +264,15 @@ def summarize(rows: list[dict[str, object]]) -> str:
     task_variants: dict[str, set[str]] = defaultdict(set)
     for row in rows:
         task_variants[str(row["task_id"])].add(str(row["variant"]))
-    paired = sum(set(VARIANTS).issubset(variants) for variants in task_variants.values())
+    complete = sum(
+        set(VARIANTS).issubset(variants) for variants in task_variants.values()
+    )
     lines.extend(
         [
             "",
             "## Coverage",
             "",
-            f"- Paired tasks: {paired}/{len(task_variants)}",
+            f"- Complete three-way tasks: {complete}/{len(task_variants)}",
             f"- Total runs: {len(rows)}",
             "",
             "Interpret quality gates before speed, token, or cost differences.",
@@ -226,7 +284,7 @@ def summarize(rows: list[dict[str, object]]) -> str:
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Validate and summarize engineering-loop experiment CSV data."
+        description="Validate and summarize engineering-loop ablation CSV data."
     )
     parser.add_argument("csv_path", type=Path)
     args = parser.parse_args()

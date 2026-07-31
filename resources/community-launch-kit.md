@@ -60,7 +60,7 @@ calls.
 **Title**
 
 ```text
-Codex How To: a measurable engineering loop with 9 reusable skills
+Codex How To: a measurable engineering loop with 8 runtime skills
 ```
 
 **Post**
@@ -73,10 +73,10 @@ The main idea is that generated code is an intermediate result. A task should
 move through scope, reproduction, implementation, focused tests, repository
 checks, diff review, and an evidence-based handoff.
 
-The repository includes 13 progressive modules, 9 focused skills, a
-dependency-free playground, and a paired-run measurement protocol. It covers
-frontend, backend, DevOps, testing, security, and bounded multi-agent
-orchestration.
+The repository includes 13 progressive modules, 8 runtime skills, an
+educational router example, a dependency-free playground, and a three-way
+skill-ablation protocol. It covers frontend, backend, DevOps, testing,
+security, and bounded multi-agent orchestration.
 
 I would especially value feedback from developers who try the playground:
 which step was unclear, which skill changed the result, and which checks Codex
@@ -103,10 +103,10 @@ I made an open-source, engineering-first guide to Codex. Instead of treating
 code generation as completion, it uses a loop: scope → reproduce → implement →
 test → review → evidence.
 
-There are 13 modules, 9 installable skills, and a dependency-free practice
-repository with seeded defects. I also included a paired-run protocol so teams
-can test whether the workflow improves outcomes without claiming a universal
-productivity multiplier.
+There are 13 modules, 8 runtime skills, and a dependency-free practice
+repository with seeded defects. I also included a no-skill/full-skill/lean-skill
+protocol so teams can test whether a workflow improves outcomes without
+claiming a universal productivity multiplier.
 
 The design choices I would most like challenged are skill routing, when to use
 subagents, and how much verification evidence belongs in the final context.
@@ -129,8 +129,8 @@ problem.
 
 ```text
 I wanted Codex to behave less like a one-shot code generator and more like an
-engineering loop, so I packaged the workflow into an open-source guide and 9
-skills.
+engineering loop, so I packaged the workflow into an open-source guide and 8
+runtime skills.
 
 The interesting part is not the prompt. The loop requires a baseline or
 reproduction, the smallest coherent change, focused and required checks, diff
@@ -162,8 +162,8 @@ https://github.com/Phelan164/codex-howto
 
 ```text
 I turned my Codex learning notes into a structured open-source curriculum:
-13 modules, 9 reusable skills, copy-ready repository guidance, CI validation,
-and a small practice project.
+13 modules, 8 runtime skills, copy-ready repository guidance, CI validation,
+and a small skill-ablation practice project.
 
 The repository is designed to be forked into stack-specific, team-specific,
 or translated editions while keeping the core reproduce–implement–test–review
@@ -184,7 +184,7 @@ scope → reproduce → implement → test → review → evidence.
 
 It is an open-source learning package with:
 • 13 modules from safe fundamentals to orchestration
-• 9 focused skills for frontend, backend, DevOps, testing, and review
+• 8 runtime skills for frontend, backend, DevOps, testing, and review
 • a dependency-free practice project
 • a protocol for measuring results instead of claiming “10x”
 
@@ -208,8 +208,8 @@ chứng: reproduce được lỗi, thay đổi nhỏ và đúng scope, test pass
 và handoff rõ phần chưa kiểm chứng.
 
 Mình xây dựng Codex How To như một learning path open source gồm 13 modules,
-9 skills cho frontend/backend/DevOps/testing/review, một playground không cần
-dependency, và cách đo hiệu quả qua paired runs.
+8 runtime skills cho frontend/backend/DevOps/testing/review, một playground
+không cần dependency, và cách so sánh no-skill/full-skill/lean-skill.
 
 Mình muốn nhận feedback thực tế: bước nào hữu ích, bước nào tạo overhead, và
 workflow còn thiếu case nào trong dự án của bạn?
@@ -242,7 +242,7 @@ Choose one primary action per post:
 
 - **Try:** complete the five-minute playground.
 - **Critique:** open an issue with one reproducible gap.
-- **Measure:** contribute anonymized paired-run results.
+- **Measure:** contribute anonymized three-way ablation results.
 - **Adapt:** create a tested stack, team, or translation fork.
 - **Follow:** star the project only if it is useful and worth revisiting.
 

@@ -58,8 +58,7 @@ to demonstrate a complete backend defect loop safely:
 demo_root="$(mktemp -d)"
 cp -R labs/engineering-playground "$demo_root/playground"
 mkdir -p "$demo_root/playground/.agents/skills"
-cp -R skills/engineering-loop skills/build-backend skills/test-software \
-  "$demo_root/playground/.agents/skills/"
+cp -R skills/engineering-loop "$demo_root/playground/.agents/skills/"
 cd "$demo_root/playground"
 git init
 ```
@@ -67,17 +66,17 @@ git init
 Start Codex in that directory and ask:
 
 ```text
-$engineering-loop $build-backend $test-software Inspect the inventory
-reservation contract, reproduce one uncovered input-boundary defect, add the
-smallest regression test, implement the fix, run the required checks, and
-review the final diff. Work only in this disposable playground.
+$engineering-loop Inspect the inventory reservation contract, reproduce one
+uncovered input-boundary defect, add the smallest regression test, implement
+the fix, run the required checks, and review the final diff. Work only in this
+disposable playground.
 ```
 
 Watch for four proof points: a failing regression before the fix, a small
 implementation diff, passing focused checks, and a final evidence report.
 Then use the
 [measurement protocol](resources/engineering-loop-measurement.md) to compare
-paired ad hoc and engineering-loop runs without treating one demo as proof.
+no-skill, full-skill, and lean-skill runs without treating one demo as proof.
 Use [PRESENTING.md](PRESENTING.md) for a 15-minute talk track, demo checklist,
 and copy-ready announcement.
 
@@ -104,9 +103,9 @@ You will learn how to:
 - **13 progressive modules** covering safety, prompting, `AGENTS.md`, skills,
   MCP, subagents, orchestration, context efficiency, automation, and
   troubleshooting.
-- **9 installable engineering skills** including a lightweight workflow router,
-  the end-to-end engineering loop, frontend, backend, DevOps, testing, code
-  review, security review, and orchestration.
+- **8 installable engineering skills** covering the end-to-end engineering
+  loop, frontend, backend, DevOps, testing, code review, security review, and
+  orchestration, plus an explicit router kept as an educational example.
 - **Copy-ready examples** for project configuration, custom agents, prompts,
   engineering specifications, dependency-aware tickets, handoffs, hooks, MCP,
   and local plugins.
@@ -170,11 +169,17 @@ shortest track that matches your work.
 
 ## Engineering skill catalog
 
-This repository includes installable starter skills:
+Start with the model, the task contract, and repository guidance. Add one
+focused skill only when it improves a measured engineering outcome or supplies
+non-generic workflow, safety, policy, or tool knowledge. Use the
+[model-adaptive skill guide](resources/model-adaptive-skills.md) and
+[three-way ablation protocol](resources/engineering-loop-measurement.md) before
+standardizing a skill for a team.
+
+This repository includes eight installable starter skills:
 
 | Skill | Purpose |
 |---|---|
-| [`choose-engineering-flow`](skills/choose-engineering-flow/SKILL.md) | Recommend the smallest useful skill sequence without executing the task |
 | [`engineering-loop`](skills/engineering-loop/SKILL.md) | Drive a change through baseline, implementation, testing, review, and evidence |
 | [`build-frontend`](skills/build-frontend/SKILL.md) | Implement accessible UI changes with visual and behavioral verification |
 | [`build-backend`](skills/build-backend/SKILL.md) | Change APIs, services, persistence, and contracts safely |
@@ -200,18 +205,15 @@ $review-code Review this branch against main. Lead with consequential findings
 and list checks you could not run.
 ```
 
-If you are unsure where to start, install the router and invoke it explicitly:
+The explicit-only
+[`choose-engineering-flow`](examples/skills/choose-engineering-flow/SKILL.md)
+router remains an educational example, not a recommended runtime dependency.
+Clear skill descriptions should normally let Codex select the relevant
+workflow without spending another turn on routing. The orchestrator remains
+explicit-only because accidental activation adds coordination overhead.
 
-```text
-$choose-engineering-flow Route this task: add an authenticated settings page
-and its API endpoint, then verify the complete change.
-```
-
-The router and orchestrator are explicit-only so that they do not add planning
-or multi-agent overhead to unrelated tasks.
-
-For a complete local develop–test–review cycle, install the relevant specialist
-skills and start with:
+For a complete local develop–test–review cycle, install `engineering-loop` and
+start with:
 
 ```text
 $engineering-loop Implement this change end to end. Continue through focused
@@ -302,7 +304,7 @@ step, and official sources.
 If the guide is useful, choose the action that creates the most value:
 
 - try the playground and report a reproducible gap;
-- contribute anonymized paired-run measurements;
+- contribute anonymized no-skill/full-skill/lean-skill measurements;
 - fork it into a tested stack, team, or translation edition;
 - share it with one relevant developer community; or
 - star it so you can find it again.
