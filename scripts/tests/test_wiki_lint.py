@@ -141,6 +141,7 @@ See the [index](../index.md).
 
         env = run.call_args.kwargs["env"]
         self.assertEqual("1", env["GIT_NO_LAZY_FETCH"])
+        self.assertEqual("1", env["GIT_NO_REPLACE_OBJECTS"])
 
     def test_valid_wiki_passes(self):
         errors, warnings = self.validate()
@@ -249,6 +250,64 @@ See the [index](../index.md).
                 self.root, recorded_revision, "evidence.md"
             ),
         )
+
+    def test_replacement_commit_cannot_substitute_pinned_evidence(self):
+        registry = json.loads(
+            (self.root / "knowledge" / "sources.json").read_text(encoding="utf-8")
+        )
+        recorded_revision = registry["sources"][0]["revision"]
+        (self.root / "evidence.md").unlink()
+        subprocess.run(
+            ["git", "-C", str(self.root), "add", "-A"],
+            check=True,
+        )
+        subprocess.run(
+            [
+                "git",
+                "-C",
+                str(self.root),
+                "-c",
+                "user.name=Wiki Lint Tests",
+                "-c",
+                "user.email=wiki-lint@example.invalid",
+                "commit",
+                "-qm",
+                "delete evidence",
+            ],
+            check=True,
+        )
+        replacement_revision = subprocess.run(
+            ["git", "-C", str(self.root), "rev-parse", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        subprocess.run(
+            [
+                "git",
+                "-C",
+                str(self.root),
+                "update-ref",
+                "refs/remotes/origin/main",
+                replacement_revision,
+            ],
+            check=True,
+        )
+        subprocess.run(
+            [
+                "git",
+                "-C",
+                str(self.root),
+                "replace",
+                recorded_revision,
+                replacement_revision,
+            ],
+            check=True,
+        )
+
+        errors, _ = self.validate()
+
+        self.assertEqual([], errors)
 
     def test_symlink_at_recorded_revision_is_rejected(self):
         target = self.root / "target.md"
@@ -430,6 +489,35 @@ See the [index](../index.md).
             )
         finally:
             outside.unlink(missing_ok=True)
+
+    def test_index_symlink_inside_project_root_is_rejected(self):
+        index = self.root / "knowledge" / "index.md"
+        index.unlink()
+        index.symlink_to("log.md")
+
+        errors, _ = self.validate()
+
+        self.assertTrue(
+            any(
+                "knowledge/index.md: path or parent is a symlink" in error
+                for error in errors
+            )
+        )
+
+    def test_wiki_page_with_symlinked_parent_is_rejected(self):
+        topics = self.root / "knowledge" / "topics"
+        actual_topics = self.root / "knowledge" / "actual-topics"
+        topics.rename(actual_topics)
+        topics.symlink_to(actual_topics.name)
+
+        errors, _ = self.validate()
+
+        self.assertTrue(
+            any(
+                "knowledge/topics/example.md: path or parent is a symlink" in error
+                for error in errors
+            )
+        )
 
     def test_empty_page_reports_errors_without_crashing(self):
         self.page.write_text("", encoding="utf-8")

@@ -32,7 +32,8 @@ file inspected while capturing new evidence:
 1. require a normalized project-relative path;
 2. reject absolute paths and `..` components;
 3. resolve symlinks;
-4. for an existing read or update target, require a regular file and verify the
+4. for an existing read or update target, reject a symlink at the target or any
+   parent below the project root, require a regular file, and verify the
    resolved target remains inside the project root; and
 5. for a new page, require a nonexistent target under an existing,
    project-contained directory, reject symlinked parents and name collisions,
@@ -48,7 +49,9 @@ regular-file entry in the pinned Git tree, then read that immutable blob. Do not
 require the path to exist in the current checkout: durable evidence remains
 valid after a later rename or deletion. Set `GIT_NO_LAZY_FETCH=1` on every Git
 object probe and read so a partial clone cannot contact its promisor remote
-without explicit network authorization.
+without explicit network authorization. Also set `GIT_NO_REPLACE_OBJECTS=1` so
+local replacement refs cannot substitute different commits or blobs for the
+recorded object IDs.
 
 ## Untrusted knowledge content
 

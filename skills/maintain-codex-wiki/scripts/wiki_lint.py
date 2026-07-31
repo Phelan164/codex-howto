@@ -50,6 +50,7 @@ SENSITIVE_PATH_SUFFIXES = (".key", ".kdbx", ".p12", ".pem", ".pfx")
 def run_git(args: list[str], **kwargs: object) -> subprocess.CompletedProcess:
     env = os.environ.copy()
     env["GIT_NO_LAZY_FETCH"] = "1"
+    env["GIT_NO_REPLACE_OBJECTS"] = "1"
     return subprocess.run(args, env=env, **kwargs)
 
 
@@ -76,6 +77,17 @@ def confined_regular_file(
     if not resolved.is_relative_to(root.resolve()):
         errors.append(f"{label}: file escapes the project root")
         return False
+    try:
+        relative = path.relative_to(root)
+    except ValueError:
+        errors.append(f"{label}: file escapes the project root")
+        return False
+    candidate = root
+    for part in relative.parts:
+        candidate /= part
+        if candidate.is_symlink():
+            errors.append(f"{label}: path or parent is a symlink")
+            return False
     if not resolved.is_file():
         errors.append(f"{label}: expected a regular file")
         return False

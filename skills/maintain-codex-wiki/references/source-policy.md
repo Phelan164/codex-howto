@@ -51,10 +51,12 @@ additional accepted branches explicitly with
 its protected default branch rather than trust the checked-out PR. Read the
 path from that commit through the Git object database rather than from the
 working tree. Set `GIT_NO_LAZY_FETCH=1` on every Git object probe and read so a
-partial clone cannot silently fetch from its promisor remote. If trusted refs
-are unavailable, the commit is unreachable from them in complete local history,
-or the blob cannot be resolved, treat the evidence as unverified drift. Before
-making that classification, detect a shallow checkout with
+partial clone cannot silently fetch from its promisor remote, and set
+`GIT_NO_REPLACE_OBJECTS=1` so local replacement refs cannot substitute
+different objects for recorded IDs. If trusted refs are unavailable, the
+commit is unreachable from them in complete local history, or the blob cannot
+be resolved, treat the evidence as unverified drift. Before making that
+classification, detect a shallow checkout with
 `git rev-parse --is-shallow-repository`. When shallow history cannot prove
 reachability or does not contain the pinned commit, report an incomplete
 checkout separately. Treat missing objects in a partial clone the same way
