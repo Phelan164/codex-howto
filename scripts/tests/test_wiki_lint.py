@@ -443,6 +443,48 @@ See the [index](../index.md).
             )
         )
 
+    def test_repository_tag_cannot_be_configured_as_trusted_history(self):
+        revision = subprocess.run(
+            ["git", "-C", str(self.root), "rev-parse", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        subprocess.run(
+            ["git", "-C", str(self.root), "tag", "evidence-release", revision],
+            check=True,
+        )
+        subprocess.run(
+            [
+                "git",
+                "-C",
+                str(self.root),
+                "symbolic-ref",
+                "--delete",
+                "refs/remotes/origin/HEAD",
+            ],
+            check=True,
+        )
+        subprocess.run(
+            [
+                "git",
+                "-C",
+                str(self.root),
+                "config",
+                "--add",
+                "codex.wikiTrustedRef",
+                "refs/tags/evidence-release",
+            ],
+            check=True,
+        )
+        errors, _ = self.validate()
+        self.assertTrue(
+            any(
+                "repository trusted refs are not configured" in error
+                for error in errors
+            )
+        )
+
     def test_unknown_superseded_source_is_rejected(self):
         self.write_registry(
             [

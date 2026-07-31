@@ -134,7 +134,7 @@ def git_trusted_refs(root: Path) -> list[str]:
     refs = [
         value.strip()
         for value in configured.stdout.splitlines()
-        if value.strip()
+        if value.strip().startswith(("refs/heads/", "refs/remotes/"))
     ]
     if refs:
         return refs

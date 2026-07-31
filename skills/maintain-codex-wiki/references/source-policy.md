@@ -39,11 +39,12 @@ report the source record for review. Require `revision` to be the full
 immutable Git commit object ID containing the evidence: detect the repository
 object format with `git rev-parse --show-object-format` and require 40
 hexadecimal characters for SHA-1 or 64 for SHA-256. Require the commit to be
-reachable from a repository-configured trusted ref, normally the protected
-default branch and, when explicitly allowed, signed release tags. Do not infer
-trust from the current branch, an arbitrary remote branch, or mere presence in
-the object database. Configure additional accepted refs explicitly with
-`git config --local --add codex.wikiTrustedRef <full-ref-name>`; CI must name
+reachable from a repository-configured trusted branch ref, normally the
+protected default branch. Accept only full `refs/heads/` or `refs/remotes/`
+names; never accept tags. Do not infer trust from the current branch, an
+arbitrary remote branch, or mere presence in the object database. Configure
+additional accepted branches explicitly with
+`git config --local --add codex.wikiTrustedRef <full-branch-ref>`; CI must name
 its protected default branch rather than trust the checked-out PR. Read the
 path from that commit through the Git object database rather than from the
 working tree. If trusted refs are unavailable, the commit is unreachable from

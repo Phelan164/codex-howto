@@ -81,15 +81,16 @@ Every registered repository `path` must include the full immutable Git commit
 object ID that contains the evidence. Determine the repository's configured
 hash format with `git rev-parse --show-object-format`; require 40 hexadecimal
 characters for SHA-1 or 64 for SHA-256. Require that commit to be reachable
-from a repository-configured trusted ref, normally the protected default
-branch and, when explicitly allowed, signed release tags. Do not treat the
-current branch, an arbitrary remote branch, or mere presence in the local
-object database as trust. If trusted refs are not configured or cannot be
-verified, fail closed and ask the maintainer to identify them. Read the blob
-through the Git object database at the recorded revision, never from mutable
-working-tree bytes. Stop and report unverified drift when the revision is
-missing, unresolved, or unreachable from trusted history; the path does not
-exist at that commit; or the record cannot be bound to the blob.
+from a repository-configured trusted branch ref, normally the protected default
+branch. Accept only full `refs/heads/` or `refs/remotes/` names; do not accept
+tags. Do not treat the current branch, an arbitrary remote branch, or mere
+presence in the local object database as trust. If trusted refs are not
+configured or cannot be verified, fail closed and ask the maintainer to
+identify them. Read the blob through the Git object database at the recorded
+revision, never from mutable working-tree bytes. Stop and report unverified
+drift when the revision is missing, unresolved, or unreachable from trusted
+history; the path does not exist at that commit; or the record cannot be bound
+to the blob.
 
 Read [source-policy.md](references/source-policy.md) before Capture, Ingest,
 Archive, or Promote.
