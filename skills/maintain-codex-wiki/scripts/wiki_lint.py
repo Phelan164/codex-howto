@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import subprocess
 import sys
@@ -44,6 +45,12 @@ SENSITIVE_PATH_NAMES = {
     "secrets.yml",
 }
 SENSITIVE_PATH_SUFFIXES = (".key", ".kdbx", ".p12", ".pem", ".pfx")
+
+
+def run_git(args: list[str], **kwargs: object) -> subprocess.CompletedProcess:
+    env = os.environ.copy()
+    env["GIT_NO_LAZY_FETCH"] = "1"
+    return subprocess.run(args, env=env, **kwargs)
 
 
 def parse_date(value: str, label: str, errors: list[str]) -> None:
@@ -88,7 +95,7 @@ def sensitive_repository_path(relative: PurePosixPath) -> bool:
 
 
 def git_tree_entry(root: Path, revision: str, relative: str) -> tuple[str, str] | None:
-    completed = subprocess.run(
+    completed = run_git(
         [
             "git",
             "-C",
@@ -121,7 +128,7 @@ def git_tree_entry(root: Path, revision: str, relative: str) -> tuple[str, str] 
 
 
 def git_trusted_refs(root: Path) -> list[str]:
-    configured = subprocess.run(
+    configured = run_git(
         ["git", "-C", str(root), "config", "--get-all", "codex.wikiTrustedRef"],
         capture_output=True,
         text=True,
@@ -135,7 +142,7 @@ def git_trusted_refs(root: Path) -> list[str]:
     if refs:
         return refs
 
-    default_remote = subprocess.run(
+    default_remote = run_git(
         [
             "git",
             "-C",
@@ -155,7 +162,7 @@ def git_trusted_refs(root: Path) -> list[str]:
 
 def git_revision_is_trusted(root: Path, revision: str, refs: list[str]) -> bool:
     return any(
-        subprocess.run(
+        run_git(
             [
                 "git",
                 "-C",
@@ -175,7 +182,7 @@ def git_revision_is_trusted(root: Path, revision: str, refs: list[str]) -> bool:
 
 
 def git_revision_exists(root: Path, revision: str) -> bool:
-    completed = subprocess.run(
+    completed = run_git(
         [
             "git",
             "-C",
@@ -191,8 +198,25 @@ def git_revision_exists(root: Path, revision: str) -> bool:
     return completed.returncode == 0
 
 
+def git_blob_exists(root: Path, revision: str, relative: str) -> bool:
+    completed = run_git(
+        [
+            "git",
+            "-C",
+            str(root),
+            "cat-file",
+            "-e",
+            f"{revision}:{relative}",
+        ],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    )
+    return completed.returncode == 0
+
+
 def git_repository_is_shallow(root: Path) -> bool:
-    completed = subprocess.run(
+    completed = run_git(
         ["git", "-C", str(root), "rev-parse", "--is-shallow-repository"],
         capture_output=True,
         text=True,
@@ -201,8 +225,29 @@ def git_repository_is_shallow(root: Path) -> bool:
     return completed.returncode == 0 and completed.stdout.strip() == "true"
 
 
+def git_repository_is_partial(root: Path) -> bool:
+    completed = run_git(
+        [
+            "git",
+            "-C",
+            str(root),
+            "config",
+            "--get-regexp",
+            r"^remote\..*\.promisor$",
+        ],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    return completed.returncode == 0 and any(
+        line.rsplit(maxsplit=1)[-1].casefold() == "true"
+        for line in completed.stdout.splitlines()
+        if line.split()
+    )
+
+
 def git_object_id_length(root: Path) -> int | None:
-    completed = subprocess.run(
+    completed = run_git(
         ["git", "-C", str(root), "rev-parse", "--show-object-format"],
         capture_output=True,
         text=True,
@@ -340,6 +385,9 @@ def load_sources(root: Path, errors: list[str]) -> dict[str, dict[str, object]]:
                 incomplete_shallow_history = git_repository_is_shallow(root) and (
                     not revision_exists or not revision_is_trusted
                 )
+                incomplete_partial_clone = git_repository_is_partial(root) and (
+                    not revision_exists or not revision_is_trusted
+                )
                 if not trusted_refs:
                     errors.append(
                         f"{label}: repository trusted refs are not configured"
@@ -348,6 +396,11 @@ def load_sources(root: Path, errors: list[str]) -> dict[str, dict[str, object]]:
                     errors.append(
                         f"{label}: shallow repository history cannot verify "
                         f"revision against trusted refs: {revision}"
+                    )
+                elif incomplete_partial_clone:
+                    errors.append(
+                        f"{label}: partial clone is missing objects required to "
+                        f"verify revision against trusted refs: {revision}"
                     )
                 elif not revision_is_trusted:
                     errors.append(
@@ -359,7 +412,10 @@ def load_sources(root: Path, errors: list[str]) -> dict[str, dict[str, object]]:
                 and len(revision) == object_id_length
                 and OBJECT_ID_RE.fullmatch(revision)
                 and not (
-                    git_repository_is_shallow(root)
+                    (
+                        git_repository_is_shallow(root)
+                        or git_repository_is_partial(root)
+                    )
                     and not git_revision_exists(root, revision)
                 )
             ):
@@ -374,6 +430,17 @@ def load_sources(root: Path, errors: list[str]) -> dict[str, dict[str, object]]:
                         f"{label}: repository evidence must be a regular file at "
                         f"revision: {revision}:{local}"
                     )
+                elif not git_blob_exists(root, revision, local):
+                    if git_repository_is_partial(root):
+                        errors.append(
+                            f"{label}: partial clone is missing the repository "
+                            f"evidence blob: {revision}:{local}"
+                        )
+                    else:
+                        errors.append(
+                            f"{label}: repository evidence blob is unavailable: "
+                            f"{revision}:{local}"
+                        )
     return sources
 
 

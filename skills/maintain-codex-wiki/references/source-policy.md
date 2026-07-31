@@ -50,13 +50,17 @@ additional accepted branches explicitly with
 `git config --local --add codex.wikiTrustedRef <full-branch-ref>`; CI must name
 its protected default branch rather than trust the checked-out PR. Read the
 path from that commit through the Git object database rather than from the
-working tree. If trusted refs are unavailable, the commit is unreachable from
-them in complete local history, or the blob cannot be resolved, treat the
-evidence as unverified drift. Before making that classification, detect a
-shallow checkout with `git rev-parse --is-shallow-repository`. When shallow
-history cannot prove reachability or does not contain the pinned commit, report
-an incomplete checkout separately. Fetch or deepen history only with explicit
-network authorization and only from the configured trusted remote and branch.
+working tree. Set `GIT_NO_LAZY_FETCH=1` on every Git object probe and read so a
+partial clone cannot silently fetch from its promisor remote. If trusted refs
+are unavailable, the commit is unreachable from them in complete local history,
+or the blob cannot be resolved, treat the evidence as unverified drift. Before
+making that classification, detect a shallow checkout with
+`git rev-parse --is-shallow-repository`. When shallow history cannot prove
+reachability or does not contain the pinned commit, report an incomplete
+checkout separately. Treat missing objects in a partial clone the same way
+after lazy fetching has been disabled. Fetch missing objects or deepen history
+only with explicit network authorization and only from the configured trusted
+remote and branch.
 Use exactly one of `url` or `path`.
 
 Source IDs are permanent. If a URL moves, update the record without changing

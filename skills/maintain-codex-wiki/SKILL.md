@@ -46,7 +46,9 @@ A revision-bound registered repository `path` is not a working-tree read.
 Validate its normalized project-relative name, sensitivity, trusted commit, and
 regular-file entry in the pinned Git tree, then read that immutable blob. Do not
 require the path to exist in the current checkout: durable evidence remains
-valid after a later rename or deletion.
+valid after a later rename or deletion. Set `GIT_NO_LAZY_FETCH=1` on every Git
+object probe and read so a partial clone cannot contact its promisor remote
+without explicit network authorization.
 
 ## Untrusted knowledge content
 
@@ -102,9 +104,12 @@ to the blob.
 Before classifying a missing or unreachable revision, run
 `git rev-parse --is-shallow-repository`. A shallow checkout may simply omit
 valid older evidence. Report the checkout as incomplete rather than calling the
-source drifted. Fetch or deepen only with explicit network authorization,
-against the configured trusted remote and branch; otherwise ask the maintainer
-for a complete checkout.
+source drifted. A partial clone may likewise omit a required object even when
+the checkout is not shallow; with lazy fetching disabled, report that state as
+an incomplete checkout rather than drift. Fetch missing objects or deepen
+history only with explicit network authorization, against the configured
+trusted remote and branch; otherwise ask the maintainer for a complete
+checkout.
 
 Read [source-policy.md](references/source-policy.md) before Capture, Ingest,
 Archive, or Promote.

@@ -5,6 +5,7 @@ import subprocess
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -127,6 +128,19 @@ See the [index](../index.md).
 
     def validate(self):
         return WIKI_LINT.validate(self.root)
+
+    def test_git_commands_disable_lazy_fetching(self):
+        with patch.object(WIKI_LINT.subprocess, "run") as run:
+            run.return_value = subprocess.CompletedProcess(
+                args=["git", "rev-parse", "--show-object-format"],
+                returncode=0,
+                stdout="sha1\n",
+            )
+
+            WIKI_LINT.git_object_id_length(self.root)
+
+        env = run.call_args.kwargs["env"]
+        self.assertEqual("1", env["GIT_NO_LAZY_FETCH"])
 
     def test_valid_wiki_passes(self):
         errors, warnings = self.validate()
@@ -650,6 +664,75 @@ See the [index](../index.md).
         errors, _ = self.validate()
 
         self.assertEqual([], errors)
+
+    def test_partial_clone_reports_incomplete_checkout_for_missing_revision(self):
+        subprocess.run(
+            [
+                "git",
+                "-C",
+                str(self.root),
+                "config",
+                "remote.origin.promisor",
+                "true",
+            ],
+            check=True,
+        )
+        registry = json.loads(
+            (self.root / "knowledge" / "sources.json").read_text(encoding="utf-8")
+        )
+        registry["sources"][0]["revision"] = "f" * 40
+        (self.root / "knowledge" / "sources.json").write_text(
+            json.dumps(registry), encoding="utf-8"
+        )
+
+        errors, _ = self.validate()
+
+        self.assertTrue(
+            any(
+                "partial clone is missing objects required to verify revision"
+                in error
+                for error in errors
+            )
+        )
+        self.assertFalse(
+            any(
+                "repository revision is not reachable from trusted refs" in error
+                or "repository evidence does not exist at revision" in error
+                for error in errors
+            )
+        )
+
+    def test_partial_clone_reports_missing_evidence_blob_without_lazy_fetch(self):
+        subprocess.run(
+            [
+                "git",
+                "-C",
+                str(self.root),
+                "config",
+                "remote.origin.promisor",
+                "true",
+            ],
+            check=True,
+        )
+        blob = subprocess.run(
+            ["git", "-C", str(self.root), "rev-parse", "HEAD:evidence.md"],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        (self.root / ".git" / "objects" / blob[:2] / blob[2:]).unlink()
+
+        errors, _ = self.validate()
+
+        self.assertTrue(
+            any(
+                "partial clone is missing the repository evidence blob" in error
+                for error in errors
+            )
+        )
+        self.assertFalse(
+            any("repository evidence does not exist at revision" in error for error in errors)
+        )
 
     def test_unknown_superseded_source_is_rejected(self):
         self.write_registry(
