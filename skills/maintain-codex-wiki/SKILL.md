@@ -1,6 +1,6 @@
 ---
 name: maintain-codex-wiki
-description: Maintain a review-first Markdown knowledge base for Codex practices with source provenance, explicit ingest and promotion, citation-aware queries, and deterministic linting. Use when asked to ingest Codex research, query what the repository knows, check wiki health, reconcile conflicting guidance, or promote verified knowledge into learning modules.
+description: Maintain a review-first Markdown knowledge base for Codex practices with source provenance, engineering capture, citation-aware queries, explicit archive and promotion, and deterministic linting. Use when asked to capture a durable engineering lesson, ingest Codex research, query or archive what the repository knows, check wiki health, reconcile conflicting guidance, or promote verified knowledge.
 ---
 
 # Maintain Codex Wiki
@@ -13,14 +13,18 @@ before shared knowledge or curriculum changes land.
 
 - **Query**: read `knowledge/index.md`, search candidate pages, and answer with
   links. Do not write unless the user explicitly asks.
+- **Capture**: preserve a durable lesson from repository evidence such as a
+  merged change, incident, review finding, or measured run.
 - **Ingest**: register one source, update affected wiki pages, run lint, and
   prepare a reviewable diff.
+- **Archive**: save a requested query result as an experimental, cited page.
 - **Lint**: run the bundled deterministic checker, then review semantic drift
   that a script cannot prove.
 - **Promote**: move a verified conclusion into the appropriate module, skill,
   or repository rule through a separate, reviewable change.
 
-Read [source-policy.md](references/source-policy.md) before Ingest or Promote.
+Read [source-policy.md](references/source-policy.md) before Capture, Ingest,
+Archive, or Promote.
 Read [article-template.md](references/article-template.md) when creating a page.
 
 ## Query
@@ -33,6 +37,22 @@ Read [article-template.md](references/article-template.md) when creating a page.
 5. Answer with links to wiki pages. State when the wiki has no evidence.
 
 Do not use model memory to silently fill a gap in the repository wiki.
+
+## Capture
+
+1. Require an explicit request to preserve the lesson.
+2. Identify a durable repository or experiment artifact. Do not treat chat
+   prose, an unmerged proposal, or model output as evidence by itself.
+3. Search the index and full wiki before creating a page.
+4. Register or reuse the evidence source, including a stable revision when
+   available and the pages it affects.
+5. Update the smallest existing page, or create an `experimental` page when
+   the conclusion is not stable enough for another status.
+6. Update the index and log, run lint, and leave promotion for a separate
+   decision.
+
+No material change is a valid result. Do not force every task, PR, or incident
+into durable knowledge.
 
 ## Ingest
 
@@ -60,12 +80,27 @@ Do not use model memory to silently fill a gap in the repository wiki.
 Compile sources sequentially because the registry, index, and log are shared
 state. Parallel research is acceptable only when workers do not edit them.
 
+## Archive
+
+Archive only when the user explicitly asks to save a query result:
+
+1. Preserve the source IDs used by the answer.
+2. Create a compact `experimental` page in the most relevant knowledge
+   directory; do not merge model-only conclusions into verified guidance.
+3. Link related pages instead of copying their prose.
+4. Update the index and log, then run lint.
+
+Archive is not promotion. A later evidence review may revise, promote, or
+remove the page.
+
 ## Lint
 
 Run the bundled checker first. It verifies:
 
 - registry schema, source IDs, dates, URLs, and local source paths;
+- source revisions, supersession references, and affected-page declarations;
 - required page metadata and registered source references;
+- duplicate page titles;
 - index coverage; and
 - local links inside `knowledge/`.
 

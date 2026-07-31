@@ -21,7 +21,9 @@ Add one object to `knowledge/sources.json`:
   "title": "Human-readable title",
   "kind": "official",
   "url": "https://example.com/source",
-  "last_verified": "YYYY-MM-DD"
+  "last_verified": "YYYY-MM-DD",
+  "revision": "release, commit, or document revision",
+  "affected_pages": ["knowledge/topics/example.md"]
 }
 ```
 
@@ -31,6 +33,13 @@ project root. Use exactly one of `url` or `path`.
 Source IDs are permanent. If a URL moves, update the record without changing
 the ID. `last_verified` records when a maintainer checked the source, not when
 the source was published.
+
+Use optional metadata when evidence supports it:
+
+- `revision` pins a release, commit, or document revision. Do not invent one.
+- `supersedes` lists older registered source IDs replaced by this source.
+- `affected_pages` lists project-relative wiki pages whose claims depend on the
+  source. Every listed page must cite that source ID.
 
 ## External content
 

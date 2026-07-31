@@ -241,7 +241,7 @@ This repository includes nine installable starter skills:
 | [`test-software`](skills/test-software/SKILL.md) | Design risk-based tests and implement the highest-value coverage |
 | [`review-security`](skills/review-security/SKILL.md) | Trace trust boundaries and report exploitable security risks |
 | [`orchestrate-engineering`](skills/orchestrate-engineering/SKILL.md) | Coordinate bounded agents while protecting context and avoiding edit conflicts |
-| [`maintain-codex-wiki`](skills/maintain-codex-wiki/SKILL.md) | Query, ingest, lint, and promote review-first Codex knowledge |
+| [`maintain-codex-wiki`](skills/maintain-codex-wiki/SKILL.md) | Query, capture, ingest, archive, lint, and promote review-first Codex knowledge |
 
 Copy a skill into `.agents/skills/` for one project or `~/.agents/skills/` for
 personal reuse:
@@ -265,8 +265,8 @@ router remains an educational example, not a recommended runtime dependency.
 Clear skill descriptions should normally let Codex select the relevant
 workflow without spending another turn on routing. The orchestrator remains
 explicit-only because accidental activation adds coordination overhead.
-`maintain-codex-wiki` is also explicit-only because ingest and promotion can
-change shared factual guidance.
+`maintain-codex-wiki` is also explicit-only because capture, ingest, archive,
+and promotion can change shared factual guidance.
 
 For a complete local develop–test–review cycle, install `engineering-loop` and
 start with:

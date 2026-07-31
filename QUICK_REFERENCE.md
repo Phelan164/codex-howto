@@ -60,7 +60,9 @@ current lean-skill runs with the same model and reasoning effort.
 
 ```text
 $maintain-codex-wiki Query ...    # Read-only by default
+$maintain-codex-wiki Capture ...  # Preserve a durable engineering lesson
 $maintain-codex-wiki Ingest ...   # Register, compile, lint, review
+$maintain-codex-wiki Archive ...  # Save cited synthesis as experimental
 $maintain-codex-wiki Lint ...     # Mechanical checks plus semantic findings
 $maintain-codex-wiki Promote ...  # Explicit move into a durable surface
 ```

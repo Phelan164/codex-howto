@@ -8,6 +8,14 @@ product compatibility.
 
 ## Unreleased
 
+- Route Codex through the Living Wiki index for prior decisions, experiments,
+  and established guidance.
+- Add explicit engineering capture and query archive operations to
+  `maintain-codex-wiki`.
+- Pin researched community sources and declare their affected wiki pages.
+- Validate source revisions, supersession relationships, affected-page
+  citations, and duplicate wiki titles.
+
 ## 0.3.0 - 2026-07-31
 
 - Add a review-first Codex Living Wiki with registered provenance, seeded

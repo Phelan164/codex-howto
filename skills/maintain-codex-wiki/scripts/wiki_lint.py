@@ -32,7 +32,7 @@ def parse_date(value: str, label: str, errors: list[str]) -> None:
         errors.append(f"{label}: expected ISO date YYYY-MM-DD, got {value!r}")
 
 
-def load_sources(root: Path, errors: list[str]) -> dict[str, dict[str, str]]:
+def load_sources(root: Path, errors: list[str]) -> dict[str, dict[str, object]]:
     path = root / "knowledge" / "sources.json"
     try:
         payload = json.loads(path.read_text(encoding="utf-8"))
@@ -50,7 +50,7 @@ def load_sources(root: Path, errors: list[str]) -> dict[str, dict[str, str]]:
         errors.append("knowledge/sources.json: sources must be a list")
         return {}
 
-    sources: dict[str, dict[str, str]] = {}
+    sources: dict[str, dict[str, object]] = {}
     for position, item in enumerate(items, start=1):
         label = f"knowledge/sources.json source #{position}"
         if not isinstance(item, dict):
@@ -76,6 +76,31 @@ def load_sources(root: Path, errors: list[str]) -> dict[str, dict[str, str]]:
             errors.append(f"{label}: last_verified is required")
         else:
             parse_date(verified, f"{label} last_verified", errors)
+
+        revision = item.get("revision")
+        if revision is not None and (
+            not isinstance(revision, str) or not revision.strip()
+        ):
+            errors.append(f"{label}: revision must be a non-empty string")
+
+        supersedes = item.get("supersedes")
+        if supersedes is not None and (
+            not isinstance(supersedes, list)
+            or any(
+                not isinstance(value, str) or not SOURCE_ID_RE.fullmatch(value)
+                for value in supersedes
+            )
+        ):
+            errors.append(f"{label}: supersedes must be a list of source IDs")
+
+        affected_pages = item.get("affected_pages")
+        if affected_pages is not None and (
+            not isinstance(affected_pages, list)
+            or any(not isinstance(value, str) or not value for value in affected_pages)
+        ):
+            errors.append(
+                f"{label}: affected_pages must be a list of project-relative paths"
+            )
 
         has_url = "url" in item
         has_path = "path" in item
@@ -144,6 +169,92 @@ def page_metadata(
     return source_ids
 
 
+def check_page_titles(pages: list[Path], root: Path, errors: list[str]) -> None:
+    titles: dict[str, Path] = {}
+    for page in pages:
+        lines = page.read_text(encoding="utf-8").splitlines()
+        if not lines:
+            continue
+        first_line = lines[0]
+        title = first_line.removeprefix("# ").strip()
+        normalized = re.sub(r"\s+", " ", title).casefold()
+        previous = titles.get(normalized)
+        if previous is not None:
+            errors.append(
+                f"{page.relative_to(root)}: duplicate page title {title!r}; "
+                f"already used by {previous.relative_to(root)}"
+            )
+        else:
+            titles[normalized] = page
+
+
+def check_source_relationships(
+    root: Path,
+    sources: dict[str, dict[str, object]],
+    page_sources: dict[str, set[str]],
+    errors: list[str],
+) -> None:
+    graph: dict[str, list[str]] = {}
+    for source_id, item in sources.items():
+        supersedes = item.get("supersedes", [])
+        if not isinstance(supersedes, list):
+            continue
+        graph[source_id] = [
+            target for target in supersedes if isinstance(target, str)
+        ]
+        for target in supersedes:
+            if not isinstance(target, str):
+                continue
+            if target == source_id:
+                errors.append(f"source {source_id!r}: cannot supersede itself")
+            elif target not in sources:
+                errors.append(
+                    f"source {source_id!r}: unknown superseded source {target!r}"
+                )
+
+        affected_pages = item.get("affected_pages", [])
+        if not isinstance(affected_pages, list):
+            continue
+        for relative in affected_pages:
+            if not isinstance(relative, str):
+                continue
+            target = (root / relative).resolve()
+            if not target.is_relative_to((root / "knowledge").resolve()):
+                errors.append(
+                    f"source {source_id!r}: affected page escapes knowledge/: "
+                    f"{relative}"
+                )
+            elif relative not in page_sources:
+                errors.append(
+                    f"source {source_id!r}: affected page is not a wiki page: "
+                    f"{relative}"
+                )
+            elif source_id not in page_sources[relative]:
+                errors.append(
+                    f"source {source_id!r}: affected page does not cite this "
+                    f"source: {relative}"
+                )
+
+    state: dict[str, int] = {}
+
+    def visit(source_id: str, trail: list[str]) -> None:
+        if state.get(source_id) == 2:
+            return
+        if state.get(source_id) == 1:
+            start = trail.index(source_id)
+            cycle = trail[start:] + [source_id]
+            errors.append(f"source supersession cycle: {' -> '.join(cycle)}")
+            return
+        state[source_id] = 1
+        for target in graph.get(source_id, []):
+            if target in sources:
+                visit(target, trail + [source_id])
+        state[source_id] = 2
+
+    for source_id in sources:
+        visit(source_id, [])
+
+
 def check_index(root: Path, pages: list[Path], errors: list[str]) -> None:
     index = root / "knowledge" / "index.md"
     try:
@@ -200,11 +311,16 @@ def validate(root: Path) -> tuple[list[str], list[str]]:
         errors.append("knowledge/: no topic, decision, or experiment pages found")
 
     referenced: set[str] = set()
+    page_sources: dict[str, set[str]] = {}
     for page in pages:
-        referenced.update(page_metadata(page, root, set(sources), errors))
+        source_ids = page_metadata(page, root, set(sources), errors)
+        referenced.update(source_ids)
+        page_sources[page.relative_to(root).as_posix()] = source_ids
     for source_id in sorted(set(sources) - referenced):
         warnings.append(f"unreferenced source: {source_id}")
 
+    check_page_titles(pages, root, errors)
+    check_source_relationships(root, sources, page_sources, errors)
     check_index(root, pages, errors)
     check_local_links(root, errors)
     return errors, warnings
