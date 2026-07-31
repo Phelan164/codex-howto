@@ -258,7 +258,7 @@ Record data after 24 hours, 7 days, and 30 days:
 | Date | Channel | Post URL | Format | Views | Repo visits | Stars | Forks | Issues/PRs | Demo completions | Notes |
 |---|---|---|---|---:|---:|---:|---:|---:|---:|---|
 | YYYY-MM-DD | Example | URL | Demo | 0 | 0 | 0 | 0 | 0 | 0 | Audience questions |
-| 2026-07-31 | OpenAI Codex GitHub Discussions | [Discussion #36262](https://github.com/openai/codex/discussions/36262) | Show and tell | — | — | 1 | 0 | 0 | — | Initial repository baseline; recheck after 24 hours |
+| 2026-07-31 | OpenAI Codex GitHub Discussions | [Discussion #36262](https://github.com/openai/codex/discussions/36262) and [benchmark update](https://github.com/openai/codex/discussions/36262#discussioncomment-17850277) | Show and tell | — | — | 1 | 0 | 0 | — | Public release count corrected; update invites reproducible measurements |
 | 2026-07-31 | Awesome Codex CLI | [PR #172](https://github.com/RoggeOhta/awesome-codex-cli/pull/172) | Directory PR | — | — | 1 | 0 | 1 | — | Open and mergeable; listing matches the public release |
 | 2026-07-31 | Awesome Codex Skills | [PR #198](https://github.com/composio-community/awesome-codex-skills/pull/198) | Skill directory PR | — | — | 1 | 0 | 1 | — | Open and mergeable; links directly to `engineering-loop` |
 | 2026-07-31 | Awesome Codex Guide | [PR #3](https://github.com/geekjourneyx/awesome-codex-guide/pull/3) | Resource directory PR | — | — | 1 | 0 | 1 | — | Adds validated English and Chinese discovery metadata |
