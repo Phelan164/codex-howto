@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security disclosure
+    url: https://github.com/Phelan164/codex-howto/security/policy
+    about: Report security concerns through the repository security policy.
+  - name: Official Codex documentation
+    url: https://developers.openai.com/codex/
+    about: Verify current Codex product behavior with the official documentation.

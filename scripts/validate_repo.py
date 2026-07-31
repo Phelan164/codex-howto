@@ -23,11 +23,18 @@ REQUIRED_ROOT = {
     "README.md",
     "LEARNING-ROADMAP.md",
     "CATALOG.md",
+    "CHANGELOG.md",
+    "COMMUNITY.md",
     "QUICK_REFERENCE.md",
     "CONTRIBUTING.md",
     "SECURITY.md",
     "AGENTS.md",
     "LICENSE",
+    "assets/social-preview.png",
+    "assets/social-preview.svg",
+    "resources/community-launch-kit.md",
+    "resources/distribution-shortlist.md",
+    "resources/release-notes-v0.2.0.md",
 }
 REQUIRED_MODULES = {
     "00-mental-model",

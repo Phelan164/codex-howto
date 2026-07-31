@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="title desc">
+  <title id="title">Codex How To</title>
+  <desc id="desc">An engineering-first Codex guide covering scope, implementation, testing, review, and evidence.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#07111f"/>
+      <stop offset="0.55" stop-color="#0d1b2e"/>
+      <stop offset="1" stop-color="#102c33"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#64e6c6"/>
+      <stop offset="1" stop-color="#6ea8fe"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="24"/>
+    </filter>
+  </defs>
+
+  <rect width="1280" height="640" rx="28" fill="url(#background)"/>
+  <circle cx="1120" cy="65" r="220" fill="#39d3ae" opacity="0.09" filter="url(#glow)"/>
+  <circle cx="90" cy="620" r="230" fill="#548cff" opacity="0.08" filter="url(#glow)"/>
+
+  <g font-family="Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+    <rect x="72" y="60" width="370" height="40" rx="20" fill="#112f38" stroke="#4ccfb2" stroke-opacity="0.55"/>
+    <text x="257" y="86" fill="#9cf5de" font-size="16" font-weight="700" text-anchor="middle" letter-spacing="1.25">OPEN SOURCE · CODEX ENGINEERING</text>
+
+    <text x="72" y="190" fill="#f7fbff" font-size="76" font-weight="800" letter-spacing="-2">CODEX HOW TO</text>
+    <rect x="72" y="217" width="640" height="7" rx="3.5" fill="url(#accent)"/>
+    <text x="72" y="278" fill="#c4d2e2" font-size="31" font-weight="500">From generated code to verified engineering evidence.</text>
+
+    <g transform="translate(72 342)">
+      <g fill="#10283a" stroke="#4c6f8d" stroke-width="2">
+        <rect x="0" y="0" width="136" height="72" rx="16"/>
+        <rect x="168" y="0" width="136" height="72" rx="16"/>
+        <rect x="336" y="0" width="136" height="72" rx="16"/>
+        <rect x="504" y="0" width="136" height="72" rx="16"/>
+        <rect x="672" y="0" width="136" height="72" rx="16"/>
+        <rect x="840" y="0" width="184" height="72" rx="16" stroke="#54d8b7"/>
+      </g>
+      <g fill="#dce9f5" font-size="21" font-weight="700" text-anchor="middle">
+        <text x="68" y="44">Scope</text>
+        <text x="236" y="44">Reproduce</text>
+        <text x="404" y="44">Implement</text>
+        <text x="572" y="44">Test</text>
+        <text x="740" y="44">Review</text>
+        <text x="932" y="44" fill="#9cf5de">Evidence</text>
+      </g>
+      <g stroke="#6d8da8" stroke-width="3" fill="none">
+        <path d="M138 36h25"/>
+        <path d="M306 36h25"/>
+        <path d="M474 36h25"/>
+        <path d="M642 36h25"/>
+        <path d="M810 36h25"/>
+      </g>
+      <g fill="#6d8da8">
+        <path d="M163 36l-10-7v14z"/>
+        <path d="M331 36l-10-7v14z"/>
+        <path d="M499 36l-10-7v14z"/>
+        <path d="M667 36l-10-7v14z"/>
+        <path d="M835 36l-10-7v14z"/>
+      </g>
+    </g>
+
+    <text x="72" y="518" fill="#9fb2c7" font-size="23">13 modules · 9 focused skills · one measurable engineering loop</text>
+    <text x="72" y="578" fill="#f3f8fc" font-size="22" font-weight="650">github.com/Phelan164/codex-howto</text>
+    <text x="1208" y="578" fill="#7fdcc5" font-size="22" font-weight="700" text-anchor="end">Learn → Run → Measure → Adapt</text>
+  </g>
+</svg>

@@ -1,0 +1,71 @@
+name: Workflow feedback
+description: Report a reproducible success, failure, or gap from a guide workflow.
+title: "[Workflow feedback]: "
+labels:
+  - feedback
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for testing the guide. Remove private code, credentials, and production data before submitting.
+  - type: dropdown
+    id: workflow
+    attributes:
+      label: Workflow
+      options:
+        - Engineering loop
+        - Frontend
+        - Backend
+        - DevOps
+        - Testing
+        - Code review
+        - Security review
+        - Orchestration
+        - Learning module
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: task
+    attributes:
+      label: Task class
+      description: Describe the kind of engineering task without sharing private repository details.
+      placeholder: Fixing an API input-boundary defect with pytest coverage
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected outcome
+      description: What did you expect the workflow to produce or verify?
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: Observed outcome
+      description: What happened, including the step where the result diverged?
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Include sanitized commands, check results, or measurements that make the report reproducible.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Codex surface, operating system, language/stack, and relevant versions.
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety check
+      options:
+        - label: I removed credentials, private source code, and production data.
+          required: true

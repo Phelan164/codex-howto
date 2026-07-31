@@ -1,0 +1,21 @@
+changelog:
+  exclude:
+    labels:
+      - skip-changelog
+    authors:
+      - dependabot
+  categories:
+    - title: New learning material
+      labels:
+        - documentation
+        - enhancement
+    - title: Workflow and skill improvements
+      labels:
+        - skill
+        - workflow
+    - title: Fixes
+      labels:
+        - bug
+    - title: Other changes
+      labels:
+        - "*"
