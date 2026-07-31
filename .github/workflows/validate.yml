@@ -27,6 +27,9 @@ jobs:
       - name: Validate guide structure and local links
         run: python3 scripts/validate_repo.py
 
+      - name: Validate the living wiki
+        run: python3 skills/maintain-codex-wiki/scripts/wiki_lint.py .
+
       - name: Run playground tests
         run: >-
           python3 -m unittest discover

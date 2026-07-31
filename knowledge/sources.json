@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "sources": [
+    {
+      "id": "official-codex-manual",
+      "title": "OpenAI Codex documentation",
+      "kind": "official",
+      "url": "https://developers.openai.com/codex/codex-manual.md",
+      "last_verified": "2026-07-31"
+    },
+    {
+      "id": "karpathy-llm-wiki-gist",
+      "title": "Karpathy: LLM Wiki",
+      "kind": "community",
+      "url": "https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f",
+      "last_verified": "2026-07-31"
+    },
+    {
+      "id": "astro-karpathy-llm-wiki",
+      "title": "Astro-Han/karpathy-llm-wiki",
+      "kind": "community",
+      "url": "https://github.com/Astro-Han/karpathy-llm-wiki",
+      "last_verified": "2026-07-31"
+    },
+    {
+      "id": "lucas-llmwiki",
+      "title": "lucasastorian/llmwiki",
+      "kind": "community",
+      "url": "https://github.com/lucasastorian/llmwiki",
+      "last_verified": "2026-07-31"
+    },
+    {
+      "id": "atomicstrata-llm-wiki-compiler",
+      "title": "atomicstrata/llm-wiki-compiler",
+      "kind": "community",
+      "url": "https://github.com/atomicstrata/llm-wiki-compiler",
+      "last_verified": "2026-07-31"
+    },
+    {
+      "id": "local-model-adaptive-skills",
+      "title": "Model-adaptive skill guide",
+      "kind": "repository",
+      "path": "resources/model-adaptive-skills.md",
+      "last_verified": "2026-07-31"
+    },
+    {
+      "id": "local-engineering-loop-measurement",
+      "title": "Engineering-loop measurement protocol",
+      "kind": "experiment",
+      "path": "resources/engineering-loop-measurement.md",
+      "last_verified": "2026-07-31"
+    },
+    {
+      "id": "local-orchestration-matrix",
+      "title": "Orchestration decision matrix",
+      "kind": "repository",
+      "path": "resources/orchestration-decision-matrix.md",
+      "last_verified": "2026-07-31"
+    }
+  ]
+}

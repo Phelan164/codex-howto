@@ -35,6 +35,7 @@ python3 -m unittest discover \
   -p "test_*.py"
 python3 scripts/summarize_engineering_loop.py \
   examples/measurements/engineering-loop-runs.csv
+python3 skills/maintain-codex-wiki/scripts/wiki_lint.py .
 python3 -m compileall -q scripts labs/engineering-playground/backend
 ```
 
@@ -70,6 +71,23 @@ Each skill must:
 
 Do not add a README inside a skill folder.
 
+## Living-wiki standard
+
+Wiki contributions must:
+
+- reuse or add a stable record in `knowledge/sources.json`;
+- use official sources for current Codex product behavior;
+- keep fetched external content in `.wiki-cache/` unless redistribution is
+  allowed;
+- distinguish verified guidance, community practice, experiments, and
+  inference;
+- update `knowledge/index.md` and `knowledge/log.md`;
+- pass `wiki_lint.py`; and
+- use a pull request for factual changes.
+
+Keep wiki pages as compact evidence maps. Do not duplicate a complete module,
+skill, or external article.
+
 ## Pull request checklist
 
 - [ ] Product claims are linked to official documentation.
@@ -77,6 +95,7 @@ Do not add a README inside a skill folder.
 - [ ] New links are relative where possible.
 - [ ] `python3 scripts/validate_repo.py` passes.
 - [ ] Playground and measurement tests pass.
+- [ ] Living-wiki changes pass `wiki_lint.py`.
 - [ ] Changed skills pass `quick_validate.py`.
 - [ ] The change is described in plain language.
 - [ ] The final diff contains no generated caches or unrelated edits.

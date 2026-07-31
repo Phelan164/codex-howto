@@ -8,6 +8,9 @@ product compatibility.
 
 ## Unreleased
 
+- Add a review-first Codex Living Wiki with registered provenance, seeded
+  evidence maps, deterministic linting, and an explicit maintenance skill.
+- Add a living-wiki learning module and a measurable wiki-efficiency baseline.
 - Add a community launch kit and structured feedback paths.
 - Add a reusable social preview asset.
 - Make the skill catalog model-adaptive: eight runtime skills and one

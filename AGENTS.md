@@ -19,6 +19,7 @@ Run:
 
 ```bash
 python3 scripts/validate_repo.py
+python3 skills/maintain-codex-wiki/scripts/wiki_lint.py .
 ```
 
 For each changed skill, also run:
@@ -31,5 +32,6 @@ python3 /path/to/skill-creator/scripts/quick_validate.py skills/<skill-name>
 
 - All relative Markdown links resolve.
 - Every skill has valid frontmatter and UI metadata.
+- Living-wiki pages have registered sources and pass deterministic lint.
 - Examples are safe and contain no placeholder secrets.
 - Version-sensitive claims include an official source or verification note.

@@ -6,6 +6,7 @@ from __future__ import annotations
 import html
 import json
 import re
+import subprocess
 import sys
 from pathlib import Path
 from urllib.parse import unquote
@@ -38,6 +39,12 @@ REQUIRED_ROOT = {
     "resources/release-notes-v0.2.0.md",
     "examples/skills/choose-engineering-flow/SKILL.md",
     "examples/skills/choose-engineering-flow/agents/openai.yaml",
+    "knowledge/README.md",
+    "knowledge/index.md",
+    "knowledge/log.md",
+    "knowledge/sources.json",
+    "knowledge/decisions/review-first-wiki.md",
+    "knowledge/experiments/wiki-efficiency-baseline.md",
 }
 REQUIRED_MODULES = {
     "00-mental-model",
@@ -53,6 +60,7 @@ REQUIRED_MODULES = {
     "10-context-and-token-efficiency",
     "11-automation-plugins-hooks",
     "12-troubleshooting",
+    "13-living-codex-wiki",
 }
 REQUIRED_SKILLS = {
     "engineering-loop",
@@ -63,9 +71,11 @@ REQUIRED_SKILLS = {
     "test-software",
     "review-security",
     "orchestrate-engineering",
+    "maintain-codex-wiki",
 }
 EXPLICIT_ONLY_SKILLS = {
     "choose-engineering-flow",
+    "maintain-codex-wiki",
     "orchestrate-engineering",
 }
 REQUIRED_LAB_FILES = {
@@ -88,6 +98,7 @@ REQUIRED_JSON = {
     "examples/hooks/validate-on-stop/hooks.json",
     "examples/plugin-marketplace/.agents/plugins/marketplace.json",
     "examples/plugin-marketplace/plugins/engineering-review/.codex-plugin/plugin.json",
+    "knowledge/sources.json",
 }
 
 
@@ -306,6 +317,23 @@ def check_placeholders(errors: list[str]) -> None:
             errors.append(f"unfinished TODO placeholder: {path.relative_to(ROOT)}")
 
 
+def check_wiki(errors: list[str]) -> None:
+    script = ROOT / "skills" / "maintain-codex-wiki" / "scripts" / "wiki_lint.py"
+    if not script.is_file():
+        errors.append("missing living-wiki lint script")
+        return
+    result = subprocess.run(
+        [sys.executable, str(script), str(ROOT)],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if result.returncode:
+        details = (result.stderr or result.stdout).strip()
+        errors.append(f"living-wiki lint failed: {details}")
+
+
 def main() -> int:
     errors: list[str] = []
     check_required(errors)
@@ -314,6 +342,7 @@ def main() -> int:
     check_skills(errors)
     check_modules(errors)
     check_placeholders(errors)
+    check_wiki(errors)
 
     if errors:
         print("Validation failed:")

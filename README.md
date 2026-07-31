@@ -17,6 +17,7 @@ DevOps, security, and multi-agent orchestration.
 [Try the playground](labs/engineering-playground/README.md) ·
 [Use the quick reference](QUICK_REFERENCE.md) ·
 [Measure the loop](resources/engineering-loop-measurement.md) ·
+[Explore the living wiki](knowledge/index.md) ·
 [Present this guide](PRESENTING.md) ·
 [Join the community](COMMUNITY.md)
 
@@ -95,6 +96,37 @@ no-skill, full-skill, and lean-skill runs without treating one demo as proof.
 Use [PRESENTING.md](PRESENTING.md) for a 15-minute talk track, demo checklist,
 and copy-ready announcement.
 
+## Make Codex know-how compound
+
+The [Codex Living Wiki](knowledge/README.md) turns repeated research into a
+reviewed, source-grounded knowledge layer:
+
+```mermaid
+flowchart LR
+    A["Official docs and engineering evidence"] --> B["Living wiki"]
+    B --> C["Query with citations"]
+    B --> D["Lint drift and provenance"]
+    B --> E["Promote through a reviewed PR"]
+    E --> F["Module, skill, rule, or check"]
+```
+
+It adapts
+[Karpathy's LLM Wiki idea](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f)
+for Codex engineering. External source bodies stay out of Git by default,
+deterministic lint checks mechanical integrity, and factual changes remain
+human-reviewed.
+
+Try a read-only query:
+
+```text
+$maintain-codex-wiki What does this repository know about orchestration
+efficiency? Cite wiki pages, separate evidence from recommendation, and do not
+modify files.
+```
+
+The wiki starts with Markdown and repository search—no database, embeddings, or
+MCP service until measured retrieval quality justifies them.
+
 ## Why this repository exists
 
 Official documentation is the source of truth for product behavior. This
@@ -111,16 +143,20 @@ You will learn how to:
 - delegate bounded work to specialized agents;
 - orchestrate parallel work without creating edit conflicts;
 - reduce wasted context, retries, and unnecessary token use;
+- compile evolving Codex know-how into a review-first living wiki;
 - automate stable workflows only after they are reliable interactively.
 
 ## What is included
 
-- **13 progressive modules** covering safety, prompting, `AGENTS.md`, skills,
+- **14 progressive modules** covering safety, prompting, `AGENTS.md`, skills,
   MCP, subagents, orchestration, context efficiency, automation, and
-  troubleshooting.
-- **8 installable engineering skills** covering the end-to-end engineering
+  living knowledge maintenance.
+- **9 installable skills** covering the end-to-end engineering
   loop, frontend, backend, DevOps, testing, code review, security review, and
-  orchestration, plus an explicit router kept as an educational example.
+  orchestration, plus review-first knowledge maintenance and an explicit
+  router kept as an educational example.
+- **A living maintainer wiki** with registered provenance, deterministic
+  linting, review gates, and a measured promotion path into the curriculum.
 - **Copy-ready examples** for project configuration, custom agents, prompts,
   engineering specifications, dependency-aware tickets, handoffs, hooks, MCP,
   and local plugins.
@@ -142,6 +178,7 @@ You will learn how to:
 | Build and review application code | [Track B · Application engineer](LEARNING-ROADMAP.md#track-b-application-engineer) |
 | Work with delivery and infrastructure | [Track C · Platform and DevOps engineer](LEARNING-ROADMAP.md#track-c-platform-and-devops-engineer) |
 | Coordinate subagents efficiently | [Track D · Agent orchestrator](LEARNING-ROADMAP.md#track-d-agent-orchestrator) |
+| Maintain evolving Codex know-how | [Track E · Knowledge maintainer](LEARNING-ROADMAP.md#track-e-knowledge-maintainer) |
 | Learn by fixing a small project | [Engineering playground](labs/engineering-playground/README.md) |
 
 ## Learning path
@@ -161,8 +198,9 @@ You will learn how to:
 | Scale | [10 · Context and token efficiency](modules/10-context-and-token-efficiency/README.md) | Reduce context pollution and expensive retries | 50 min |
 | Scale | [11 · Automation, plugins, and hooks](modules/11-automation-plugins-hooks/README.md) | Package and automate stable workflows | 60 min |
 | Operations | [12 · Troubleshooting](modules/12-troubleshooting/README.md) | Diagnose failures by layer instead of guessing | 35 min |
+| Operations | [13 · Living Codex wiki](modules/13-living-codex-wiki/README.md) | Compile, verify, and promote evolving know-how | 55 min |
 
-Full path: roughly **9–10 hours**. Start with modules 00–03, then follow the
+Full path: roughly **10–11 hours**. Start with modules 00–03, then follow the
 shortest track that matches your work.
 
 ## Five-minute safe start
@@ -191,7 +229,7 @@ non-generic workflow, safety, policy, or tool knowledge. Use the
 [three-way ablation protocol](resources/engineering-loop-measurement.md) before
 standardizing a skill for a team.
 
-This repository includes eight installable starter skills:
+This repository includes nine installable starter skills:
 
 | Skill | Purpose |
 |---|---|
@@ -203,6 +241,7 @@ This repository includes eight installable starter skills:
 | [`test-software`](skills/test-software/SKILL.md) | Design risk-based tests and implement the highest-value coverage |
 | [`review-security`](skills/review-security/SKILL.md) | Trace trust boundaries and report exploitable security risks |
 | [`orchestrate-engineering`](skills/orchestrate-engineering/SKILL.md) | Coordinate bounded agents while protecting context and avoiding edit conflicts |
+| [`maintain-codex-wiki`](skills/maintain-codex-wiki/SKILL.md) | Query, ingest, lint, and promote review-first Codex knowledge |
 
 Copy a skill into `.agents/skills/` for one project or `~/.agents/skills/` for
 personal reuse:
@@ -226,6 +265,8 @@ router remains an educational example, not a recommended runtime dependency.
 Clear skill descriptions should normally let Codex select the relevant
 workflow without spending another turn on routing. The orchestrator remains
 explicit-only because accidental activation adds coordination overhead.
+`maintain-codex-wiki` is also explicit-only because ingest and promotion can
+change shared factual guidance.
 
 For a complete local develop–test–review cycle, install `engineering-loop` and
 start with:
@@ -264,6 +305,7 @@ codex-howto/
 ├── .codex-plugin/           # Plugin manifest over the existing skill catalog
 ├── modules/                 # Progressive tutorials and labs
 ├── skills/                  # Installable engineering skills
+├── knowledge/               # Review-first maintainer evidence wiki
 ├── labs/
 │   └── engineering-playground/ # Self-contained practice project
 ├── examples/
@@ -298,6 +340,14 @@ The skill-system refinements were inspired by the original
 [mattpocock/skills](https://github.com/mattpocock/skills) repository. Its
 invocation, routing, debugging, and review ideas were adapted to Codex without
 copying its skills.
+
+The living-wiki pattern was inspired by
+[Karpathy's LLM Wiki idea](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f).
+The review-first Codex adaptation also studies
+[Astro-Han/karpathy-llm-wiki](https://github.com/Astro-Han/karpathy-llm-wiki),
+[lucasastorian/llmwiki](https://github.com/lucasastorian/llmwiki), and
+[atomicstrata/llm-wiki-compiler](https://github.com/atomicstrata/llm-wiki-compiler).
+External source bodies are not copied into this repository by default.
 
 Useful related community projects:
 

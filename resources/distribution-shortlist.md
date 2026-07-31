@@ -19,7 +19,7 @@ activity were checked on 2026-07-31; recheck them immediately before posting.
 Suggested title:
 
 ```text
-Codex How To: a runnable engineering loop with 8 runtime skills
+Codex How To: engineering loops and a review-first living wiki
 ```
 
 Suggested opening:
@@ -58,7 +58,7 @@ real engineering check.
 Proposed entry:
 
 ```markdown
-- [Codex How To](https://github.com/Phelan164/codex-howto) — Engineering-first Codex curriculum with 13 modules, 8 runtime skills, a runnable playground, and three-way skill ablation. ![GitHub stars](https://img.shields.io/github/stars/Phelan164/codex-howto?style=flat-square)
+- [Codex How To](https://github.com/Phelan164/codex-howto) — Engineering-first Codex curriculum with 14 modules, 9 installable skills, a review-first living wiki, a runnable playground, and measured workflow experiments. ![GitHub stars](https://img.shields.io/github/stars/Phelan164/codex-howto?style=flat-square)
 ```
 
 ### Awesome Codex Skills
@@ -92,8 +92,9 @@ Disclosure: I maintain this project.
 
 I built Codex How To because generated code kept being treated as the finish
 line. The repository packages a stricter loop—scope, reproduce, implement,
-test, review, and evidence—into 8 runtime skills and a dependency-free
-playground with no-skill/full-skill/lean-skill comparison.
+test, review, and evidence—into 9 installable skills, a review-first living
+wiki, and a dependency-free playground with no-skill/full-skill/lean-skill
+comparison.
 
 I am looking for critical feedback from people who run the five-minute demo:
 which step catches a real problem, and which step adds overhead without value?

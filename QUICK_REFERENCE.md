@@ -18,6 +18,7 @@ Done when:
 | Repeatable workflow | Skill |
 | Specialized delegated role | Custom agent |
 | Live external data or action | MCP/app connector |
+| Synthesized evidence and evolving know-how | Living wiki |
 | Mechanical lifecycle enforcement | Hook |
 | Distributable bundle | Plugin |
 | Scheduled or unattended task | Automation |
@@ -54,6 +55,22 @@ current lean-skill runs with the same model and reasoning effort.
 - Review failure paths and rollback.
 - Confirm no secrets or generated artifacts were added.
 - Ask for remaining assumptions and unverified claims.
+
+## Living-wiki operations
+
+```text
+$maintain-codex-wiki Query ...    # Read-only by default
+$maintain-codex-wiki Ingest ...   # Register, compile, lint, review
+$maintain-codex-wiki Lint ...     # Mechanical checks plus semantic findings
+$maintain-codex-wiki Promote ...  # Explicit move into a durable surface
+```
+
+```bash
+python3 skills/maintain-codex-wiki/scripts/wiki_lint.py .
+```
+
+Keep external source bodies in `.wiki-cache/`, not in the public repository,
+unless redistribution is permitted.
 
 ## Useful commands
 

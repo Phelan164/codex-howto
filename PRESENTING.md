@@ -17,10 +17,11 @@ evidence.
 
 Codex can generate code quickly, but production engineering also requires
 clear acceptance criteria, regression proof, repository checks, review, and a
-useful handoff. `codex-howto` packages that process into 13 progressive modules,
-8 runtime skills, one router example, copy-ready templates, and a safe
-dependency-free playground. It covers frontend, backend, DevOps, testing,
-security, and orchestration without recommending that every task load a skill.
+useful handoff. `codex-howto` packages that process into 14 progressive modules,
+9 installable skills, a review-first living wiki, one router example,
+copy-ready templates, and a safe dependency-free playground. It covers
+frontend, backend, DevOps, testing, security, orchestration, and knowledge
+maintenance without recommending that every task load a skill.
 
 ## Fifteen-minute presentation
 
@@ -30,7 +31,7 @@ security, and orchestration without recommending that every task load a skill.
 | 2–4 min | The model | Prompt → `AGENTS.md` → skill → tool/agent only when needed |
 | 4–10 min | Live demo | One playground defect through reproduce, fix, test, and review |
 | 10–12 min | Skill routing | One lifecycle owner plus relevant domain specialists |
-| 12–14 min | Efficiency | Focused context, bounded delegation, evidence summaries |
+| 12–14 min | Efficiency | Focused context, bounded delegation, living evidence |
 | 14–15 min | Start here | Choose a learning track or repeat the playground |
 
 Do not spend the opening minutes listing modules. The live result should make
@@ -109,6 +110,11 @@ Show progressive disclosure, explicit-only routing and orchestration,
 skill/plugin packaging, context budgets, and the orchestration decision
 matrix.
 
+### Documentation and enablement teams
+
+Show the Codex Living Wiki, registered source provenance, deterministic lint,
+and the PR-gated path from evolving evidence into published guidance.
+
 ## Measurement
 
 Compare no-skill, v0.2 full-skill, and current lean-skill runs. Keep the task,
@@ -145,9 +151,9 @@ context practices.
 > The central workflow is a complete engineering loop: reproduce, implement,
 > test, review, fix verified findings, and report evidence.
 >
-> The repository includes 13 progressive modules, 8 runtime skills, a
-> three-way skill-ablation protocol, copy-ready templates, and a
-> dependency-free practice project.
+> The repository includes 14 progressive modules, 9 installable skills, a
+> review-first living wiki, a three-way skill-ablation protocol, copy-ready
+> templates, and a dependency-free practice project.
 >
 > https://github.com/Phelan164/codex-howto
 
