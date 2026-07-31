@@ -16,10 +16,13 @@ DevOps, security, and multi-agent orchestration.
 [Choose a track](LEARNING-ROADMAP.md) ·
 [Browse skills](#engineering-skill-catalog) ·
 [Install from skills.sh](https://skills.sh/phelan164/codex-howto) ·
+[Find verified listings on SkillStore](https://skillstore.io/search?q=phelan164) ·
 [Try the playground](labs/engineering-playground/README.md) ·
 [Use the quick reference](QUICK_REFERENCE.md) ·
 [Measure the loop](resources/engineering-loop-measurement.md) ·
 [Explore the living wiki](knowledge/index.md) ·
+[Run a community benchmark](https://github.com/Phelan164/codex-howto/issues/16) ·
+[Fork an edition](https://github.com/Phelan164/codex-howto/fork) ·
 [Present this guide](PRESENTING.md) ·
 [Join the community](COMMUNITY.md)
 
@@ -253,6 +256,10 @@ npx skills add Phelan164/codex-howto --skill engineering-loop -g -a codex -y
 npx skills add Phelan164/codex-howto --skill maintain-codex-wiki -g -a codex -y
 ```
 
+The flagship skills also have independently scanned SkillStore pages:
+[Engineering Loop](https://skillstore.io/skills/phelan164-engineering-loop) and
+[Maintain Codex Wiki](https://skillstore.io/skills/phelan164-maintain-codex-wiki).
+
 List all nine skills without installing:
 
 ```bash
@@ -385,8 +392,9 @@ step, and official sources.
 If the guide is useful, choose the action that creates the most value:
 
 - try the playground and report a reproducible gap;
-- contribute anonymized no-skill/full-skill/lean-skill measurements;
-- fork it into a tested stack, team, or translation edition;
+- [contribute anonymized engineering-loop measurements](https://github.com/Phelan164/codex-howto/issues/8);
+- [test the Living Wiki against normal repository search](https://github.com/Phelan164/codex-howto/issues/16);
+- [fork it into a tested stack, team, or translation edition](https://github.com/Phelan164/codex-howto/fork);
 - share it with one relevant developer community; or
 - star it so you can find it again.
 
