@@ -151,16 +151,20 @@ See the [index](../index.md).
         errors, _ = self.validate()
         self.assertTrue(any("missing page topics/example.md" in error for error in errors))
 
-    def test_missing_local_source_is_rejected(self):
+    def test_missing_worktree_source_is_valid_when_pinned_blob_exists(self):
         (self.root / "evidence.md").unlink()
         errors, _ = self.validate()
-        self.assertTrue(
-            any("local source does not exist: evidence.md" in error for error in errors)
-        )
+        self.assertEqual([], errors)
 
-    def test_untracked_repository_source_is_rejected(self):
+    def test_source_absent_from_recorded_tree_is_rejected(self):
         untracked = self.root / "untracked.md"
         untracked.write_text("# Untracked\n", encoding="utf-8")
+        revision = subprocess.run(
+            ["git", "-C", str(self.root), "rev-parse", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
         self.write_registry(
             [
                 {
@@ -169,13 +173,126 @@ See the [index](../index.md).
                     "kind": "repository",
                     "path": "untracked.md",
                     "last_verified": "2026-07-31",
+                    "revision": revision,
                 }
             ]
         )
         errors, _ = self.validate()
         self.assertTrue(
             any(
-                "repository evidence must be version-controlled" in error
+                "repository evidence does not exist at revision" in error
+                for error in errors
+            )
+        )
+
+    def test_historical_source_survives_later_committed_rename(self):
+        registry = json.loads(
+            (self.root / "knowledge" / "sources.json").read_text(encoding="utf-8")
+        )
+        recorded_revision = registry["sources"][0]["revision"]
+        (self.root / "evidence.md").rename(self.root / "renamed-evidence.md")
+        subprocess.run(
+            ["git", "-C", str(self.root), "add", "-A"],
+            check=True,
+        )
+        subprocess.run(
+            [
+                "git",
+                "-C",
+                str(self.root),
+                "-c",
+                "user.name=Wiki Lint Tests",
+                "-c",
+                "user.email=wiki-lint@example.invalid",
+                "commit",
+                "-qm",
+                "rename evidence",
+            ],
+            check=True,
+        )
+        current_revision = subprocess.run(
+            ["git", "-C", str(self.root), "rev-parse", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        subprocess.run(
+            [
+                "git",
+                "-C",
+                str(self.root),
+                "update-ref",
+                "refs/remotes/origin/main",
+                current_revision,
+            ],
+            check=True,
+        )
+        errors, _ = self.validate()
+        self.assertEqual([], errors)
+        self.assertEqual(
+            ("100644", "blob"),
+            WIKI_LINT.git_tree_entry(
+                self.root, recorded_revision, "evidence.md"
+            ),
+        )
+
+    def test_symlink_at_recorded_revision_is_rejected(self):
+        target = self.root / "target.md"
+        target.write_text("# Target\n", encoding="utf-8")
+        linked = self.root / "linked-evidence.md"
+        linked.symlink_to(target.name)
+        subprocess.run(
+            ["git", "-C", str(self.root), "add", "target.md", "linked-evidence.md"],
+            check=True,
+        )
+        subprocess.run(
+            [
+                "git",
+                "-C",
+                str(self.root),
+                "-c",
+                "user.name=Wiki Lint Tests",
+                "-c",
+                "user.email=wiki-lint@example.invalid",
+                "commit",
+                "-qm",
+                "add linked evidence",
+            ],
+            check=True,
+        )
+        revision = subprocess.run(
+            ["git", "-C", str(self.root), "rev-parse", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        subprocess.run(
+            [
+                "git",
+                "-C",
+                str(self.root),
+                "update-ref",
+                "refs/remotes/origin/main",
+                revision,
+            ],
+            check=True,
+        )
+        self.write_registry(
+            [
+                {
+                    "id": "linked-evidence",
+                    "title": "Linked evidence",
+                    "kind": "repository",
+                    "path": "linked-evidence.md",
+                    "last_verified": "2026-07-31",
+                    "revision": revision,
+                }
+            ]
+        )
+        errors, _ = self.validate()
+        self.assertTrue(
+            any(
+                "repository evidence must be a regular file at revision" in error
                 for error in errors
             )
         )

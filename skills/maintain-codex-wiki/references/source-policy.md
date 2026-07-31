@@ -28,14 +28,17 @@ Add one object to `knowledge/sources.json`:
 ```
 
 Use `path` instead of `url` for repository evidence. Accept only normalized
-project-relative paths: reject absolute paths and `..` components, resolve
-symlinks, and verify the resolved target remains inside the project root before
-reading it. Require the evidence file to be version-controlled. Reject paths
-identified as sensitive by repository policy or common credential names,
-including `.env*`, private keys, credential or secret files, and authentication
-configuration. Use a repository secret scanner when available without printing
-secret values. If safe classification is uncertain, do not read the file and
-report the source record for review. Require `revision` to be the full
+project-relative paths: reject absolute paths and `..` components. For Capture,
+confine and inspect the current working-tree file before recording it. For later
+Query, Lint, Archive, or Promote operations, do not resolve the path in the
+current checkout. Require a regular-file entry at the recorded revision and
+read its immutable blob from the Git object database, so a later rename or
+deletion does not invalidate durable evidence. Reject paths identified as
+sensitive by repository policy or common credential names, including `.env*`,
+private keys, credential or secret files, and authentication configuration. Use
+a repository secret scanner when available without printing secret values. If
+safe classification is uncertain, do not read the blob and report the source
+record for review. Require `revision` to be the full
 immutable Git commit object ID containing the evidence: detect the repository
 object format with `git rev-parse --show-object-format` and require 40
 hexadecimal characters for SHA-1 or 64 for SHA-256. Require the commit to be

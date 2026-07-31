@@ -87,41 +87,37 @@ def sensitive_repository_path(relative: PurePosixPath) -> bool:
     )
 
 
-def git_tracks(root: Path, relative: str) -> bool:
-    if not (root / ".git").exists():
-        return False
+def git_tree_entry(root: Path, revision: str, relative: str) -> tuple[str, str] | None:
     completed = subprocess.run(
         [
             "git",
             "-C",
             str(root),
-            "ls-files",
-            "--error-unmatch",
+            "ls-tree",
+            "-z",
+            "--full-tree",
+            revision,
             "--",
             relative,
         ],
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
+        capture_output=True,
         check=False,
     )
-    return completed.returncode == 0
-
-
-def git_contains_blob(root: Path, revision: str, relative: str) -> bool:
-    completed = subprocess.run(
-        [
-            "git",
-            "-C",
-            str(root),
-            "cat-file",
-            "-e",
-            f"{revision}:{relative}",
-        ],
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-        check=False,
-    )
-    return completed.returncode == 0
+    if completed.returncode != 0 or not completed.stdout:
+        return None
+    metadata, separator, returned_path = completed.stdout.partition(b"\t")
+    fields = metadata.split()
+    if separator != b"\t" or len(fields) != 3:
+        return None
+    try:
+        decoded_path = returned_path.removesuffix(b"\0").decode("utf-8")
+        mode = fields[0].decode("ascii")
+        object_type = fields[1].decode("ascii")
+    except UnicodeDecodeError:
+        return None
+    if decoded_path != relative:
+        return None
+    return mode, object_type
 
 
 def git_trusted_refs(root: Path) -> list[str]:
@@ -292,18 +288,6 @@ def load_sources(root: Path, errors: list[str]) -> dict[str, dict[str, object]]:
             if sensitive_repository_path(local_path):
                 errors.append(f"{label}: sensitive repository path is not allowed")
                 continue
-            confined_regular_file(
-                root / local,
-                root,
-                f"{label} path",
-                errors,
-                missing_message=f"{label}: local source does not exist: {local}",
-            )
-            if not git_tracks(root, local):
-                errors.append(
-                    f"{label}: repository evidence must be version-controlled: "
-                    f"{local}"
-                )
             object_id_length = git_object_id_length(root)
             if object_id_length is None:
                 errors.append(
@@ -333,12 +317,18 @@ def load_sources(root: Path, errors: list[str]) -> dict[str, dict[str, object]]:
                 isinstance(revision, str)
                 and len(revision) == object_id_length
                 and OBJECT_ID_RE.fullmatch(revision)
-                and not git_contains_blob(root, revision, local)
             ):
-                errors.append(
-                    f"{label}: repository evidence does not exist at revision: "
-                    f"{revision}:{local}"
-                )
+                entry = git_tree_entry(root, revision, local)
+                if entry is None:
+                    errors.append(
+                        f"{label}: repository evidence does not exist at revision: "
+                        f"{revision}:{local}"
+                    )
+                elif entry[0] not in {"100644", "100755"} or entry[1] != "blob":
+                    errors.append(
+                        f"{label}: repository evidence must be a regular file at "
+                        f"revision: {revision}:{local}"
+                    )
     return sources
 
 
