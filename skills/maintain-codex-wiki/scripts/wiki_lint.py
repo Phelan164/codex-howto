@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import subprocess
 import sys
 from datetime import date
 from pathlib import Path, PurePosixPath
@@ -26,6 +27,22 @@ SOURCES_RE = re.compile(r"^>\s*Sources:\s*(.+?)\s*$", re.IGNORECASE)
 ALLOWED_KINDS = {"official", "repository", "community", "experiment"}
 ALLOWED_STATUSES = {"verified", "community", "experimental", "decision"}
 PAGE_DIRS = ("topics", "decisions", "experiments")
+SENSITIVE_PATH_NAMES = {
+    ".netrc",
+    ".npmrc",
+    ".pypirc",
+    "credentials.json",
+    "credentials.yaml",
+    "credentials.yml",
+    "id_dsa",
+    "id_ecdsa",
+    "id_ed25519",
+    "id_rsa",
+    "secrets.json",
+    "secrets.yaml",
+    "secrets.yml",
+}
+SENSITIVE_PATH_SUFFIXES = (".key", ".kdbx", ".p12", ".pem", ".pfx")
 
 
 def parse_date(value: str, label: str, errors: list[str]) -> None:
@@ -55,6 +72,38 @@ def confined_regular_file(
         errors.append(f"{label}: expected a regular file")
         return False
     return True
+
+
+def sensitive_repository_path(relative: PurePosixPath) -> bool:
+    names = {part.casefold() for part in relative.parts}
+    filename = relative.name.casefold()
+    return (
+        any(name in names for name in {".aws", ".git", ".gnupg", ".ssh"})
+        or filename == ".env"
+        or filename.startswith(".env.")
+        or filename in SENSITIVE_PATH_NAMES
+        or filename.endswith(SENSITIVE_PATH_SUFFIXES)
+    )
+
+
+def git_tracks(root: Path, relative: str) -> bool:
+    if not (root / ".git").exists():
+        return False
+    completed = subprocess.run(
+        [
+            "git",
+            "-C",
+            str(root),
+            "ls-files",
+            "--error-unmatch",
+            "--",
+            relative,
+        ],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    )
+    return completed.returncode == 0
 
 
 def load_sources(root: Path, errors: list[str]) -> dict[str, dict[str, object]]:
@@ -147,10 +196,17 @@ def load_sources(root: Path, errors: list[str]) -> dict[str, dict[str, object]]:
                 errors.append(f"{label}: path must be a non-empty string")
                 continue
             local_path = PurePosixPath(local)
-            if local_path.is_absolute() or ".." in local_path.parts:
+            if (
+                local_path.is_absolute()
+                or ".." in local_path.parts
+                or local_path.as_posix() != local
+            ):
                 errors.append(
                     f"{label}: path must be a normalized project-relative path"
                 )
+                continue
+            if sensitive_repository_path(local_path):
+                errors.append(f"{label}: sensitive repository path is not allowed")
                 continue
             confined_regular_file(
                 root / local,
@@ -159,6 +215,11 @@ def load_sources(root: Path, errors: list[str]) -> dict[str, dict[str, object]]:
                 errors,
                 missing_message=f"{label}: local source does not exist: {local}",
             )
+            if not git_tracks(root, local):
+                errors.append(
+                    f"{label}: repository evidence must be version-controlled: "
+                    f"{local}"
+                )
     return sources
 
 

@@ -1,5 +1,6 @@
 import importlib.util
 import json
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -55,6 +56,14 @@ See the [index](../index.md).
         (self.root / "knowledge" / "log.md").write_text(
             "# Log\n", encoding="utf-8"
         )
+        subprocess.run(
+            ["git", "init", "-q", str(self.root)],
+            check=True,
+        )
+        subprocess.run(
+            ["git", "-C", str(self.root), "add", "."],
+            check=True,
+        )
 
     def tearDown(self):
         self.temp.cleanup()
@@ -96,6 +105,51 @@ See the [index](../index.md).
         errors, _ = self.validate()
         self.assertTrue(
             any("local source does not exist: evidence.md" in error for error in errors)
+        )
+
+    def test_untracked_repository_source_is_rejected(self):
+        untracked = self.root / "untracked.md"
+        untracked.write_text("# Untracked\n", encoding="utf-8")
+        self.write_registry(
+            [
+                {
+                    "id": "untracked-evidence",
+                    "title": "Untracked evidence",
+                    "kind": "repository",
+                    "path": "untracked.md",
+                    "last_verified": "2026-07-31",
+                }
+            ]
+        )
+        errors, _ = self.validate()
+        self.assertTrue(
+            any(
+                "repository evidence must be version-controlled" in error
+                for error in errors
+            )
+        )
+
+    def test_sensitive_repository_source_is_rejected(self):
+        sensitive = self.root / ".env.production"
+        sensitive.write_text("TOKEN=not-a-real-secret\n", encoding="utf-8")
+        subprocess.run(
+            ["git", "-C", str(self.root), "add", "-f", ".env.production"],
+            check=True,
+        )
+        self.write_registry(
+            [
+                {
+                    "id": "sensitive-evidence",
+                    "title": "Sensitive evidence",
+                    "kind": "repository",
+                    "path": ".env.production",
+                    "last_verified": "2026-07-31",
+                }
+            ]
+        )
+        errors, _ = self.validate()
+        self.assertTrue(
+            any("sensitive repository path is not allowed" in error for error in errors)
         )
 
     def test_broken_local_link_is_rejected(self):
