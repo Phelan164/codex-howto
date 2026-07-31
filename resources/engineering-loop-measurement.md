@@ -36,6 +36,13 @@ baseline, and a release, commit SHA, or branch label for the lean candidate.
 Do not reuse a modified worktree or paste discoveries between runs. Rotate the
 variant order across tasks to reduce order and operator-learning effects.
 
+The
+[GPT-5.6-sol backend boundary seed measurement](../examples/measurements/gpt-5.6-sol-backend-boundary-2026-07-31.md)
+shows one completed three-way run. All variants passed, while both skill
+variants added token and retry overhead on that bounded task. Treat it as a
+transparent example of this protocol—not as evidence for a general model or
+skill conclusion.
+
 ## Minimum experiment
 
 Run at least three paired tasks before drawing a local directional conclusion.
