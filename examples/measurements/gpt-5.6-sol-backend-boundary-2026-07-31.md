@@ -98,8 +98,11 @@ consistency, or handoff benefits that justify its context cost.
 - All runs could see the same personal global skill catalog.
 - The CLI repeatedly reported a model-cache schema warning; no run failed, but
   the runtime was not warning-free.
-- The playground revision tracks Python bytecode artifacts. Every run had to
-  remove test-generated binary churn, adding environment-specific work.
+- The setup copied untracked local Python bytecode into every disposable
+  playground before its baseline commit. The variants remained comparable, but
+  cleanup added environment-specific work and makes retry/time differences less
+  generalizable. A playground-local `.gitignore` was added after the runs to
+  prevent future standalone copies from capturing this noise.
 - Elapsed time was recorded from CLI event timestamps to the nearest second.
 - Cost and context-noise-line measurements were unavailable and were not
   estimated.
