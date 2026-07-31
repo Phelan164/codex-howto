@@ -258,6 +258,7 @@ Record data after 24 hours, 7 days, and 30 days:
 | Date | Channel | Post URL | Format | Views | Repo visits | Stars | Forks | Issues/PRs | Demo completions | Notes |
 |---|---|---|---|---:|---:|---:|---:|---:|---:|---|
 | YYYY-MM-DD | Example | URL | Demo | 0 | 0 | 0 | 0 | 0 | 0 | Audience questions |
+| 2026-07-31 | GitHub Traffic | [Repository](https://github.com/Phelan164/codex-howto) | 14-day baseline | 39 | 2 | 1 | 0 | — | — | 23 clones from 17 unique cloners; GitHub was the only reported referrer |
 | 2026-07-31 | GitHub Releases | [v0.3.0](https://github.com/Phelan164/codex-howto/releases/tag/v0.3.0) | Release | — | — | 1 | 0 | 0 | — | Living Wiki and model-adaptive skills released from validated `main` |
 | 2026-07-31 | OpenAI Codex GitHub Discussions | [Discussion #36262](https://github.com/openai/codex/discussions/36262) and [benchmark update](https://github.com/openai/codex/discussions/36262#discussioncomment-17850277) | Show and tell | — | — | 1 | 0 | 0 | — | Updated to v0.3.0; invites reproducible measurements |
 | 2026-07-31 | Awesome Codex CLI | [PR #172](https://github.com/RoggeOhta/awesome-codex-cli/pull/172) | Directory PR | — | — | 1 | 0 | 1 | — | Updated to the 14-module, 9-skill v0.3.0 release |
