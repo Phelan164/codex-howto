@@ -1,6 +1,6 @@
 {
   "name": "codex-howto",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Model-adaptive Codex workflows for engineering and review-first knowledge maintenance.",
   "author": {
     "name": "Phelan164",
@@ -20,6 +20,7 @@
   "interface": {
     "displayName": "Codex How To",
     "shortDescription": "Engineering-first Codex workflows",
+    "composerIcon": "./assets/icon.svg",
     "longDescription": "A progressive guide, reusable engineering skills, and a review-first living knowledge workflow for Codex.",
     "developerName": "Phelan164",
     "category": "Developer Tools",
