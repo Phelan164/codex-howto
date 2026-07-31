@@ -6,14 +6,18 @@ unverified.
 
 ## Participate
 
-- **Try the playground** and report unclear steps or unexpected behavior.
-- **Measure three-way runs** with the included protocol instead of relying on
-  a single impressive demo.
+- **Try the playground** and
+  [report unclear steps or unexpected behavior](https://github.com/Phelan164/codex-howto/issues/new/choose).
+- **Measure three-way runs** and
+  [contribute the result](https://github.com/Phelan164/codex-howto/issues/8)
+  instead of relying on a single impressive demo.
+- **Benchmark the Living Wiki** against normal repository search in
+  [the community experiment](https://github.com/Phelan164/codex-howto/issues/16).
 - **Open an issue** for a documentation defect, missing engineering case, or
   reproducible workflow failure.
 - **Contribute a focused change** that follows the content and skill standards.
-- **Fork the repository** when you need a team-, language-, or stack-specific
-  edition.
+- **[Fork the repository](https://github.com/Phelan164/codex-howto/fork)**
+  when you need a team-, language-, or stack-specific edition.
 
 Stars are useful signals that the guide should remain discoverable. Forks are
 most valuable when they produce a tested adaptation, not when they merely copy
