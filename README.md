@@ -27,15 +27,30 @@ DevOps, security, and multi-agent orchestration.
 ## See the engineering loop
 
 ```mermaid
-flowchart LR
-    A["Scoped task"] --> B["Reproduce or baseline"]
-    B --> C["Smallest coherent change"]
-    C --> D["Focused checks"]
-    D --> E["Required checks"]
-    E --> F["Findings-first review"]
-    F --> G["Evidence and handoff"]
-    F -- "Verified issue" --> C
+flowchart TD
+    subgraph Understand["1 · Understand"]
+        direction LR
+        A["Scope the task"] --> B["Reproduce or baseline"]
+    end
+
+    subgraph Build["2 · Change and verify"]
+        direction LR
+        C["Make a small change"] --> D["Run focused checks"] --> E["Run required checks"]
+    end
+
+    subgraph Finish["3 · Review and finish"]
+        direction LR
+        F["Review findings"] --> G["Record evidence and hand off"]
+    end
+
+    B --> C
+    E --> F
+    F -. "Issue found" .-> C
 ```
+
+Read it top to bottom: understand the task, make and verify one small change,
+then review and hand off evidence. A verified review finding returns to the
+change step.
 
 The repository treats generated code as an intermediate result. Completion
 requires observable behavior, relevant checks, diff review, and an explicit
