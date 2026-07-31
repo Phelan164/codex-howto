@@ -1,7 +1,7 @@
 # Engineering-loop evidence
 
 > Status: experimental
-> Last verified: 2026-07-31
+> Last updated: 2026-07-31
 > Sources: `local-engineering-loop-measurement`
 
 ## Current understanding

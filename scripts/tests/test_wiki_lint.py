@@ -124,8 +124,76 @@ See the [index](../index.md).
         self.page.write_text("# Example\n", encoding="utf-8")
         errors, _ = self.validate()
         self.assertTrue(any("Status must be one of" in error for error in errors))
-        self.assertTrue(any("missing Last verified" in error for error in errors))
         self.assertTrue(any("Sources must contain" in error for error in errors))
+
+    def test_experimental_page_requires_last_updated_not_last_verified(self):
+        self.page.write_text(
+            self.page.read_text(encoding="utf-8").replace(
+                "> Status: verified", "> Status: experimental"
+            ),
+            encoding="utf-8",
+        )
+        errors, _ = self.validate()
+        self.assertTrue(
+            any(
+                "Last verified is only valid for verified pages" in error
+                for error in errors
+            )
+        )
+        self.assertTrue(any("missing Last updated" in error for error in errors))
+
+        self.page.write_text(
+            self.page.read_text(encoding="utf-8").replace(
+                "> Last verified: 2026-07-31", "> Last updated: 2026-07-31"
+            ),
+            encoding="utf-8",
+        )
+        errors, _ = self.validate()
+        self.assertEqual([], errors)
+
+    def test_verified_page_requires_last_verified(self):
+        self.page.write_text(
+            self.page.read_text(encoding="utf-8").replace(
+                "> Last verified: 2026-07-31", "> Last updated: 2026-07-31"
+            ),
+            encoding="utf-8",
+        )
+        errors, _ = self.validate()
+        self.assertTrue(any("missing Last verified" in error for error in errors))
+
+    def test_wiki_page_symlink_cannot_escape_project_root(self):
+        outside = Path(self.temp.name).parent / "outside-wiki-page.md"
+        outside.write_text("# Private\n", encoding="utf-8")
+        try:
+            self.page.unlink()
+            self.page.symlink_to(outside)
+            errors, _ = self.validate()
+            self.assertTrue(
+                any(
+                    "knowledge/topics/example.md: file escapes the project root"
+                    in error
+                    for error in errors
+                )
+            )
+        finally:
+            outside.unlink(missing_ok=True)
+
+    def test_index_symlink_cannot_escape_project_root(self):
+        outside = Path(self.temp.name).parent / "outside-wiki-index.md"
+        outside.write_text("# Private\n", encoding="utf-8")
+        index = self.root / "knowledge" / "index.md"
+        try:
+            index.unlink()
+            index.symlink_to(outside)
+            errors, _ = self.validate()
+            self.assertTrue(
+                any(
+                    "knowledge/index.md: file escapes the project root" in error
+                    for error in errors
+                )
+            )
+        finally:
+            outside.unlink(missing_ok=True)
 
     def test_empty_page_reports_errors_without_crashing(self):
         self.page.write_text("", encoding="utf-8")
@@ -221,7 +289,7 @@ See the [index](../index.md).
             """# example
 
 > Status: decision
-> Last verified: 2026-07-31
+> Last updated: 2026-07-31
 > Sources: `local-evidence`
 """,
             encoding="utf-8",

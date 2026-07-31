@@ -1,7 +1,7 @@
 # Orchestration efficiency
 
 > Status: experimental
-> Last verified: 2026-07-31
+> Last updated: 2026-07-31
 > Sources: `official-codex-manual`, `local-orchestration-matrix`
 
 ## Current understanding

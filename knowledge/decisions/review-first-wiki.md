@@ -1,7 +1,7 @@
 # Review-first wiki architecture
 
 > Status: decision
-> Last verified: 2026-07-31
+> Last updated: 2026-07-31
 > Sources: `official-codex-manual`, `karpathy-llm-wiki-gist`, `astro-karpathy-llm-wiki`, `lucas-llmwiki`, `atomicstrata-llm-wiki-compiler`, `codealmanac`, `kw-okf-memory-skill`
 
 ## Decision

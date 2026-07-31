@@ -8,7 +8,7 @@ import json
 import re
 import sys
 from datetime import date
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from urllib.parse import unquote, urlparse
 
 
@@ -18,6 +18,9 @@ SOURCE_REF_RE = re.compile(r"`([a-z0-9]+(?:-[a-z0-9]+)*)`")
 STATUS_RE = re.compile(r"^>\s*Status:\s*(\S+)\s*$", re.IGNORECASE)
 VERIFIED_RE = re.compile(
     r"^>\s*Last verified:\s*(\d{4}-\d{2}-\d{2})\s*$", re.IGNORECASE
+)
+UPDATED_RE = re.compile(
+    r"^>\s*Last updated:\s*(\d{4}-\d{2}-\d{2})\s*$", re.IGNORECASE
 )
 SOURCES_RE = re.compile(r"^>\s*Sources:\s*(.+?)\s*$", re.IGNORECASE)
 ALLOWED_KINDS = {"official", "repository", "community", "experiment"}
@@ -32,13 +35,40 @@ def parse_date(value: str, label: str, errors: list[str]) -> None:
         errors.append(f"{label}: expected ISO date YYYY-MM-DD, got {value!r}")
 
 
+def confined_regular_file(
+    path: Path,
+    root: Path,
+    label: str,
+    errors: list[str],
+    *,
+    missing_message: str | None = None,
+) -> bool:
+    try:
+        resolved = path.resolve(strict=True)
+    except FileNotFoundError:
+        errors.append(missing_message or f"{label}: file does not exist")
+        return False
+    if not resolved.is_relative_to(root.resolve()):
+        errors.append(f"{label}: file escapes the project root")
+        return False
+    if not resolved.is_file():
+        errors.append(f"{label}: expected a regular file")
+        return False
+    return True
+
+
 def load_sources(root: Path, errors: list[str]) -> dict[str, dict[str, object]]:
     path = root / "knowledge" / "sources.json"
+    if not confined_regular_file(
+        path,
+        root,
+        "knowledge/sources.json",
+        errors,
+        missing_message="missing knowledge/sources.json",
+    ):
+        return {}
     try:
         payload = json.loads(path.read_text(encoding="utf-8"))
-    except FileNotFoundError:
-        errors.append("missing knowledge/sources.json")
-        return {}
     except json.JSONDecodeError as exc:
         errors.append(f"invalid knowledge/sources.json: {exc}")
         return {}
@@ -116,11 +146,19 @@ def load_sources(root: Path, errors: list[str]) -> dict[str, dict[str, object]]:
             if not isinstance(local, str) or not local:
                 errors.append(f"{label}: path must be a non-empty string")
                 continue
-            target = (root / local).resolve()
-            if not target.is_relative_to(root.resolve()):
-                errors.append(f"{label}: path escapes the project root")
-            elif not target.is_file():
-                errors.append(f"{label}: local source does not exist: {local}")
+            local_path = PurePosixPath(local)
+            if local_path.is_absolute() or ".." in local_path.parts:
+                errors.append(
+                    f"{label}: path must be a normalized project-relative path"
+                )
+                continue
+            confined_regular_file(
+                root / local,
+                root,
+                f"{label} path",
+                errors,
+                missing_message=f"{label}: local source does not exist: {local}",
+            )
     return sources
 
 
@@ -144,12 +182,15 @@ def page_metadata(
 
     status = None
     verified = None
+    updated = None
     source_ids: set[str] = set()
     for line in lines[1:12]:
         if match := STATUS_RE.match(line):
             status = match.group(1).lower()
         elif match := VERIFIED_RE.match(line):
             verified = match.group(1)
+        elif match := UPDATED_RE.match(line):
+            updated = match.group(1)
         elif match := SOURCES_RE.match(line):
             source_ids = set(SOURCE_REF_RE.findall(match.group(1)))
 
@@ -158,10 +199,20 @@ def page_metadata(
             f"{relative}: Status must be one of "
             f"{', '.join(sorted(ALLOWED_STATUSES))}"
         )
-    if verified is None:
-        errors.append(f"{relative}: missing Last verified metadata")
-    else:
-        parse_date(verified, f"{relative} Last verified", errors)
+    if status == "verified":
+        if verified is None:
+            errors.append(f"{relative}: missing Last verified metadata")
+        else:
+            parse_date(verified, f"{relative} Last verified", errors)
+    elif status in ALLOWED_STATUSES:
+        if verified is not None:
+            errors.append(
+                f"{relative}: Last verified is only valid for verified pages"
+            )
+        if updated is None:
+            errors.append(f"{relative}: missing Last updated metadata")
+        else:
+            parse_date(updated, f"{relative} Last updated", errors)
     if not source_ids:
         errors.append(f"{relative}: Sources must contain at least one backticked ID")
     for source_id in sorted(source_ids - known_sources):
@@ -257,11 +308,15 @@ def check_source_relationships(
 
 def check_index(root: Path, pages: list[Path], errors: list[str]) -> None:
     index = root / "knowledge" / "index.md"
-    try:
-        text = index.read_text(encoding="utf-8")
-    except FileNotFoundError:
-        errors.append("missing knowledge/index.md")
+    if not confined_regular_file(
+        index,
+        root,
+        "knowledge/index.md",
+        errors,
+        missing_message="missing knowledge/index.md",
+    ):
         return
+    text = index.read_text(encoding="utf-8")
 
     indexed: set[Path] = set()
     for target in LINK_RE.findall(text):
@@ -286,6 +341,9 @@ def check_local_links(root: Path, errors: list[str]) -> None:
         errors.append("missing knowledge/ directory")
         return
     for path in sorted(knowledge.rglob("*.md")):
+        relative = path.relative_to(root).as_posix()
+        if not confined_regular_file(path, root, relative, errors):
+            continue
         text = path.read_text(encoding="utf-8")
         for target in LINK_RE.findall(text):
             local = target.partition("#")[0]
@@ -306,7 +364,14 @@ def validate(root: Path) -> tuple[list[str], list[str]]:
     errors: list[str] = []
     warnings: list[str] = []
     sources = load_sources(root, errors)
-    pages = wiki_pages(root)
+    discovered_pages = wiki_pages(root)
+    pages = [
+        page
+        for page in discovered_pages
+        if confined_regular_file(
+            page, root, page.relative_to(root).as_posix(), errors
+        )
+    ]
     if not pages:
         errors.append("knowledge/: no topic, decision, or experiment pages found")
 

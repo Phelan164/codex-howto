@@ -31,9 +31,10 @@ Read [article-template.md](references/article-template.md) when creating a page.
 
 1. Read `knowledge/index.md`.
 2. Search `knowledge/` for the subject and its common synonyms.
-3. Before reading any registered repository `path`, require a normalized
-   project-relative path, reject absolute paths and `..` components, resolve
-   symlinks, and verify the target remains inside the project root.
+3. Before reading any wiki page, index, registry, log, or registered
+   repository `path`, require a normalized project-relative path, reject
+   absolute paths and `..` components, resolve symlinks, require a regular
+   file, and verify the target remains inside the project root.
 4. Read only the relevant pages and their registered sources.
 5. Distinguish verified guidance, community practice, experiment results, and
    unresolved claims.
@@ -117,8 +118,9 @@ Then inspect what deterministic lint cannot establish:
 - whether a conclusion deserves promotion; and
 - whether a page duplicates existing curriculum instead of mapping evidence.
 
-Auto-fix only mechanical link or index errors. Propose factual changes for
-review.
+Treat lint as read-only unless the user explicitly authorizes fixes. With that
+authorization, auto-fix only mechanical link or index errors. Otherwise report
+the proposed edits. Always propose factual changes for review.
 
 ## Promote
 
