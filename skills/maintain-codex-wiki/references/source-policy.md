@@ -27,8 +27,10 @@ Add one object to `knowledge/sources.json`:
 }
 ```
 
-Use `path` instead of `url` for repository evidence. Paths are relative to the
-project root. Use exactly one of `url` or `path`.
+Use `path` instead of `url` for repository evidence. Accept only normalized
+project-relative paths: reject absolute paths and `..` components, resolve
+symlinks, and verify the resolved target remains inside the project root before
+reading it. Use exactly one of `url` or `path`.
 
 Source IDs are permanent. If a URL moves, update the record without changing
 the ID. `last_verified` records when a maintainer checked the source, not when
