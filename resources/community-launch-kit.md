@@ -60,7 +60,7 @@ calls.
 **Title**
 
 ```text
-Codex How To: a measurable engineering loop with 8 runtime skills
+Codex How To: engineering loops and a review-first living wiki
 ```
 
 **Post**
@@ -73,10 +73,11 @@ The main idea is that generated code is an intermediate result. A task should
 move through scope, reproduction, implementation, focused tests, repository
 checks, diff review, and an evidence-based handoff.
 
-The repository includes 13 progressive modules, 8 runtime skills, an
-educational router example, a dependency-free playground, and a three-way
-skill-ablation protocol. It covers frontend, backend, DevOps, testing,
-security, and bounded multi-agent orchestration.
+The repository includes 14 progressive modules, 9 installable skills, a
+review-first Codex Living Wiki, an educational router example, a
+dependency-free playground, and a three-way skill-ablation protocol. It covers
+frontend, backend, DevOps, testing, security, bounded multi-agent
+orchestration, and evidence-backed knowledge maintenance.
 
 I would especially value feedback from developers who try the playground:
 which step was unclear, which skill changed the result, and which checks Codex
@@ -103,10 +104,11 @@ I made an open-source, engineering-first guide to Codex. Instead of treating
 code generation as completion, it uses a loop: scope → reproduce → implement →
 test → review → evidence.
 
-There are 13 modules, 8 runtime skills, and a dependency-free practice
-repository with seeded defects. I also included a no-skill/full-skill/lean-skill
-protocol so teams can test whether a workflow improves outcomes without
-claiming a universal productivity multiplier.
+There are 14 modules, 9 installable skills, a review-first living wiki, and a
+dependency-free practice repository with seeded defects. I also included
+no-skill/full-skill/lean-skill and no-wiki/wiki evaluation plans so teams can
+test whether a workflow improves outcomes without claiming a universal
+productivity multiplier.
 
 The design choices I would most like challenged are skill routing, when to use
 subagents, and how much verification evidence belongs in the final context.
@@ -129,8 +131,8 @@ problem.
 
 ```text
 I wanted Codex to behave less like a one-shot code generator and more like an
-engineering loop, so I packaged the workflow into an open-source guide and 8
-runtime skills.
+engineering loop, so I packaged the workflow into an open-source guide and 9
+installable skills.
 
 The interesting part is not the prompt. The loop requires a baseline or
 reproduction, the smallest coherent change, focused and required checks, diff
@@ -162,8 +164,9 @@ https://github.com/Phelan164/codex-howto
 
 ```text
 I turned my Codex learning notes into a structured open-source curriculum:
-13 modules, 8 runtime skills, copy-ready repository guidance, CI validation,
-and a small skill-ablation practice project.
+14 modules, 9 installable skills, a source-grounded living wiki, copy-ready
+repository guidance, CI validation, and a small skill-ablation practice
+project.
 
 The repository is designed to be forked into stack-specific, team-specific,
 or translated editions while keeping the core reproduce–implement–test–review
@@ -183,8 +186,9 @@ I built Codex How To around a stricter loop:
 scope → reproduce → implement → test → review → evidence.
 
 It is an open-source learning package with:
-• 13 modules from safe fundamentals to orchestration
-• 8 runtime skills for frontend, backend, DevOps, testing, and review
+• 14 modules from safe fundamentals to living knowledge maintenance
+• 9 installable skills for engineering, review, and wiki maintenance
+• a source-grounded Codex Living Wiki with deterministic lint
 • a dependency-free practice project
 • a protocol for measuring results instead of claiming “10x”
 
@@ -207,9 +211,10 @@ Codex sinh code nhanh, nhưng một engineering task chỉ hoàn thành khi có 
 chứng: reproduce được lỗi, thay đổi nhỏ và đúng scope, test pass, review diff,
 và handoff rõ phần chưa kiểm chứng.
 
-Mình xây dựng Codex How To như một learning path open source gồm 13 modules,
-8 runtime skills cho frontend/backend/DevOps/testing/review, một playground
-không cần dependency, và cách so sánh no-skill/full-skill/lean-skill.
+Mình xây dựng Codex How To như một learning path open source gồm 14 modules,
+9 installable skills cho engineering/review/knowledge maintenance, một living
+wiki có source rõ ràng, một playground không cần dependency, và cách so sánh
+no-skill/full-skill/lean-skill.
 
 Mình muốn nhận feedback thực tế: bước nào hữu ích, bước nào tạo overhead, và
 workflow còn thiếu case nào trong dự án của bạn?

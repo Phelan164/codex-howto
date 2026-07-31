@@ -17,6 +17,7 @@
 | [10 · Context efficiency](modules/10-context-and-token-efficiency/README.md) | Context budget and summary contracts |
 | [11 · Automation and plugins](modules/11-automation-plugins-hooks/README.md) | Promotion path from prompt to automation |
 | [12 · Troubleshooting](modules/12-troubleshooting/README.md) | Layer-by-layer diagnosis |
+| [13 · Living Codex wiki](modules/13-living-codex-wiki/README.md) | Review-first knowledge compilation |
 
 ## Installable skills
 
@@ -30,6 +31,18 @@
 | [test-software](skills/test-software/SKILL.md) | `references/test-strategy.md` |
 | [review-security](skills/review-security/SKILL.md) | `references/threat-checklist.md` |
 | [orchestrate-engineering](skills/orchestrate-engineering/SKILL.md) | `references/context-budget.md` |
+| [maintain-codex-wiki](skills/maintain-codex-wiki/SKILL.md) | `references/source-policy.md`, `references/article-template.md`, `scripts/wiki_lint.py` |
+
+## Living knowledge
+
+- [Codex Living Wiki](knowledge/README.md) — review model and operating
+  boundaries.
+- [Wiki index](knowledge/index.md) — compact routing across current topics,
+  decisions, and experiments.
+- [Source registry](knowledge/sources.json) — provenance without committing
+  external source bodies.
+- [Wiki efficiency baseline](knowledge/experiments/wiki-efficiency-baseline.md)
+  — planned no-wiki/query/maintenance comparison.
 
 ## Copy-ready examples
 

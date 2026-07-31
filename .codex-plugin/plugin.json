@@ -1,7 +1,7 @@
 {
   "name": "codex-howto",
   "version": "0.3.0",
-  "description": "Model-adaptive Codex workflows for implementation, testing, review, security, operations, and orchestration.",
+  "description": "Model-adaptive Codex workflows for engineering and review-first knowledge maintenance.",
   "author": {
     "name": "Phelan164",
     "url": "https://github.com/Phelan164"
@@ -13,13 +13,14 @@
     "codex",
     "engineering",
     "skills",
-    "workflows"
+    "workflows",
+    "knowledge-management"
   ],
   "skills": "./skills/",
   "interface": {
     "displayName": "Codex How To",
     "shortDescription": "Engineering-first Codex workflows",
-    "longDescription": "A progressive guide and reusable skill set for safe, evidence-driven software engineering with Codex.",
+    "longDescription": "A progressive guide, reusable engineering skills, and a review-first living knowledge workflow for Codex.",
     "developerName": "Phelan164",
     "category": "Developer Tools",
     "capabilities": [
@@ -31,7 +32,8 @@
     "defaultPrompt": [
       "Choose the smallest engineering workflow for my task.",
       "Run an evidence-driven engineering loop.",
-      "Review this change against its requirements."
+      "Review this change against its requirements.",
+      "Query or maintain the Codex Living Wiki."
     ]
   }
 }

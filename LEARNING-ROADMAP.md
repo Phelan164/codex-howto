@@ -54,6 +54,23 @@ Complete Tracks A and B, then:
 
 **Exit test:** divide a review into independent read-only tasks, collect evidence summaries, deduplicate findings, and compare the result with a single-agent review.
 
+## Track E: Knowledge maintainer
+
+Complete Track A, then:
+
+1. [Living Codex wiki](modules/13-living-codex-wiki/README.md)
+2. Inspect the [source registry](knowledge/sources.json) and
+   [review-first architecture](knowledge/decisions/review-first-wiki.md).
+3. Install `maintain-codex-wiki`.
+4. Query one topic without writing files.
+5. Ingest one official source on a branch and run deterministic lint.
+6. Complete the
+   [wiki efficiency baseline](knowledge/experiments/wiki-efficiency-baseline.md).
+
+**Exit test:** prepare a source-grounded wiki update that keeps external
+content out of Git, passes lint, preserves uncertainty, and separates evidence
+compilation from curriculum promotion.
+
 ## Skill progression
 
 | Level | Reusable surface | Use it for |
