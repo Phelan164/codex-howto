@@ -3,6 +3,7 @@ description: Report a reproducible success, failure, or gap from a guide workflo
 title: "[Workflow feedback]: "
 labels:
   - feedback
+  - workflow
 body:
   - type: markdown
     attributes:
@@ -21,6 +22,7 @@ body:
         - Code review
         - Security review
         - Orchestration
+        - Living Wiki
         - Learning module
         - Other
     validations:
