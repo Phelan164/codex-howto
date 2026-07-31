@@ -12,6 +12,10 @@ Maintain an accurate, engineering-first learning guide for OpenAI Codex.
 - Keep modules progressive: outcome, concepts, exercise, verification, sources.
 - Keep skill bodies concise; put optional detail in direct `references/`.
 - Preserve attribution to `luongnv89/claude-howto` as inspiration.
+- For work that depends on prior decisions, experiments, or established Codex
+  guidance, read `knowledge/index.md` first and load only relevant pages.
+- Treat wiki queries as read-only unless the user explicitly requests capture,
+  ingest, archive, or promotion.
 
 ## Validation
 

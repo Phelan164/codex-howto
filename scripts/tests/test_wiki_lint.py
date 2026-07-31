@@ -1,5 +1,6 @@
 import importlib.util
 import json
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -29,6 +30,8 @@ class WikiLintTests(unittest.TestCase):
                     "kind": "repository",
                     "path": "evidence.md",
                     "last_verified": "2026-07-31",
+                    "revision": "abc123",
+                    "affected_pages": ["knowledge/topics/example.md"],
                 }
             ]
         )
@@ -52,6 +55,14 @@ See the [index](../index.md).
         )
         (self.root / "knowledge" / "log.md").write_text(
             "# Log\n", encoding="utf-8"
+        )
+        subprocess.run(
+            ["git", "init", "-q", str(self.root)],
+            check=True,
+        )
+        subprocess.run(
+            ["git", "-C", str(self.root), "add", "."],
+            check=True,
         )
 
     def tearDown(self):
@@ -96,6 +107,51 @@ See the [index](../index.md).
             any("local source does not exist: evidence.md" in error for error in errors)
         )
 
+    def test_untracked_repository_source_is_rejected(self):
+        untracked = self.root / "untracked.md"
+        untracked.write_text("# Untracked\n", encoding="utf-8")
+        self.write_registry(
+            [
+                {
+                    "id": "untracked-evidence",
+                    "title": "Untracked evidence",
+                    "kind": "repository",
+                    "path": "untracked.md",
+                    "last_verified": "2026-07-31",
+                }
+            ]
+        )
+        errors, _ = self.validate()
+        self.assertTrue(
+            any(
+                "repository evidence must be version-controlled" in error
+                for error in errors
+            )
+        )
+
+    def test_sensitive_repository_source_is_rejected(self):
+        sensitive = self.root / ".env.production"
+        sensitive.write_text("TOKEN=not-a-real-secret\n", encoding="utf-8")
+        subprocess.run(
+            ["git", "-C", str(self.root), "add", "-f", ".env.production"],
+            check=True,
+        )
+        self.write_registry(
+            [
+                {
+                    "id": "sensitive-evidence",
+                    "title": "Sensitive evidence",
+                    "kind": "repository",
+                    "path": ".env.production",
+                    "last_verified": "2026-07-31",
+                }
+            ]
+        )
+        errors, _ = self.validate()
+        self.assertTrue(
+            any("sensitive repository path is not allowed" in error for error in errors)
+        )
+
     def test_broken_local_link_is_rejected(self):
         self.page.write_text(
             self.page.read_text(encoding="utf-8").replace(
@@ -122,8 +178,183 @@ See the [index](../index.md).
         self.page.write_text("# Example\n", encoding="utf-8")
         errors, _ = self.validate()
         self.assertTrue(any("Status must be one of" in error for error in errors))
-        self.assertTrue(any("missing Last verified" in error for error in errors))
         self.assertTrue(any("Sources must contain" in error for error in errors))
+
+    def test_experimental_page_requires_last_updated_not_last_verified(self):
+        self.page.write_text(
+            self.page.read_text(encoding="utf-8").replace(
+                "> Status: verified", "> Status: experimental"
+            ),
+            encoding="utf-8",
+        )
+        errors, _ = self.validate()
+        self.assertTrue(
+            any(
+                "Last verified is only valid for verified pages" in error
+                for error in errors
+            )
+        )
+        self.assertTrue(any("missing Last updated" in error for error in errors))
+
+        self.page.write_text(
+            self.page.read_text(encoding="utf-8").replace(
+                "> Last verified: 2026-07-31", "> Last updated: 2026-07-31"
+            ),
+            encoding="utf-8",
+        )
+        errors, _ = self.validate()
+        self.assertEqual([], errors)
+
+    def test_verified_page_requires_last_verified(self):
+        self.page.write_text(
+            self.page.read_text(encoding="utf-8").replace(
+                "> Last verified: 2026-07-31", "> Last updated: 2026-07-31"
+            ),
+            encoding="utf-8",
+        )
+        errors, _ = self.validate()
+        self.assertTrue(any("missing Last verified" in error for error in errors))
+
+    def test_wiki_page_symlink_cannot_escape_project_root(self):
+        outside = Path(self.temp.name).parent / "outside-wiki-page.md"
+        outside.write_text("# Private\n", encoding="utf-8")
+        try:
+            self.page.unlink()
+            self.page.symlink_to(outside)
+            errors, _ = self.validate()
+            self.assertTrue(
+                any(
+                    "knowledge/topics/example.md: file escapes the project root"
+                    in error
+                    for error in errors
+                )
+            )
+        finally:
+            outside.unlink(missing_ok=True)
+
+    def test_index_symlink_cannot_escape_project_root(self):
+        outside = Path(self.temp.name).parent / "outside-wiki-index.md"
+        outside.write_text("# Private\n", encoding="utf-8")
+        index = self.root / "knowledge" / "index.md"
+        try:
+            index.unlink()
+            index.symlink_to(outside)
+            errors, _ = self.validate()
+            self.assertTrue(
+                any(
+                    "knowledge/index.md: file escapes the project root" in error
+                    for error in errors
+                )
+            )
+        finally:
+            outside.unlink(missing_ok=True)
+
+    def test_empty_page_reports_errors_without_crashing(self):
+        self.page.write_text("", encoding="utf-8")
+        errors, _ = self.validate()
+        self.assertTrue(any("first line must be an H1" in error for error in errors))
+
+    def test_empty_source_revision_is_rejected(self):
+        self.write_registry(
+            [
+                {
+                    "id": "local-evidence",
+                    "title": "Local evidence",
+                    "kind": "repository",
+                    "path": "evidence.md",
+                    "last_verified": "2026-07-31",
+                    "revision": "",
+                }
+            ]
+        )
+        errors, _ = self.validate()
+        self.assertTrue(any("revision must be a non-empty string" in e for e in errors))
+
+    def test_unknown_superseded_source_is_rejected(self):
+        self.write_registry(
+            [
+                {
+                    "id": "local-evidence",
+                    "title": "Local evidence",
+                    "kind": "repository",
+                    "path": "evidence.md",
+                    "last_verified": "2026-07-31",
+                    "supersedes": ["missing-source"],
+                }
+            ]
+        )
+        errors, _ = self.validate()
+        self.assertTrue(any("unknown superseded source" in error for error in errors))
+
+    def test_supersession_cycle_is_rejected(self):
+        other = self.root / "other.md"
+        other.write_text("# Other\n", encoding="utf-8")
+        self.write_registry(
+            [
+                {
+                    "id": "local-evidence",
+                    "title": "Local evidence",
+                    "kind": "repository",
+                    "path": "evidence.md",
+                    "last_verified": "2026-07-31",
+                    "supersedes": ["other-evidence"],
+                },
+                {
+                    "id": "other-evidence",
+                    "title": "Other evidence",
+                    "kind": "repository",
+                    "path": "other.md",
+                    "last_verified": "2026-07-31",
+                    "supersedes": ["local-evidence"],
+                },
+            ]
+        )
+        errors, _ = self.validate()
+        self.assertTrue(any("source supersession cycle" in error for error in errors))
+
+    def test_affected_page_must_cite_source(self):
+        other = self.root / "other.md"
+        other.write_text("# Other\n", encoding="utf-8")
+        self.write_registry(
+            [
+                {
+                    "id": "local-evidence",
+                    "title": "Local evidence",
+                    "kind": "repository",
+                    "path": "evidence.md",
+                    "last_verified": "2026-07-31",
+                },
+                {
+                    "id": "other-evidence",
+                    "title": "Other evidence",
+                    "kind": "repository",
+                    "path": "other.md",
+                    "last_verified": "2026-07-31",
+                    "affected_pages": ["knowledge/topics/example.md"],
+                },
+            ]
+        )
+        errors, _ = self.validate()
+        self.assertTrue(any("affected page does not cite" in error for error in errors))
+
+    def test_duplicate_page_title_is_rejected(self):
+        duplicate = self.root / "knowledge" / "decisions" / "duplicate.md"
+        duplicate.write_text(
+            """# example
+
+> Status: decision
+> Last updated: 2026-07-31
+> Sources: `local-evidence`
+""",
+            encoding="utf-8",
+        )
+        (self.root / "knowledge" / "index.md").write_text(
+            "# Index\n\n- [Example](topics/example.md)\n"
+            "- [Duplicate](decisions/duplicate.md)\n",
+            encoding="utf-8",
+        )
+        errors, _ = self.validate()
+        self.assertTrue(any("duplicate page title" in error for error in errors))
 
 
 if __name__ == "__main__":

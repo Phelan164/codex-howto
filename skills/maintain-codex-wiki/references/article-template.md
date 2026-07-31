@@ -1,8 +1,19 @@
 # Article title
 
-> Status: verified
+> Status: <verified|community|experimental|decision>
 > Last verified: YYYY-MM-DD
 > Sources: `source-id`, `another-source-id`
+
+Choose the status from the evidence and operation. Capture and Archive pages
+default to `experimental`; do not label a page `verified` until its
+load-bearing claims have been checked against durable evidence.
+
+Use `Last verified` only for `verified` pages. For `community`,
+`experimental`, and `decision` pages, replace it with:
+
+```markdown
+> Last updated: YYYY-MM-DD
+```
 
 ## Current understanding
 

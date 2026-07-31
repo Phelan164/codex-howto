@@ -6,56 +6,107 @@
       "title": "OpenAI Codex documentation",
       "kind": "official",
       "url": "https://developers.openai.com/codex/codex-manual.md",
-      "last_verified": "2026-07-31"
+      "last_verified": "2026-07-31",
+      "affected_pages": [
+        "knowledge/decisions/review-first-wiki.md"
+      ]
     },
     {
       "id": "karpathy-llm-wiki-gist",
       "title": "Karpathy: LLM Wiki",
       "kind": "community",
       "url": "https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f",
-      "last_verified": "2026-07-31"
+      "last_verified": "2026-07-31",
+      "affected_pages": [
+        "knowledge/decisions/review-first-wiki.md",
+        "knowledge/experiments/wiki-efficiency-baseline.md"
+      ]
     },
     {
       "id": "astro-karpathy-llm-wiki",
       "title": "Astro-Han/karpathy-llm-wiki",
       "kind": "community",
       "url": "https://github.com/Astro-Han/karpathy-llm-wiki",
-      "last_verified": "2026-07-31"
+      "last_verified": "2026-07-31",
+      "revision": "eafcc77001e496cc43499e4923b663aec722c813",
+      "affected_pages": [
+        "knowledge/decisions/review-first-wiki.md"
+      ]
     },
     {
       "id": "lucas-llmwiki",
       "title": "lucasastorian/llmwiki",
       "kind": "community",
       "url": "https://github.com/lucasastorian/llmwiki",
-      "last_verified": "2026-07-31"
+      "last_verified": "2026-07-31",
+      "revision": "ab1a32e26f97f57fe11e872015c1bc8811192a21",
+      "affected_pages": [
+        "knowledge/decisions/review-first-wiki.md"
+      ]
     },
     {
       "id": "atomicstrata-llm-wiki-compiler",
       "title": "atomicstrata/llm-wiki-compiler",
       "kind": "community",
       "url": "https://github.com/atomicstrata/llm-wiki-compiler",
-      "last_verified": "2026-07-31"
+      "last_verified": "2026-07-31",
+      "revision": "cb22dbb74cc4958fc7b43045db456b554c6dd9e9",
+      "affected_pages": [
+        "knowledge/decisions/review-first-wiki.md"
+      ]
+    },
+    {
+      "id": "codealmanac",
+      "title": "AlmanacCode/codealmanac",
+      "kind": "community",
+      "url": "https://github.com/AlmanacCode/codealmanac",
+      "last_verified": "2026-07-31",
+      "revision": "0f153501f40a6596fe7c47dc6198eda149363135",
+      "affected_pages": [
+        "knowledge/decisions/review-first-wiki.md"
+      ]
+    },
+    {
+      "id": "kw-okf-memory-skill",
+      "title": "KevinLuo1/kw-okf-memory-skill",
+      "kind": "community",
+      "url": "https://github.com/KevinLuo1/kw-okf-memory-skill",
+      "last_verified": "2026-07-31",
+      "revision": "ea58d5fa8afd4807dad6c3fc30fed3f0f7ed03c5",
+      "affected_pages": [
+        "knowledge/decisions/review-first-wiki.md"
+      ]
     },
     {
       "id": "local-model-adaptive-skills",
       "title": "Model-adaptive skill guide",
       "kind": "repository",
       "path": "resources/model-adaptive-skills.md",
-      "last_verified": "2026-07-31"
+      "last_verified": "2026-07-31",
+      "affected_pages": [
+        "knowledge/topics/model-adaptive-skills.md"
+      ]
     },
     {
       "id": "local-engineering-loop-measurement",
       "title": "Engineering-loop measurement protocol",
       "kind": "experiment",
       "path": "resources/engineering-loop-measurement.md",
-      "last_verified": "2026-07-31"
+      "last_verified": "2026-07-31",
+      "affected_pages": [
+        "knowledge/topics/engineering-loop-evidence.md",
+        "knowledge/experiments/wiki-efficiency-baseline.md"
+      ]
     },
     {
       "id": "local-orchestration-matrix",
       "title": "Orchestration decision matrix",
       "kind": "repository",
       "path": "resources/orchestration-decision-matrix.md",
-      "last_verified": "2026-07-31"
+      "last_verified": "2026-07-31",
+      "affected_pages": [
+        "knowledge/topics/orchestration-efficiency.md"
+      ]
     }
   ]
 }

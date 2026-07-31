@@ -60,7 +60,9 @@ current lean-skill runs with the same model and reasoning effort.
 
 ```text
 $maintain-codex-wiki Query ...    # Read-only by default
+$maintain-codex-wiki Capture ...  # Preserve a durable engineering lesson
 $maintain-codex-wiki Ingest ...   # Register, compile, lint, review
+$maintain-codex-wiki Archive ...  # Save cited synthesis as experimental
 $maintain-codex-wiki Lint ...     # Mechanical checks plus semantic findings
 $maintain-codex-wiki Promote ...  # Explicit move into a durable surface
 ```
@@ -71,6 +73,16 @@ python3 skills/maintain-codex-wiki/scripts/wiki_lint.py .
 
 Keep external source bodies in `.wiki-cache/`, not in the public repository,
 unless redistribution is permitted.
+
+## Install a flagship skill
+
+```bash
+npx skills add Phelan164/codex-howto --skill engineering-loop -g -a codex -y
+npx skills add Phelan164/codex-howto --skill maintain-codex-wiki -g -a codex -y
+```
+
+Browse the indexed skills at
+[skills.sh/phelan164/codex-howto](https://skills.sh/phelan164/codex-howto).
 
 ## Useful commands
 

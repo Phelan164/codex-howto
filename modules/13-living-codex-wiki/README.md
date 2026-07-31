@@ -65,18 +65,31 @@ The implementation deliberately starts without a database, vector search,
 MCP server, or web UI. Add those only when retrieval measurements show that
 index-first Markdown search is no longer sufficient.
 
-## Four operations
+## Six operations
 
 ### Query
 
 Read the index, search candidate pages and synonyms, then answer with wiki
 links. Query is read-only unless the user asks to save or change knowledge.
 
+### Capture
+
+Preserve an explicit, durable engineering lesson from a merged change,
+incident, review finding, or measured run. Use repository artifacts as
+evidence, update the smallest relevant page, and accept "no material change"
+when the result is too narrow or transient.
+
 ### Ingest
 
 Register one source, classify its authority, update every materially affected
 page, preserve disagreements, update the index and log, and prepare a PR.
 Compile sources sequentially because the registry, index, and log are shared.
+
+### Archive
+
+Save a useful query result only when the user asks. Mark it experimental,
+preserve its source IDs, and link existing pages instead of copying them.
+Archived synthesis is not verified guidance and is not automatically promoted.
 
 ### Lint
 
@@ -156,6 +169,7 @@ quality and improve evidence recall or context discovery.
 
 - Query does not write by default.
 - Source records use stable IDs and valid local paths or HTTPS URLs.
+- Available source revisions and affected-page dependencies are recorded.
 - External source bodies remain outside Git unless redistribution is allowed.
 - All wiki pages appear in the index and pass deterministic lint.
 - Community practice is never labeled official behavior.
@@ -177,5 +191,7 @@ quality and improve evidence recall or context discovery.
 - [Astro-Han/karpathy-llm-wiki](https://github.com/Astro-Han/karpathy-llm-wiki)
 - [lucasastorian/llmwiki](https://github.com/lucasastorian/llmwiki)
 - [atomicstrata/llm-wiki-compiler](https://github.com/atomicstrata/llm-wiki-compiler)
+- [AlmanacCode/codealmanac](https://github.com/AlmanacCode/codealmanac)
+- [KevinLuo1/kw-okf-memory-skill](https://github.com/KevinLuo1/kw-okf-memory-skill)
 
 Last verified: 2026-07-31.
