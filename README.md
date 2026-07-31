@@ -10,10 +10,12 @@ DevOps, security, and multi-agent orchestration.
 
 [![Validate](https://github.com/Phelan164/codex-howto/actions/workflows/validate.yml/badge.svg)](https://github.com/Phelan164/codex-howto/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![skills.sh](https://skills.sh/b/phelan164/codex-howto)](https://skills.sh/phelan164/codex-howto)
 
 [Start learning](modules/00-mental-model/README.md) ·
 [Choose a track](LEARNING-ROADMAP.md) ·
 [Browse skills](#engineering-skill-catalog) ·
+[Install from skills.sh](https://skills.sh/phelan164/codex-howto) ·
 [Try the playground](labs/engineering-playground/README.md) ·
 [Use the quick reference](QUICK_REFERENCE.md) ·
 [Measure the loop](resources/engineering-loop-measurement.md) ·
@@ -243,8 +245,22 @@ This repository includes nine installable starter skills:
 | [`orchestrate-engineering`](skills/orchestrate-engineering/SKILL.md) | Coordinate bounded agents while protecting context and avoiding edit conflicts |
 | [`maintain-codex-wiki`](skills/maintain-codex-wiki/SKILL.md) | Query, capture, ingest, archive, lint, and promote review-first Codex knowledge |
 
-Copy a skill into `.agents/skills/` for one project or `~/.agents/skills/` for
-personal reuse:
+Install a flagship skill through the
+[open agent skills ecosystem](https://skills.sh/phelan164/codex-howto):
+
+```bash
+npx skills add Phelan164/codex-howto --skill engineering-loop -g -a codex -y
+npx skills add Phelan164/codex-howto --skill maintain-codex-wiki -g -a codex -y
+```
+
+List all nine skills without installing:
+
+```bash
+npx skills add Phelan164/codex-howto --list
+```
+
+Alternatively, inspect and copy a skill into `.agents/skills/` for one project
+or `~/.agents/skills/` for personal reuse:
 
 ```bash
 mkdir -p .agents/skills

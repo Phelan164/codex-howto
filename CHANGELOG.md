@@ -15,6 +15,8 @@ product compatibility.
 - Pin researched community sources and declare their affected wiki pages.
 - Validate source revisions, supersession relationships, affected-page
   citations, and duplicate wiki titles.
+- Add verified `npx skills` installation commands and the public skills.sh
+  catalog page.
 
 ## 0.3.0 - 2026-07-31
 
