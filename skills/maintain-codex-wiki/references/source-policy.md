@@ -35,8 +35,10 @@ identified as sensitive by repository policy or common credential names,
 including `.env*`, private keys, credential or secret files, and authentication
 configuration. Use a repository secret scanner when available without printing
 secret values. If safe classification is uncertain, do not read the file and
-report the source record for review. Require `revision` to be the immutable
-40-character Git commit containing the evidence, and read the path from that
+report the source record for review. Require `revision` to be the full
+immutable Git commit object ID containing the evidence: detect the repository
+object format with `git rev-parse --show-object-format` and require 40
+hexadecimal characters for SHA-1 or 64 for SHA-256. Read the path from that
 commit through the Git object database rather than from the working tree. If
 the commit or blob cannot be resolved, treat the evidence as unverified drift.
 Use exactly one of `url` or `path`.

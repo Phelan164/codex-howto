@@ -68,8 +68,10 @@ name resolution, and apply the same validation to every redirect. If the tool
 cannot enforce destination and redirect validation, do not fetch; report the
 source record instead. Keep fetched content in `.wiki-cache/`.
 
-Every registered repository `path` must include the immutable 40-character Git
-commit that contains the evidence. Read that blob through the Git object
+Every registered repository `path` must include the full immutable Git commit
+object ID that contains the evidence. Determine the repository's configured
+hash format with `git rev-parse --show-object-format`; require 40 hexadecimal
+characters for SHA-1 or 64 for SHA-256. Read that blob through the Git object
 database at the recorded revision, never from mutable working-tree bytes. Stop
 and report unverified drift when the revision is missing or unresolved, the
 path does not exist at that commit, or the record cannot be bound to the blob.

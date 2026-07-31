@@ -298,7 +298,7 @@ See the [index](../index.md).
         errors, _ = self.validate()
         self.assertTrue(any("revision must be a non-empty string" in e for e in errors))
 
-    def test_repository_source_requires_full_revision(self):
+    def test_repository_source_requires_full_object_id(self):
         self.write_registry(
             [
                 {
@@ -319,6 +319,18 @@ See the [index](../index.md).
                 for error in errors
             )
         )
+
+    def test_sha256_repository_uses_64_character_object_ids(self):
+        sha256_root = self.root / "sha256-repository"
+        completed = subprocess.run(
+            ["git", "init", "-q", "--object-format=sha256", str(sha256_root)],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        if completed.returncode != 0:
+            self.skipTest("installed Git does not support SHA-256 repositories")
+        self.assertEqual(64, WIKI_LINT.git_object_id_length(sha256_root))
 
     def test_repository_source_must_exist_at_revision(self):
         self.write_registry(

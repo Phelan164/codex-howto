@@ -14,7 +14,7 @@ from urllib.parse import unquote, urlparse
 
 
 SOURCE_ID_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
-COMMIT_SHA_RE = re.compile(r"^[0-9a-f]{40}$", re.IGNORECASE)
+OBJECT_ID_RE = re.compile(r"^[0-9a-f]+$", re.IGNORECASE)
 LINK_RE = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
 SOURCE_REF_RE = re.compile(r"`([a-z0-9]+(?:-[a-z0-9]+)*)`")
 STATUS_RE = re.compile(r"^>\s*Status:\s*(\S+)\s*$", re.IGNORECASE)
@@ -122,6 +122,18 @@ def git_contains_blob(root: Path, revision: str, relative: str) -> bool:
         check=False,
     )
     return completed.returncode == 0
+
+
+def git_object_id_length(root: Path) -> int | None:
+    completed = subprocess.run(
+        ["git", "-C", str(root), "rev-parse", "--show-object-format"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if completed.returncode != 0:
+        return None
+    return {"sha1": 40, "sha256": 64}.get(completed.stdout.strip())
 
 
 def load_sources(root: Path, errors: list[str]) -> dict[str, dict[str, object]]:
@@ -238,12 +250,19 @@ def load_sources(root: Path, errors: list[str]) -> dict[str, dict[str, object]]:
                     f"{label}: repository evidence must be version-controlled: "
                     f"{local}"
                 )
-            if not isinstance(revision, str) or not COMMIT_SHA_RE.fullmatch(
-                revision
+            object_id_length = git_object_id_length(root)
+            if object_id_length is None:
+                errors.append(
+                    f"{label}: cannot determine repository Git object format"
+                )
+            elif (
+                not isinstance(revision, str)
+                or len(revision) != object_id_length
+                or not OBJECT_ID_RE.fullmatch(revision)
             ):
                 errors.append(
-                    f"{label}: repository evidence requires a full 40-character "
-                    "Git revision"
+                    f"{label}: repository evidence requires a full "
+                    f"{object_id_length}-character Git revision"
                 )
             elif not git_contains_blob(root, revision, local):
                 errors.append(
