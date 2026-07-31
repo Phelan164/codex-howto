@@ -8,6 +8,8 @@ product compatibility.
 
 ## Unreleased
 
+## 0.4.0 - 2026-07-31
+
 - Route Codex through the Living Wiki index for prior decisions, experiments,
   and established guidance.
 - Add explicit engineering capture and query archive operations to

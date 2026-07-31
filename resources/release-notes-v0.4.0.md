@@ -67,7 +67,7 @@ corpus, automatic transcript ingestion, or autonomous merge path.
 The release gate covers:
 
 - repository structure and every relative Markdown link;
-- 20 measurement and Living Wiki utility tests;
+- 26 measurement and Living Wiki utility tests;
 - both dependency-free engineering playground tests;
 - six seeded wiki pages with zero lint warnings;
 - source revisions, supersession relationships, affected-page citations, and
