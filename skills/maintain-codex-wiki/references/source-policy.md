@@ -51,8 +51,13 @@ additional accepted branches explicitly with
 its protected default branch rather than trust the checked-out PR. Read the
 path from that commit through the Git object database rather than from the
 working tree. If trusted refs are unavailable, the commit is unreachable from
-them, or the commit or blob cannot be resolved, treat the evidence as
-unverified drift. Use exactly one of `url` or `path`.
+them in complete local history, or the blob cannot be resolved, treat the
+evidence as unverified drift. Before making that classification, detect a
+shallow checkout with `git rev-parse --is-shallow-repository`. When shallow
+history cannot prove reachability or does not contain the pinned commit, report
+an incomplete checkout separately. Fetch or deepen history only with explicit
+network authorization and only from the configured trusted remote and branch.
+Use exactly one of `url` or `path`.
 
 Source IDs are permanent. If a URL moves, update the record without changing
 the ID. `last_verified` records when a maintainer checked the source, not when

@@ -174,6 +174,33 @@ def git_revision_is_trusted(root: Path, revision: str, refs: list[str]) -> bool:
     )
 
 
+def git_revision_exists(root: Path, revision: str) -> bool:
+    completed = subprocess.run(
+        [
+            "git",
+            "-C",
+            str(root),
+            "cat-file",
+            "-e",
+            f"{revision}^{{commit}}",
+        ],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    )
+    return completed.returncode == 0
+
+
+def git_repository_is_shallow(root: Path) -> bool:
+    completed = subprocess.run(
+        ["git", "-C", str(root), "rev-parse", "--is-shallow-repository"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    return completed.returncode == 0 and completed.stdout.strip() == "true"
+
+
 def git_object_id_length(root: Path) -> int | None:
     completed = subprocess.run(
         ["git", "-C", str(root), "rev-parse", "--show-object-format"],
@@ -304,11 +331,25 @@ def load_sources(root: Path, errors: list[str]) -> dict[str, dict[str, object]]:
                 )
             else:
                 trusted_refs = git_trusted_refs(root)
+                revision_exists = git_revision_exists(root, revision)
+                revision_is_trusted = bool(
+                    trusted_refs
+                    and revision_exists
+                    and git_revision_is_trusted(root, revision, trusted_refs)
+                )
+                incomplete_shallow_history = git_repository_is_shallow(root) and (
+                    not revision_exists or not revision_is_trusted
+                )
                 if not trusted_refs:
                     errors.append(
                         f"{label}: repository trusted refs are not configured"
                     )
-                elif not git_revision_is_trusted(root, revision, trusted_refs):
+                elif incomplete_shallow_history:
+                    errors.append(
+                        f"{label}: shallow repository history cannot verify "
+                        f"revision against trusted refs: {revision}"
+                    )
+                elif not revision_is_trusted:
                     errors.append(
                         f"{label}: repository revision is not reachable from "
                         f"trusted refs: {revision}"
@@ -317,6 +358,10 @@ def load_sources(root: Path, errors: list[str]) -> dict[str, dict[str, object]]:
                 isinstance(revision, str)
                 and len(revision) == object_id_length
                 and OBJECT_ID_RE.fullmatch(revision)
+                and not (
+                    git_repository_is_shallow(root)
+                    and not git_revision_exists(root, revision)
+                )
             ):
                 entry = git_tree_entry(root, revision, local)
                 if entry is None:

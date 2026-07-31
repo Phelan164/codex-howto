@@ -602,6 +602,55 @@ See the [index](../index.md).
             )
         )
 
+    def test_shallow_history_reports_incomplete_checkout_for_missing_revision(self):
+        current_revision = subprocess.run(
+            ["git", "-C", str(self.root), "rev-parse", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        (self.root / ".git" / "shallow").write_text(
+            f"{current_revision}\n", encoding="ascii"
+        )
+        registry = json.loads(
+            (self.root / "knowledge" / "sources.json").read_text(encoding="utf-8")
+        )
+        registry["sources"][0]["revision"] = "f" * 40
+        (self.root / "knowledge" / "sources.json").write_text(
+            json.dumps(registry), encoding="utf-8"
+        )
+
+        errors, _ = self.validate()
+
+        self.assertTrue(
+            any(
+                "shallow repository history cannot verify revision" in error
+                for error in errors
+            )
+        )
+        self.assertFalse(
+            any(
+                "repository revision is not reachable from trusted refs" in error
+                or "repository evidence does not exist at revision" in error
+                for error in errors
+            )
+        )
+
+    def test_shallow_history_accepts_available_trusted_revision(self):
+        current_revision = subprocess.run(
+            ["git", "-C", str(self.root), "rev-parse", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        (self.root / ".git" / "shallow").write_text(
+            f"{current_revision}\n", encoding="ascii"
+        )
+
+        errors, _ = self.validate()
+
+        self.assertEqual([], errors)
+
     def test_unknown_superseded_source_is_rejected(self):
         self.write_registry(
             [

@@ -95,9 +95,16 @@ presence in the local object database as trust. If trusted refs are not
 configured or cannot be verified, fail closed and ask the maintainer to
 identify them. Read the blob through the Git object database at the recorded
 revision, never from mutable working-tree bytes. Stop and report unverified
-drift when the revision is missing, unresolved, or unreachable from trusted
-history; the path does not exist at that commit; or the record cannot be bound
+drift when complete local history proves the revision unreachable from trusted
+history, the path does not exist at that commit, or the record cannot be bound
 to the blob.
+
+Before classifying a missing or unreachable revision, run
+`git rev-parse --is-shallow-repository`. A shallow checkout may simply omit
+valid older evidence. Report the checkout as incomplete rather than calling the
+source drifted. Fetch or deepen only with explicit network authorization,
+against the configured trusted remote and branch; otherwise ask the maintainer
+for a complete checkout.
 
 Read [source-policy.md](references/source-policy.md) before Capture, Ingest,
 Archive, or Promote.
