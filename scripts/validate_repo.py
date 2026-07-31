@@ -36,6 +36,7 @@ REQUIRED_ROOT = {
     "resources/community-launch-kit.md",
     "resources/distribution-shortlist.md",
     "resources/model-adaptive-skills.md",
+    "resources/release-notes-v0.4.0.md",
     "resources/release-notes-v0.3.0.md",
     "resources/release-notes-v0.2.0.md",
     "examples/skills/choose-engineering-flow/SKILL.md",
