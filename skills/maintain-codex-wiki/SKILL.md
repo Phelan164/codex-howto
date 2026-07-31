@@ -23,6 +23,21 @@ before shared knowledge or curriculum changes land.
 - **Promote**: move a verified conclusion into the appropriate module, skill,
   or repository rule through a separate, reviewable change.
 
+## Confinement invariant
+
+Apply this before any operation reads, searches, or changes wiki state. For
+every wiki page, index, registry, log, and registered repository `path`:
+
+1. require a normalized project-relative path;
+2. reject absolute paths and `..` components;
+3. resolve symlinks;
+4. require a regular file; and
+5. verify the resolved target remains inside the project root.
+
+Do not begin Query, Capture, Ingest, Archive, Lint, or Promote until every file
+the operation will touch passes this check. Treat an unsafe path as a reported
+validation error, never as content to inspect.
+
 Read [source-policy.md](references/source-policy.md) before Capture, Ingest,
 Archive, or Promote.
 Read [article-template.md](references/article-template.md) when creating a page.
@@ -31,14 +46,10 @@ Read [article-template.md](references/article-template.md) when creating a page.
 
 1. Read `knowledge/index.md`.
 2. Search `knowledge/` for the subject and its common synonyms.
-3. Before reading any wiki page, index, registry, log, or registered
-   repository `path`, require a normalized project-relative path, reject
-   absolute paths and `..` components, resolve symlinks, require a regular
-   file, and verify the target remains inside the project root.
-4. Read only the relevant pages and their registered sources.
-5. Distinguish verified guidance, community practice, experiment results, and
+3. Read only the relevant pages and their registered sources.
+4. Distinguish verified guidance, community practice, experiment results, and
    unresolved claims.
-6. Answer with links to wiki pages. State when the wiki has no evidence.
+5. Answer with links to wiki pages. State when the wiki has no evidence.
 
 Do not use model memory to silently fill a gap in the repository wiki.
 
