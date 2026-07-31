@@ -50,6 +50,9 @@
 - [Stop-hook example](examples/hooks/validate-on-stop/hooks.json)
 - [Orchestration decision matrix](resources/orchestration-decision-matrix.md)
 - [Token-efficiency scorecard](resources/token-efficiency-scorecard.md)
+- [Community launch kit](resources/community-launch-kit.md)
+- [Verified distribution shortlist](resources/distribution-shortlist.md)
+- [v0.2.0 release notes](resources/release-notes-v0.2.0.md)
 
 ## Hands-on lab
 
@@ -60,6 +63,8 @@
   live-demo script, measurement plan, and copy-ready announcement.
 - [Engineering-loop measurement protocol](resources/engineering-loop-measurement.md)
   — paired experiment design, quality gates, metrics, and decision rules.
+- [Community guide](COMMUNITY.md) — responsible participation, useful fork
+  paths, and community standards.
 
 ## Official references
 

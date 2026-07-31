@@ -9,6 +9,18 @@ Thank you for improving Codex How To.
 - Open an issue first for major curriculum changes or new product surfaces.
 - Never include private repository content, credentials, or production data.
 
+## Ways to contribute
+
+- Fix an unclear instruction, broken example, or outdated official source.
+- Add one missing engineering case with a runnable exercise and verification.
+- Report sanitized workflow evidence, including negative or inconclusive
+  results.
+- Adapt a focused stack or translation edition in a fork, then contribute
+  generally useful improvements upstream.
+
+Large stack-specific or organization-specific variants usually belong in a
+fork. Keep the upstream guide focused on reusable engineering decisions.
+
 ## Local validation
 
 The repository validator uses only the Python standard library:
@@ -18,6 +30,12 @@ python3 scripts/validate_repo.py
 python3 -m unittest discover \
   -s labs/engineering-playground/backend \
   -p "test_*.py"
+python3 -m unittest discover \
+  -s scripts/tests \
+  -p "test_*.py"
+python3 scripts/summarize_engineering_loop.py \
+  examples/measurements/engineering-loop-runs.csv
+python3 -m compileall -q scripts labs/engineering-playground/backend
 ```
 
 For a changed skill, also run the official `quick_validate.py` bundled with the
@@ -56,6 +74,7 @@ Do not add a README inside a skill folder.
 - [ ] Examples are safe to copy into a test repository.
 - [ ] New links are relative where possible.
 - [ ] `python3 scripts/validate_repo.py` passes.
+- [ ] Playground and measurement tests pass.
 - [ ] Changed skills pass `quick_validate.py`.
 - [ ] The change is described in plain language.
 - [ ] The final diff contains no generated caches or unrelated edits.

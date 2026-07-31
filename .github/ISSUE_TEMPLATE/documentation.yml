@@ -1,0 +1,46 @@
+name: Documentation problem
+description: Report an unclear, incorrect, outdated, or broken guide page.
+title: "[Docs]: "
+labels:
+  - documentation
+body:
+  - type: input
+    id: location
+    attributes:
+      label: Page or section
+      placeholder: modules/07-testing-and-review/README.md — Required checks
+    validations:
+      required: true
+  - type: dropdown
+    id: problem
+    attributes:
+      label: Problem type
+      options:
+        - Incorrect product behavior
+        - Outdated command or configuration
+        - Unclear explanation
+        - Broken example or link
+        - Missing prerequisite
+        - Accessibility or formatting
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: What needs improvement?
+      description: Explain the problem and include a minimal reproduction when relevant.
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Supporting source
+      description: Link official documentation for version-sensitive product claims when available.
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety check
+      options:
+        - label: I removed credentials, private source code, and production data.
+          required: true

@@ -2,6 +2,8 @@
 
 Turn Codex from a code generator into a verifiable engineering workflow.
 
+![Codex How To: from scope through evidence](assets/social-preview.svg)
+
 This engineering-first guide takes a task through scoping, implementation,
 testing, review, and evidence—with focused workflows for frontend, backend,
 DevOps, security, and multi-agent orchestration.
@@ -15,7 +17,8 @@ DevOps, security, and multi-agent orchestration.
 [Try the playground](labs/engineering-playground/README.md) ·
 [Use the quick reference](QUICK_REFERENCE.md) ·
 [Measure the loop](resources/engineering-loop-measurement.md) ·
-[Present this guide](PRESENTING.md)
+[Present this guide](PRESENTING.md) ·
+[Join the community](COMMUNITY.md)
 
 > **Status:** community preview. Content was checked against official Codex
 > documentation on 2026-07-24. Codex changes quickly; verify settings and
@@ -295,6 +298,18 @@ The authoritative upstream implementation is [openai/codex](https://github.com/o
 Contributions are welcome. Start with [CONTRIBUTING.md](CONTRIBUTING.md). New
 tutorials should include a concrete outcome, a safe exercise, a verification
 step, and official sources.
+
+If the guide is useful, choose the action that creates the most value:
+
+- try the playground and report a reproducible gap;
+- contribute anonymized paired-run measurements;
+- fork it into a tested stack, team, or translation edition;
+- share it with one relevant developer community; or
+- star it so you can find it again.
+
+Use the [community guide](COMMUNITY.md) for responsible participation and the
+[launch kit](resources/community-launch-kit.md) for audience-specific
+presentation material.
 
 ## License and trademarks
 
