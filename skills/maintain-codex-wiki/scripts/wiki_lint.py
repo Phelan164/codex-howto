@@ -124,6 +124,60 @@ def git_contains_blob(root: Path, revision: str, relative: str) -> bool:
     return completed.returncode == 0
 
 
+def git_trusted_refs(root: Path) -> list[str]:
+    configured = subprocess.run(
+        ["git", "-C", str(root), "config", "--get-all", "codex.wikiTrustedRef"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    refs = [
+        value.strip()
+        for value in configured.stdout.splitlines()
+        if value.strip()
+    ]
+    if refs:
+        return refs
+
+    default_remote = subprocess.run(
+        [
+            "git",
+            "-C",
+            str(root),
+            "symbolic-ref",
+            "--quiet",
+            "refs/remotes/origin/HEAD",
+        ],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if default_remote.returncode == 0 and default_remote.stdout.strip():
+        return [default_remote.stdout.strip()]
+    return []
+
+
+def git_revision_is_trusted(root: Path, revision: str, refs: list[str]) -> bool:
+    return any(
+        subprocess.run(
+            [
+                "git",
+                "-C",
+                str(root),
+                "merge-base",
+                "--is-ancestor",
+                revision,
+                ref,
+            ],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            check=False,
+        ).returncode
+        == 0
+        for ref in refs
+    )
+
+
 def git_object_id_length(root: Path) -> int | None:
     completed = subprocess.run(
         ["git", "-C", str(root), "rev-parse", "--show-object-format"],
@@ -264,7 +318,23 @@ def load_sources(root: Path, errors: list[str]) -> dict[str, dict[str, object]]:
                     f"{label}: repository evidence requires a full "
                     f"{object_id_length}-character Git revision"
                 )
-            elif not git_contains_blob(root, revision, local):
+            else:
+                trusted_refs = git_trusted_refs(root)
+                if not trusted_refs:
+                    errors.append(
+                        f"{label}: repository trusted refs are not configured"
+                    )
+                elif not git_revision_is_trusted(root, revision, trusted_refs):
+                    errors.append(
+                        f"{label}: repository revision is not reachable from "
+                        f"trusted refs: {revision}"
+                    )
+            if (
+                isinstance(revision, str)
+                and len(revision) == object_id_length
+                and OBJECT_ID_RE.fullmatch(revision)
+                and not git_contains_blob(root, revision, local)
+            ):
                 errors.append(
                     f"{label}: repository evidence does not exist at revision: "
                     f"{revision}:{local}"

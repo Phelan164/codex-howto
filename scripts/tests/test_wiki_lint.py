@@ -1,5 +1,6 @@
 import importlib.util
 import json
+import os
 import subprocess
 import tempfile
 import unittest
@@ -85,6 +86,28 @@ See the [index](../index.md).
             capture_output=True,
             text=True,
         ).stdout.strip()
+        subprocess.run(
+            [
+                "git",
+                "-C",
+                str(self.root),
+                "update-ref",
+                "refs/remotes/origin/main",
+                revision,
+            ],
+            check=True,
+        )
+        subprocess.run(
+            [
+                "git",
+                "-C",
+                str(self.root),
+                "symbolic-ref",
+                "refs/remotes/origin/HEAD",
+                "refs/remotes/origin/main",
+            ],
+            check=True,
+        )
         registry = json.loads(
             (self.root / "knowledge" / "sources.json").read_text(encoding="utf-8")
         )
@@ -349,6 +372,73 @@ See the [index](../index.md).
         self.assertTrue(
             any(
                 "repository evidence does not exist at revision" in error
+                for error in errors
+            )
+        )
+
+    def test_repository_revision_must_be_reachable_from_trusted_ref(self):
+        detached = subprocess.run(
+            [
+                "git",
+                "-C",
+                str(self.root),
+                "commit-tree",
+                subprocess.run(
+                    ["git", "-C", str(self.root), "write-tree"],
+                    check=True,
+                    capture_output=True,
+                    text=True,
+                ).stdout.strip(),
+                "-m",
+                "untrusted evidence",
+            ],
+            check=True,
+            capture_output=True,
+            text=True,
+            env={
+                **os.environ,
+                "GIT_AUTHOR_NAME": "Wiki Lint Tests",
+                "GIT_AUTHOR_EMAIL": "wiki-lint@example.invalid",
+                "GIT_COMMITTER_NAME": "Wiki Lint Tests",
+                "GIT_COMMITTER_EMAIL": "wiki-lint@example.invalid",
+            },
+        ).stdout.strip()
+        self.write_registry(
+            [
+                {
+                    "id": "local-evidence",
+                    "title": "Local evidence",
+                    "kind": "repository",
+                    "path": "evidence.md",
+                    "last_verified": "2026-07-31",
+                    "revision": detached,
+                }
+            ]
+        )
+        errors, _ = self.validate()
+        self.assertTrue(
+            any(
+                "repository revision is not reachable from trusted refs" in error
+                for error in errors
+            )
+        )
+
+    def test_repository_source_requires_configured_trusted_ref(self):
+        subprocess.run(
+            [
+                "git",
+                "-C",
+                str(self.root),
+                "symbolic-ref",
+                "--delete",
+                "refs/remotes/origin/HEAD",
+            ],
+            check=True,
+        )
+        errors, _ = self.validate()
+        self.assertTrue(
+            any(
+                "repository trusted refs are not configured" in error
                 for error in errors
             )
         )

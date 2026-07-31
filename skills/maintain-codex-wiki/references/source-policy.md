@@ -38,10 +38,14 @@ secret values. If safe classification is uncertain, do not read the file and
 report the source record for review. Require `revision` to be the full
 immutable Git commit object ID containing the evidence: detect the repository
 object format with `git rev-parse --show-object-format` and require 40
-hexadecimal characters for SHA-1 or 64 for SHA-256. Read the path from that
-commit through the Git object database rather than from the working tree. If
-the commit or blob cannot be resolved, treat the evidence as unverified drift.
-Use exactly one of `url` or `path`.
+hexadecimal characters for SHA-1 or 64 for SHA-256. Require the commit to be
+reachable from a repository-configured trusted ref, normally the protected
+default branch and, when explicitly allowed, signed release tags. Do not infer
+trust from the current branch, an arbitrary remote branch, or mere presence in
+the object database. Read the path from that commit through the Git object
+database rather than from the working tree. If trusted refs are unavailable,
+the commit is unreachable from them, or the commit or blob cannot be resolved,
+treat the evidence as unverified drift. Use exactly one of `url` or `path`.
 
 Source IDs are permanent. If a URL moves, update the record without changing
 the ID. `last_verified` records when a maintainer checked the source, not when
@@ -64,7 +68,10 @@ Use optional metadata when evidence supports it:
   validates a public HTTPS destination and every redirect. Reject embedded
   credentials plus loopback, private, link-local, reserved, and cloud-metadata
   destinations after resolution. Fail closed when these checks are unavailable.
-- Put temporary downloads and extracted text in `.wiki-cache/`.
+- Put temporary downloads and extracted text in `.wiki-cache/` only after
+  verifying that its existing parents are non-symlinked directories inside the
+  project. Use a new, collision-free target, refuse overwrite, and verify the
+  created artifact remains a regular project-contained file before reading it.
 - Do not commit full external articles, documentation, transcripts, or images
   without redistribution permission.
 - Prefer a metadata record, a direct link, and a compact synthesis.
