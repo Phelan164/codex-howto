@@ -37,6 +37,11 @@ Ask the plan to include assumptions, affected interfaces, implementation stages,
 
 Do not turn a small, well-understood edit into a ceremony. Planning has value when it reduces wrong work.
 
+For a change that needs a durable review artifact, copy the
+[engineering specification template](../../examples/templates/engineering-spec.md).
+It separates confirmed requirements, open questions, affected contracts,
+verification, delivery safety, and explicit non-goals.
+
 ## Context routing
 
 Point Codex to likely entry points instead of attaching the entire repository. Ask it to expand context only when imports, callers, tests, or contracts require it.
@@ -66,6 +71,8 @@ and verification commands.
 - Each stage has a proof of completion.
 - The plan identifies security and migration risks.
 - The plan is small enough to review before coding.
+- A durable specification, when needed, separates facts from assumptions and
+  names observable verification.
 
 ## Official sources
 

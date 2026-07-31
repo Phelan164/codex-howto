@@ -1,7 +1,10 @@
 # Codex How To
 
-An engineering-first guide to OpenAI Codex—from your first safe task to
-reusable skills, specialized agents, and disciplined multi-agent workflows.
+Turn Codex from a code generator into a verifiable engineering workflow.
+
+This engineering-first guide takes a task through scoping, implementation,
+testing, review, and evidence—with focused workflows for frontend, backend,
+DevOps, security, and multi-agent orchestration.
 
 [![Validate](https://github.com/Phelan164/codex-howto/actions/workflows/validate.yml/badge.svg)](https://github.com/Phelan164/codex-howto/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -10,11 +13,70 @@ reusable skills, specialized agents, and disciplined multi-agent workflows.
 [Choose a track](LEARNING-ROADMAP.md) ·
 [Browse skills](#engineering-skill-catalog) ·
 [Try the playground](labs/engineering-playground/README.md) ·
-[Use the quick reference](QUICK_REFERENCE.md)
+[Use the quick reference](QUICK_REFERENCE.md) ·
+[Measure the loop](resources/engineering-loop-measurement.md) ·
+[Present this guide](PRESENTING.md)
 
 > **Status:** community preview. Content was checked against official Codex
 > documentation on 2026-07-24. Codex changes quickly; verify settings and
 > commands through the links marked **Official source**.
+
+## See the engineering loop
+
+```mermaid
+flowchart LR
+    A["Scoped task"] --> B["Reproduce or baseline"]
+    B --> C["Smallest coherent change"]
+    C --> D["Focused checks"]
+    D --> E["Required checks"]
+    E --> F["Findings-first review"]
+    F --> G["Evidence and handoff"]
+    F -- "Verified issue" --> C
+```
+
+The repository treats generated code as an intermediate result. Completion
+requires observable behavior, relevant checks, diff review, and an explicit
+record of anything that remains unverified.
+
+| Ad hoc Codex use | Repository workflow |
+|---|---|
+| Start from a vague request | Define goal, context, constraints, and done conditions |
+| Generate a large solution in one pass | Reproduce, change minimally, and verify incrementally |
+| Load broad context “just in case” | Route to one lifecycle skill and only relevant specialists |
+| Treat passing output as proof | Record commands, results, review findings, and residual risk |
+| Add agents because parallelism is available | Delegate only independent, bounded work |
+
+## Five-minute engineering demo
+
+Use the dependency-free [engineering playground](labs/engineering-playground/README.md)
+to demonstrate a complete backend defect loop safely:
+
+```bash
+demo_root="$(mktemp -d)"
+cp -R labs/engineering-playground "$demo_root/playground"
+mkdir -p "$demo_root/playground/.agents/skills"
+cp -R skills/engineering-loop skills/build-backend skills/test-software \
+  "$demo_root/playground/.agents/skills/"
+cd "$demo_root/playground"
+git init
+```
+
+Start Codex in that directory and ask:
+
+```text
+$engineering-loop $build-backend $test-software Inspect the inventory
+reservation contract, reproduce one uncovered input-boundary defect, add the
+smallest regression test, implement the fix, run the required checks, and
+review the final diff. Work only in this disposable playground.
+```
+
+Watch for four proof points: a failing regression before the fix, a small
+implementation diff, passing focused checks, and a final evidence report.
+Then use the
+[measurement protocol](resources/engineering-loop-measurement.md) to compare
+paired ad hoc and engineering-loop runs without treating one demo as proof.
+Use [PRESENTING.md](PRESENTING.md) for a 15-minute talk track, demo checklist,
+and copy-ready announcement.
 
 ## Why this repository exists
 
@@ -39,11 +101,12 @@ You will learn how to:
 - **13 progressive modules** covering safety, prompting, `AGENTS.md`, skills,
   MCP, subagents, orchestration, context efficiency, automation, and
   troubleshooting.
-- **8 installable engineering skills** for the end-to-end engineering loop,
-  frontend, backend, DevOps, testing, code review, security review, and
-  orchestration.
+- **9 installable engineering skills** including a lightweight workflow router,
+  the end-to-end engineering loop, frontend, backend, DevOps, testing, code
+  review, security review, and orchestration.
 - **Copy-ready examples** for project configuration, custom agents, prompts,
-  hooks, MCP, and local plugins.
+  engineering specifications, dependency-aware tickets, handoffs, hooks, MCP,
+  and local plugins.
 - **A dependency-free playground** with seeded defects for practicing the full
   implement–test–review loop safely.
 
@@ -85,7 +148,7 @@ You will learn how to:
 Full path: roughly **9–10 hours**. Start with modules 00–03, then follow the
 shortest track that matches your work.
 
-## Five-minute start
+## Five-minute safe start
 
 1. Install Codex using the [official quickstart](https://developers.openai.com/codex/quickstart).
 2. Open a small, version-controlled repository.
@@ -108,6 +171,7 @@ This repository includes installable starter skills:
 
 | Skill | Purpose |
 |---|---|
+| [`choose-engineering-flow`](skills/choose-engineering-flow/SKILL.md) | Recommend the smallest useful skill sequence without executing the task |
 | [`engineering-loop`](skills/engineering-loop/SKILL.md) | Drive a change through baseline, implementation, testing, review, and evidence |
 | [`build-frontend`](skills/build-frontend/SKILL.md) | Implement accessible UI changes with visual and behavioral verification |
 | [`build-backend`](skills/build-backend/SKILL.md) | Change APIs, services, persistence, and contracts safely |
@@ -132,6 +196,16 @@ it explicitly:
 $review-code Review this branch against main. Lead with consequential findings
 and list checks you could not run.
 ```
+
+If you are unsure where to start, install the router and invoke it explicitly:
+
+```text
+$choose-engineering-flow Route this task: add an authenticated settings page
+and its API endpoint, then verify the complete change.
+```
+
+The router and orchestrator are explicit-only so that they do not add planning
+or multi-agent overhead to unrelated tasks.
 
 For a complete local develop–test–review cycle, install the relevant specialist
 skills and start with:
@@ -167,6 +241,7 @@ Parallel agents often improve elapsed time and protect the main thread from nois
 ```text
 codex-howto/
 ├── .github/                 # Validation workflow and PR template
+├── .codex-plugin/           # Plugin manifest over the existing skill catalog
 ├── modules/                 # Progressive tutorials and labs
 ├── skills/                  # Installable engineering skills
 ├── labs/
@@ -198,6 +273,11 @@ orchestration workflows against its seeded defects.
 ## Inspiration and related work
 
 The progressive-module idea was inspired by [luongnv89/claude-howto](https://github.com/luongnv89/claude-howto). This repository is an original Codex-focused curriculum and does not copy its tutorial text or templates.
+
+The skill-system refinements were inspired by the original
+[mattpocock/skills](https://github.com/mattpocock/skills) repository. Its
+invocation, routing, debugging, and review ideas were adapted to Codex without
+copying its skills.
 
 Useful related community projects:
 

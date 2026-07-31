@@ -25,3 +25,8 @@ Score each item from 0 (no) to 2 (consistently).
 - **0–7:** simplify the workflow before adding agents or automation.
 
 Track retries, elapsed time, duplicate work, and accepted defects alongside token use. A cheaper run that produces the wrong change is not efficient.
+
+For a controlled baseline-vs-workflow comparison, use the
+[engineering-loop measurement protocol](engineering-loop-measurement.md) and
+its structured run record. This scorecard evaluates practices; it does not by
+itself demonstrate that the engineering loop caused a better outcome.

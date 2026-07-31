@@ -1,0 +1,1 @@
+task_id,variant,run_id,accepted,evidence_complete,regression_before_fix,focused_checks_passed,required_checks_passed,actionable_findings,false_positives,retries,human_corrections,elapsed_seconds,total_tokens,total_cost_usd,context_noise_lines,notes

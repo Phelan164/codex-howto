@@ -24,6 +24,9 @@ main agent by default and load only the domain guidance the task needs.
 
 For a long, cross-stack, or high-risk change, use the templates and failure
 rules in [references/loop-contract.md](references/loop-contract.md).
+When a defect is intermittent, performance-related, difficult to reproduce, or
+resists the first evidence-driven pass, use
+[references/hard-debugging.md](references/hard-debugging.md).
 
 ## Route only relevant guidance
 

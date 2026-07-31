@@ -33,6 +33,17 @@ jobs:
           -s labs/engineering-playground/backend
           -p "test_*.py"
 
+      - name: Run measurement utility tests
+        run: >-
+          python3 -m unittest discover
+          -s scripts/tests
+          -p "test_*.py"
+
+      - name: Validate the measurement template
+        run: >-
+          python3 scripts/summarize_engineering_loop.py
+          examples/measurements/engineering-loop-runs.csv
+
       - name: Compile Python examples
         run: >-
           python3 -m compileall -q

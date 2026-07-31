@@ -22,11 +22,12 @@
 
 | Skill | Bundled reference |
 |---|---|
-| [engineering-loop](skills/engineering-loop/SKILL.md) | `references/loop-contract.md` |
+| [choose-engineering-flow](skills/choose-engineering-flow/SKILL.md) | Explicit-only router; no bundled reference |
+| [engineering-loop](skills/engineering-loop/SKILL.md) | `references/loop-contract.md`, `references/hard-debugging.md` |
 | [build-frontend](skills/build-frontend/SKILL.md) | `references/verification.md` |
 | [build-backend](skills/build-backend/SKILL.md) | `references/contracts-and-data.md` |
 | [operate-devops](skills/operate-devops/SKILL.md) | `references/change-safety.md` |
-| [review-code](skills/review-code/SKILL.md) | `references/review-checklist.md` |
+| [review-code](skills/review-code/SKILL.md) | `references/review-checklist.md`, `references/review-lenses.md` |
 | [test-software](skills/test-software/SKILL.md) | `references/test-strategy.md` |
 | [review-security](skills/review-security/SKILL.md) | `references/threat-checklist.md` |
 | [orchestrate-engineering](skills/orchestrate-engineering/SKILL.md) | `references/context-budget.md` |
@@ -41,6 +42,10 @@
 - [General task prompt](examples/prompts/task-template.md)
 - [Orchestrated review prompt](examples/prompts/orchestrated-review.md)
 - [Scheduled documentation-drift prompt](examples/prompts/scheduled-docs-drift.md)
+- [Engineering specification](examples/templates/engineering-spec.md)
+- [Dependency-aware ticket set](examples/templates/dependency-aware-tickets.md)
+- [Engineering handoff](examples/templates/engineering-handoff.md)
+- [Engineering-loop run record](examples/measurements/engineering-loop-runs.csv)
 - [Local plugin marketplace](examples/plugin-marketplace/.agents/plugins/marketplace.json)
 - [Stop-hook example](examples/hooks/validate-on-stop/hooks.json)
 - [Orchestration decision matrix](resources/orchestration-decision-matrix.md)
@@ -50,7 +55,11 @@
 
 - [Engineering playground](labs/engineering-playground/README.md) — a
   dependency-free frontend, backend, and deployment fixture with seeded defects
-  for all seven bundled skills.
+  for the end-to-end loop and its specialist workflows.
+- [Developer presentation guide](PRESENTING.md) — a 15-minute talk track,
+  live-demo script, measurement plan, and copy-ready announcement.
+- [Engineering-loop measurement protocol](resources/engineering-loop-measurement.md)
+  — paired experiment design, quality gates, metrics, and decision rules.
 
 ## Official references
 

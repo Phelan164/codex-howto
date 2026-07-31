@@ -1,0 +1,6 @@
+interface:
+  display_name: "Choose Engineering Flow"
+  short_description: "Select the smallest useful engineering workflow"
+  default_prompt: "Use $choose-engineering-flow to recommend the smallest relevant skill sequence for this task."
+policy:
+  allow_implicit_invocation: false
