@@ -8,15 +8,32 @@ product compatibility.
 
 ## Unreleased
 
-- Route Codex through the Living Wiki index for prior decisions, experiments,
-  and established guidance.
+## 0.5.0 - 2026-08-01
+
+- Add controlled GPT-5.6-sol engineering-loop measurements that compare no
+  repository skill, the v0.2.0 full skill, and the v0.4.0 lean skill.
+- Add a reproducible dependency-free 2048 implementation benchmark with ten
+  deterministic tests and a post-run evaluator.
+- Surface the balanced result: the control was cheapest for a small backend
+  fix, while the lean skill used fewer reported tokens on the medium game task.
+- Qualify the repository as a distributable Codex plugin with marketplace
+  metadata and automated bundle scanning.
+- Route prior engineering knowledge through the Living Wiki index and
+  strengthen source identity, revision, and affected-page validation.
+- Add verified `npx skills` installation commands, the public skills.sh catalog
+  page, and clearer participation paths for measurements and adaptations.
+
+## 0.4.0 - 2026-07-31
+
+- Route prior decisions, experiments, and established guidance through the
+  Living Wiki index.
 - Add explicit engineering capture and query archive operations to
   `maintain-codex-wiki`.
-- Pin researched community sources and declare their affected wiki pages.
-- Validate source revisions, supersession relationships, affected-page
-  citations, and duplicate wiki titles.
-- Add verified `npx skills` installation commands and the public skills.sh
-  catalog page.
+- Strengthen source provenance, promotion policy, and deterministic wiki lint.
+- Add distribution and traffic baselines plus structured workflow-feedback
+  paths.
+- Publish verified `npx skills` installation commands and the skills.sh catalog
+  page.
 
 ## 0.3.0 - 2026-07-31
 
