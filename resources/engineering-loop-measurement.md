@@ -43,6 +43,13 @@ variants added token and retry overhead on that bounded task. Treat it as a
 transparent example of this protocol—not as evidence for a general model or
 skill conclusion.
 
+The
+[GPT-5.6-sol 2048 game seed measurement](../examples/measurements/gpt-5.6-sol-2048-game-2026-07-31.md)
+applies the same protocol to a medium-sized implementation task. All variants
+again passed, but the lean skill used fewer reported tokens and stopped browser
+probing sooner. The two seed tasks point in different directions, which is why
+the protocol requires representative repetitions before changing policy.
+
 ## Minimum experiment
 
 Run at least three paired tasks before drawing a local directional conclusion.

@@ -70,6 +70,28 @@ record of anything that remains unverified.
 | Treat passing output as proof | Record commands, results, review findings, and residual risk |
 | Add agents because parallelism is available | Delegate only independent, bounded work |
 
+## What the seed measurements show
+
+Skills are not automatically more efficient. In controlled GPT-5.6-sol runs,
+the best choice changed with task size:
+
+| Task | Quality result | Most token-efficient variant |
+|---|---|---|
+| Small backend boundary fix | All three variants passed | No repository skill: 390,144 reported tokens |
+| Medium 2048 browser game | All three variants passed | Lean skill v0.4.0: 380,767 reported tokens |
+
+On the game task, the lean `engineering-loop` used **31.2% fewer reported
+tokens than v0.2.0** and **54.0% fewer than the no-repository-skill control**.
+On the smaller backend fix, the control remained cheapest. This suggests that
+lifecycle guidance may be redundant for a bounded fix but useful when a task
+spans implementation, testing, review, and evidence handoff.
+
+These are two controlled seed tasks, not universal performance claims. Read the
+[backend result](examples/measurements/gpt-5.6-sol-backend-boundary-2026-07-31.md),
+the [2048 result](examples/measurements/gpt-5.6-sol-2048-game-2026-07-31.md),
+and the [measurement protocol](resources/engineering-loop-measurement.md) before
+changing a team workflow.
+
 ## Five-minute engineering demo
 
 Use the dependency-free [engineering playground](labs/engineering-playground/README.md)
@@ -98,6 +120,9 @@ implementation diff, passing focused checks, and a final evidence report.
 Then use the
 [measurement protocol](resources/engineering-loop-measurement.md) to compare
 no-skill, full-skill, and lean-skill runs without treating one demo as proof.
+For a larger implementation exercise, use the
+[dependency-free 2048 benchmark](labs/2048-game-benchmark/README.md) and inspect
+the [GPT-5.6-sol seed measurement](examples/measurements/gpt-5.6-sol-2048-game-2026-07-31.md).
 Use [PRESENTING.md](PRESENTING.md) for a 15-minute talk track, demo checklist,
 and copy-ready announcement.
 
