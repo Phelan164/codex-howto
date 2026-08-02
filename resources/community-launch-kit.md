@@ -255,6 +255,7 @@ Record data after 24 hours, 7 days, and 30 days:
 | 2026-08-01 | GitHub Releases | [v0.5.0](https://github.com/Phelan164/codex-howto/releases/tag/v0.5.0) | Release | — | — | 1 | 0 | 0 | — | Six GPT-5.6-sol runs, 2048 benchmark, plugin distribution, and replication request |
 | 2026-08-02 | GitHub Traffic | [Repository](https://github.com/Phelan164/codex-howto) | 14-day baseline | 114 | 11 | 1 | 0 | — | — | 223 clones from 104 unique cloners; likely includes automated registry and scanner traffic |
 | 2026-08-02 | SkillStore | [Engineering Loop](https://skillstore.io/skills/phelan164-engineering-loop) | Independent audit | 0 | — | 1 | 0 | — | 3 downloads | Approved, audit complete, signed artifact available, quality score 75 |
+| 2026-08-02 | HOL Codex Plugin Marketplace | [PR #341](https://github.com/hashgraph-online/awesome-codex-plugins/pull/341) | Plugin marketplace PR | — | — | 1 | 0 | 1 | — | One alphabetized Development & Workflow entry; source scanner CI passes the required ≥80/no-high gate |
 
 Use GitHub traffic and referral data while available. Compare channels by
 meaningful actions—completed demos, useful issues, repeat visitors, and
