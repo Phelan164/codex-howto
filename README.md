@@ -99,6 +99,10 @@ The [interactive benchmark explorer](site/README.md) turns the six runs into a
 task-size toggle, proportional token comparison, run-detail table, method
 summary, and visible limitations. Its source and rendered evidence are checked
 in CI so the shareable view remains traceable to the repository measurements.
+The standalone
+[measurement article](resources/articles/do-codex-skills-save-tokens.md)
+explains the setup, results, boundary hypothesis, and replication protocol
+without requiring a repository click.
 
 ## Five-minute engineering demo
 

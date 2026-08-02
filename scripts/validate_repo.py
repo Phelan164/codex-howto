@@ -36,6 +36,7 @@ REQUIRED_ROOT = {
     "assets/social-preview.png",
     "assets/social-preview.svg",
     "resources/community-launch-kit.md",
+    "resources/articles/do-codex-skills-save-tokens.md",
     "resources/distribution-shortlist.md",
     "resources/model-adaptive-skills.md",
     "resources/release-notes-v0.5.0.md",
