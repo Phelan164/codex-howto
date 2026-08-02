@@ -19,6 +19,7 @@ HEADING_RE = re.compile(r"^#{1,6}\s+(.+?)\s*#*\s*$")
 UI_FIELD_RE = re.compile(r'^  ([a-z_]+):\s+("(?:[^"\\]|\\.)*")\s*$')
 REQUIRED_ROOT = {
     ".github/pull_request_template.md",
+    ".github/workflows/benchmark-site.yml",
     ".github/workflows/validate.yml",
     ".codex-plugin/plugin.json",
     "README.md",
@@ -29,6 +30,7 @@ REQUIRED_ROOT = {
     "QUICK_REFERENCE.md",
     "CONTRIBUTING.md",
     "SECURITY.md",
+    "site/README.md",
     "AGENTS.md",
     "LICENSE",
     "assets/social-preview.png",
@@ -109,6 +111,22 @@ REQUIRED_JSON = {
     "examples/plugin-marketplace/plugins/engineering-review/.codex-plugin/plugin.json",
     "knowledge/sources.json",
 }
+IGNORED_PATH_PARTS = {
+    ".git",
+    ".next",
+    ".wrangler",
+    "dist",
+    "node_modules",
+}
+
+
+def repository_files(pattern: str) -> list[Path]:
+    """Return repository source files while excluding generated/vendor trees."""
+    return [
+        path
+        for path in ROOT.rglob(pattern)
+        if not IGNORED_PATH_PARTS.intersection(path.relative_to(ROOT).parts)
+    ]
 
 
 def check_required(errors: list[str]) -> None:
@@ -136,7 +154,7 @@ def check_json_examples(errors: list[str]) -> None:
 
 
 def check_links(errors: list[str]) -> None:
-    for path in ROOT.rglob("*.md"):
+    for path in repository_files("*.md"):
         text = path.read_text(encoding="utf-8")
         for target in LINK_RE.findall(text):
             target = target.strip()
@@ -320,7 +338,7 @@ def check_modules(errors: list[str]) -> None:
 
 
 def check_placeholders(errors: list[str]) -> None:
-    for path in list(ROOT.rglob("*.md")) + list(ROOT.rglob("*.yaml")):
+    for path in repository_files("*.md") + repository_files("*.yaml"):
         text = path.read_text(encoding="utf-8")
         if "[TODO" in text or "TODO]" in text:
             errors.append(f"unfinished TODO placeholder: {path.relative_to(ROOT)}")
