@@ -22,6 +22,7 @@ DevOps, security, and multi-agent orchestration.
 [Try the playground](labs/engineering-playground/README.md) ·
 [Use the quick reference](QUICK_REFERENCE.md) ·
 [Measure the loop](resources/engineering-loop-measurement.md) ·
+[Explore the benchmark](site/README.md) ·
 [Explore the living wiki](knowledge/index.md) ·
 [Run a community benchmark](https://github.com/Phelan164/codex-howto/issues/16) ·
 [Fork an edition](resources/fork-an-edition.md) ·
@@ -93,6 +94,15 @@ These are two controlled seed tasks, not universal performance claims. Read the
 the [2048 result](examples/measurements/gpt-5.6-sol-2048-game-2026-07-31.md),
 and the [measurement protocol](resources/engineering-loop-measurement.md) before
 changing a team workflow.
+
+The [interactive benchmark explorer](site/README.md) turns the six runs into a
+task-size toggle, proportional token comparison, run-detail table, method
+summary, and visible limitations. Its source and rendered evidence are checked
+in CI so the shareable view remains traceable to the repository measurements.
+The standalone
+[measurement article](resources/articles/do-codex-skills-save-tokens.md)
+explains the setup, results, boundary hypothesis, and replication protocol
+without requiring a repository click.
 
 ## Five-minute engineering demo
 
