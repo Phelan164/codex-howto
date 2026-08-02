@@ -105,6 +105,10 @@ after every gate below passes:
 - both task toggles work and the source-measurement links resolve; and
 - the maintainer can remain available for technical questions.
 
+The merge, public-access, anonymous-response, and CI gates passed on
+2026-08-02. Run one final interaction and outbound-link smoke test immediately
+before submitting.
+
 **Title**
 
 ```text
