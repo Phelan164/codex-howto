@@ -94,10 +94,53 @@ https://github.com/Phelan164/codex-howto
 
 ## Hacker News
 
-Do not submit this documentation repository as a Show HN project. The
+Do not submit the documentation repository by itself. The
 [Show HN guidelines](https://news.ycombinator.com/showhn.html) exclude reading
-material and lists. Reconsider only if the project gains a hosted, directly
-usable tool or interactive benchmark that a visitor can try.
+material and lists. The interactive benchmark creates an eligible tool only
+after every gate below passes:
+
+- PR #27 is merged and its CI is green on `main`;
+- `https://codex-howto-benchmark.nguyenvantamdk2.chatgpt.site` is public;
+- an anonymous visitor receives the explorer without sign-in;
+- both task toggles work and the source-measurement links resolve; and
+- the maintainer can remain available for technical questions.
+
+**Title**
+
+```text
+Show HN: Do Codex skills save tokens? A six-run task-size benchmark
+```
+
+**Body**
+
+```text
+I built an interactive explorer for a small controlled experiment with
+GPT-5.6-sol.
+
+Six runs compared no repository skill, engineering-loop v0.2.0, and a lean
+v0.4.0 skill across two task sizes. Every variant passed its acceptance gates.
+The result reversed with task size: no repository skill used the fewest
+reported tokens on a bounded backend fix, while the lean skill used 54.0% fewer
+than the control on a medium dependency-free 2048 implementation.
+
+The useful claim is not that skills save tokens. It is that a workflow skill
+has to earn its context cost for the task class.
+
+The explorer shows the exact token, time, retry, and acceptance results; links
+to both source measurements; and keeps the limitations visible. I would value
+replications that disagree, especially on real frontend, infrastructure,
+ambiguous-debugging, or security-sensitive work.
+
+Interactive benchmark:
+https://codex-howto-benchmark.nguyenvantamdk2.chatgpt.site
+
+Source and replication protocol:
+https://github.com/Phelan164/codex-howto
+```
+
+Do not ask for votes, coordinate comments, or submit before anonymous access is
+verified. Answer questions with the source measurements rather than expanding
+the two-task result into a general performance claim.
 
 ## Reddit
 
@@ -211,21 +254,17 @@ https://github.com/Phelan164/codex-howto
 Ask a moderator before posting in groups that do not publish clear promotion
 rules.
 
-## Technical article outline
+## Technical article
 
-**Working title:** “Do Codex skills actually save tokens? What six controlled
-GPT-5.6-sol runs showed”
+Use the complete, publication-ready
+[measurement article](articles/do-codex-skills-save-tokens.md). It includes the
+controlled setup, both result tables, the task-size hypothesis, limitations,
+and the replication protocol.
 
-1. The claim being tested and why quality gates come first.
-2. The three variants and controlled starting conditions.
-3. Small backend result: all pass, no-skill control cheapest.
-4. Medium 2048 result: all pass, lean skill cheapest.
-5. Why context cost depends on task class.
-6. Limitations: two tasks, global skills, reported tokens, blocked live browser.
-7. A copy-ready replication protocol and falsification request.
-
-Publish the useful explanation in the article itself. Do not make the article
-an empty teaser that requires a GitHub click.
+Publish the useful explanation in the destination itself. Do not turn it into
+an empty teaser that requires a GitHub click. Update only channel-specific
+frontmatter, the cover-image URL, and the public interactive-benchmark link;
+keep the measurements and limitations unchanged.
 
 ## Calls to action
 
