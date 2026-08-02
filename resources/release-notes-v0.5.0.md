@@ -4,6 +4,10 @@ Codex How To now includes controlled GPT-5.6-sol measurements for deciding
 when an engineering skill earns its context cost, plus a reproducible
 medium-sized implementation benchmark and a distributable Codex plugin bundle.
 
+[Explore the interactive benchmark](https://codex-howto-benchmark.nguyenvantamdk2.chatgpt.site)
+to compare the two task sizes, inspect exact run evidence, and follow every
+result back to its source measurement.
+
 ## Highlights
 
 - **Measured skill value:** six controlled runs compare no repository skill,
