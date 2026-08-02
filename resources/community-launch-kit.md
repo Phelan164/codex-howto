@@ -13,13 +13,13 @@ Use the copy below only after adapting it to the selected destination.
 
 | Window | Action | Evidence to collect |
 |---|---|---|
-| Day 0 | Publish a tagged GitHub release, verify `npx skills`, and confirm the skills.sh catalog | Release URL, passing CI, and install result |
-| Day 1 | Post a short demo on personal LinkedIn, X, or a developer fanpage | Views, repository visits, useful replies |
-| Day 2–3 | Submit to Codex GitHub Show and tell, then the OpenAI developer community | Questions, playground attempts, issues |
-| Day 4–6 | Submit one entry to Awesome Codex CLI and one skill to Awesome Codex Skills | Referral traffic, installs, accepted PRs |
-| Day 7 | Share once in the current r/ChatGPTCoding promotion thread | Clicks, comments, retention |
-| Day 8–10 | Publish a complete technical article on DEV or Viblo | Reads, referral traffic, completed demos |
-| Day 11–14 | Share results, fixes, and a first community contribution | Repeat visitors, contributors, forks |
+| Day 0 | Publish a tagged release, verify `npx skills`, and confirm skills.sh plus independent audit pages | Release URL, passing CI, install result, audit URLs |
+| Day 1 | Publish one short measurement result on a personal developer channel | Views, repository visits, useful disagreement |
+| Day 2–3 | Update the existing Codex GitHub Show and tell and project announcement | Questions, playground attempts, issues |
+| Day 4–6 | Submit one guide listing and one flagship skill listing | Referral traffic, installs, accepted PRs |
+| Day 7 | Share the mixed benchmark result once in an allowed Codex showcase or promotion thread | Clicks, technical replies, replications |
+| Day 8–10 | Publish a complete measurement article on DEV or Viblo | Reads, referral traffic, completed demos |
+| Day 11–14 | Share corrections, independent results, and the fork-edition starter | Repeat visitors, contributors, maintained forks |
 
 Do not publish identical copy everywhere on the same day. Adapt the engineering
 angle to the audience, confirm current self-promotion rules, and remain
@@ -27,18 +27,21 @@ available to answer questions.
 
 ## Repository launch settings
 
-Apply these settings after the launch-readiness pull request is merged:
+Verify these settings before each release:
 
-- **Description:** `Measurable engineering loops for OpenAI Codex: scope,
-  implement, test, review, and report evidence.`
-- **Topics:** retain `codex`, `codex-cli`, `openai`, `mcp`, `ai-agents`, and
-  `developer-tools`; add `software-engineering`, `agentic-workflows`, `testing`,
-  `code-review`, `devops`, and `skills`.
+- **Description:** state the module count, installable skills, measurement
+  surface, and engineering audience without claiming a productivity multiplier.
+- **Topics:** keep the available topic slots focused on Codex, agent skills,
+  software engineering, testing, review, DevOps, orchestration, and knowledge
+  maintenance.
 - **Social preview:** upload `assets/social-preview.png`.
-- **Discussions:** enable only if the maintainer can answer questions and
-  moderate the space.
-- **Release:** tag `v0.2.0` on the merged main commit and use
-  `resources/release-notes-v0.2.0.md` as the release body.
+- **Discussions:** keep the evergreen welcome post aligned with the current
+  release and replication request.
+- **Release:** tag the merged `main` commit and use the matching file under
+  `resources/release-notes-v*.md`. The current release is
+  [`v0.5.0`](https://github.com/Phelan164/codex-howto/releases/tag/v0.5.0).
+- **Trust evidence:** verify the public SkillStore audit links and badge
+  endpoints before displaying them.
 
 Do not tag the feature branch: the release tag should identify the exact
 commit users receive from the default branch.
@@ -74,51 +77,27 @@ move through scope, reproduction, implementation, focused tests, repository
 checks, diff review, and an evidence-based handoff.
 
 The repository includes 14 progressive modules, 9 installable skills, a
-review-first Codex Living Wiki, an educational router example, a
-dependency-free playground, and a three-way skill-ablation protocol. It covers
-frontend, backend, DevOps, testing, security, bounded multi-agent
-orchestration, and evidence-backed knowledge maintenance.
+review-first Codex Living Wiki, a dependency-free playground, and a
+reproducible three-way skill-ablation protocol.
 
-I would especially value feedback from developers who try the playground:
-which step was unclear, which skill changed the result, and which checks Codex
-still missed?
+Six controlled GPT-5.6-sol runs produced a mixed result. Every variant passed.
+No repository skill used the fewest reported tokens on a small backend fix.
+The lean engineering loop used 31.2% fewer reported tokens than v0.2.0 and
+54.0% fewer than the no-skill control on a medium 2048 implementation.
+
+I would especially value independent results that disagree with this boundary:
+which task did you run, what passed, where did the skill help, and where did it
+add ceremony?
 
 https://github.com/Phelan164/codex-howto
 ```
 
-## Show HN
+## Hacker News
 
-Use this only after a new developer can reproduce the five-minute demo from a
-clean checkout.
-
-**Title**
-
-```text
-Show HN: Codex How To – measurable engineering loops, skills, and orchestration
-```
-
-**Body**
-
-```text
-I made an open-source, engineering-first guide to Codex. Instead of treating
-code generation as completion, it uses a loop: scope → reproduce → implement →
-test → review → evidence.
-
-There are 14 modules, 9 installable skills, a review-first living wiki, and a
-dependency-free practice repository with seeded defects. I also included
-no-skill/full-skill/lean-skill and no-wiki/wiki evaluation plans so teams can
-test whether a workflow improves outcomes without claiming a universal
-productivity multiplier.
-
-The design choices I would most like challenged are skill routing, when to use
-subagents, and how much verification evidence belongs in the final context.
-
-Repository and runnable demo:
-https://github.com/Phelan164/codex-howto
-```
-
-Do not ask for upvotes. Answer technical questions and disclose that you are
-the project author.
+Do not submit this documentation repository as a Show HN project. The
+[Show HN guidelines](https://news.ycombinator.com/showhn.html) exclude reading
+material and lists. Reconsider only if the project gains a hosted, directly
+usable tool or interactive benchmark that a visitor can try.
 
 ## Reddit
 
@@ -130,17 +109,20 @@ problem.
 ### AI coding angle
 
 ```text
-I wanted Codex to behave less like a one-shot code generator and more like an
-engineering loop, so I packaged the workflow into an open-source guide and 9
-installable skills.
+Maintainer disclosure: I built Codex How To, an open-source engineering guide
+and skill package for Codex.
 
-The interesting part is not the prompt. The loop requires a baseline or
-reproduction, the smallest coherent change, focused and required checks, diff
-review, and an evidence report. There is a tiny dependency-free playground if
-you want to test it without pointing an agent at a production repository.
+I tested whether an engineering workflow skill actually reduces reported token
+use. Six controlled GPT-5.6-sol runs compared no repository skill,
+engineering-loop v0.2.0, and the current lean skill across two task sizes.
 
-I am looking for critical feedback on where the loop adds useful discipline
-and where it adds unnecessary overhead:
+Every variant passed. The no-skill control was cheapest on a small backend fix.
+On a medium dependency-free 2048 implementation, the lean skill used 31.2%
+fewer reported tokens than v0.2.0 and 54.0% fewer than the control.
+
+My tentative conclusion is not “skills save tokens.” A skill has to earn its
+context cost for the task class. I am looking for independent results,
+including neutral and negative ones:
 https://github.com/Phelan164/codex-howto
 ```
 
@@ -190,7 +172,11 @@ It is an open-source learning package with:
 • 9 installable skills for engineering, review, and wiki maintenance
 • a source-grounded Codex Living Wiki with deterministic lint
 • a dependency-free practice project
-• a protocol for measuring results instead of claiming “10x”
+• six controlled GPT-5.6-sol seed runs with mixed results
+
+The small task favored no skill. The medium implementation favored the lean
+engineering loop. That is a more useful boundary than claiming skills always
+save tokens.
 
 Try the five-minute playground, adapt a fork for your stack, or tell me where
 the workflow breaks:
@@ -211,10 +197,10 @@ Codex sinh code nhanh, nhưng một engineering task chỉ hoàn thành khi có 
 chứng: reproduce được lỗi, thay đổi nhỏ và đúng scope, test pass, review diff,
 và handoff rõ phần chưa kiểm chứng.
 
-Mình xây dựng Codex How To như một learning path open source gồm 14 modules,
-9 installable skills cho engineering/review/knowledge maintenance, một living
-wiki có source rõ ràng, một playground không cần dependency, và cách so sánh
-no-skill/full-skill/lean-skill.
+Mình chạy sáu lượt đo GPT-5.6-sol với ba variant: no-skill, engineering-loop
+v0.2.0, và bản lean hiện tại. Cả ba đều pass. Task backend nhỏ dùng no-skill ít
+reported token nhất; task 2048 cỡ vừa dùng bản lean ít hơn 31.2% so với v0.2.0
+và 54.0% so với control.
 
 Mình muốn nhận feedback thực tế: bước nào hữu ích, bước nào tạo overhead, và
 workflow còn thiếu case nào trong dự án của bạn?
@@ -227,16 +213,16 @@ rules.
 
 ## Technical article outline
 
-**Working title:** “Code generation is an intermediate result: building a
-measurable engineering loop for Codex”
+**Working title:** “Do Codex skills actually save tokens? What six controlled
+GPT-5.6-sol runs showed”
 
-1. The failure mode: a plausible patch without reproducible evidence.
-2. The loop contract: scope, reproduce, implement, test, review, evidence.
-3. Why one lifecycle owner is usually better than loading every skill.
-4. When a bounded subagent saves elapsed time and when it wastes tokens.
-5. A complete playground example.
-6. Paired-run measurement and limitations.
-7. How teams can fork the guide for their stack.
+1. The claim being tested and why quality gates come first.
+2. The three variants and controlled starting conditions.
+3. Small backend result: all pass, no-skill control cheapest.
+4. Medium 2048 result: all pass, lean skill cheapest.
+5. Why context cost depends on task class.
+6. Limitations: two tasks, global skills, reported tokens, blocked live browser.
+7. A copy-ready replication protocol and falsification request.
 
 Publish the useful explanation in the article itself. Do not make the article
 an empty teaser that requires a GitHub click.
@@ -248,7 +234,7 @@ Choose one primary action per post:
 - **Try:** complete the five-minute playground.
 - **Critique:** open an issue with one reproducible gap.
 - **Measure:** contribute anonymized three-way ablation results.
-- **Adapt:** create a tested stack, team, or translation fork.
+- **Adapt:** create a tested stack, team, translation, or benchmark edition.
 - **Follow:** star the project only if it is useful and worth revisiting.
 
 ## Distribution tracker
@@ -266,6 +252,9 @@ Record data after 24 hours, 7 days, and 30 days:
 | 2026-07-31 | Awesome Codex Skills | [PR #198](https://github.com/composio-community/awesome-codex-skills/pull/198) | Skill directory PR | — | — | 1 | 0 | 1 | — | Open and mergeable; canonical `engineering-loop` catalog link verified |
 | 2026-07-31 | Awesome Codex Guide | [PR #3](https://github.com/geekjourneyx/awesome-codex-guide/pull/3) | Resource directory PR | — | — | 1 | 0 | 1 | — | English and Chinese discovery metadata plus the install path |
 | 2026-07-31 | GitHub contributors | [Issue #8](https://github.com/Phelan164/codex-howto/issues/8) | Community benchmark | — | — | 1 | 0 | 1 | — | Invites sanitized three-way measurements and reproducible forks |
+| 2026-08-01 | GitHub Releases | [v0.5.0](https://github.com/Phelan164/codex-howto/releases/tag/v0.5.0) | Release | — | — | 1 | 0 | 0 | — | Six GPT-5.6-sol runs, 2048 benchmark, plugin distribution, and replication request |
+| 2026-08-02 | GitHub Traffic | [Repository](https://github.com/Phelan164/codex-howto) | 14-day baseline | 114 | 11 | 1 | 0 | — | — | 223 clones from 104 unique cloners; likely includes automated registry and scanner traffic |
+| 2026-08-02 | SkillStore | [Engineering Loop](https://skillstore.io/skills/phelan164-engineering-loop) | Independent audit | 0 | — | 1 | 0 | — | 3 downloads | Approved, audit complete, signed artifact available, quality score 75 |
 
 Use GitHub traffic and referral data while available. Compare channels by
 meaningful actions—completed demos, useful issues, repeat visitors, and
