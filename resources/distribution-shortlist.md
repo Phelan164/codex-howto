@@ -86,6 +86,29 @@ Proposed entry:
 - **Gate:** complete—the released skill passes the official validator and an
   isolated `npx skills` Codex installation.
 
+### HOL Codex Plugin Marketplace
+
+- **Destination:** [hashgraph-online/awesome-codex-plugins](https://github.com/hashgraph-online/awesome-codex-plugins)
+- **Rules:** submit one repository-root README entry, sorted alphabetically,
+  after the source plugin passes the required HOL scanner workflow.
+- **Why it fits:** the marketplace mirrors installable plugin bundles instead
+  of treating the project as a generic reading list.
+- **Verified:** the repository has a valid manifest and icon, `SECURITY.md`,
+  an MIT license, and a passing SHA-pinned scanner workflow configured with
+  `min_score: 80` and `fail_on_severity: high`.
+- **Submission:** [PR #341](https://github.com/hashgraph-online/awesome-codex-plugins/pull/341)
+  adds one entry under **Development & Workflow**.
+
+### SkillStore
+
+- **Destination:** [Engineering Loop](https://skillstore.io/skills/phelan164-engineering-loop)
+  and [Maintain Codex Wiki](https://skillstore.io/skills/phelan164-maintain-codex-wiki).
+- **Why it fits:** the pages provide independent discovery, security status,
+  quality scoring, and install/download signals for the flagship skills.
+- **Status:** both skills are already listed; do not submit duplicate forms.
+- **Measure:** page views, downloads, favorites, and whether audit visibility
+  improves repository conversion.
+
 ## Priority 2: rule-approved discovery
 
 ### r/ChatGPTCoding self-promotion thread
@@ -192,13 +215,6 @@ If those gates are met, email `hello@console.dev` with a concise description,
 demo instructions, release link, and maintenance evidence. Do not purchase a
 sponsorship as a substitute for product fit.
 
-### Awesome Codex Plugins
-
-The repository includes a `.codex-plugin/plugin.json`, but the plugin directory
-should receive a submission only after the package is installation-tested and
-passes the directory's current validation or trust checks. Lead with the
-engineering workflow package, not the tutorial catalog.
-
 ## Do not prioritize yet
 
 - **Product Hunt:** the current artifact is primarily a curriculum and workflow
@@ -212,14 +228,18 @@ engineering workflow package, not the tutorial catalog.
 
 ## Recommended order
 
-1. Merge and release `v0.2.0`.
-2. Publish OpenAI Codex Show and tell.
-3. Submit one Awesome Codex CLI entry.
-4. Submit `engineering-loop` to Awesome Codex Skills.
-5. Use the current r/ChatGPTCoding promotion thread.
-6. Publish the full DEV article; adapt it into Vietnamese for Viblo.
+1. Keep the `v0.5.0` release, skills.sh catalog, and SkillStore audit pages
+   healthy.
+2. Answer feedback on the existing OpenAI Codex Show and tell.
+3. Maintain the pending Awesome Codex CLI, Awesome Codex Skills, and HOL
+   marketplace submissions without duplicating them.
+4. Share the mixed benchmark result once in a current rule-approved promotion
+   thread.
+5. Publish the complete measurement article on DEV; adapt it into Vietnamese
+   for Viblo.
+6. Invite independent benchmark runs and maintained fork editions.
 7. Use r/devops only with the platform-safety angle.
-8. Consider Show HN and console.dev after evidence from real users.
+8. Reconsider Show HN only after there is a hosted, directly usable tool.
 
 Record each result in the
 [distribution tracker](community-launch-kit.md#distribution-tracker) after 24
