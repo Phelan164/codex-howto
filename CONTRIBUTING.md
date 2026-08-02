@@ -2,6 +2,9 @@
 
 Thank you for improving Codex How To.
 
+By participating, you agree to follow the
+[Code of Conduct](CODE_OF_CONDUCT.md).
+
 ## Before you start
 
 - Search existing issues and pull requests for overlapping work.
