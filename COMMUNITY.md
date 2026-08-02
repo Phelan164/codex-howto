@@ -16,8 +16,8 @@ unverified.
 - **Open an issue** for a documentation defect, missing engineering case, or
   reproducible workflow failure.
 - **Contribute a focused change** that follows the content and skill standards.
-- **[Fork the repository](https://github.com/Phelan164/codex-howto/fork)**
-  when you need a team-, language-, or stack-specific edition.
+- **[Fork a tested edition](resources/fork-an-edition.md)** when you need a
+  team-, language-, stack-, or benchmark-specific adaptation.
 
 Stars are useful signals that the guide should remain discoverable. Forks are
 most valuable when they produce a tested adaptation, not when they merely copy

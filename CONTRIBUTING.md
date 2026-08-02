@@ -15,8 +15,9 @@ Thank you for improving Codex How To.
 - Add one missing engineering case with a runnable exercise and verification.
 - Report sanitized workflow evidence, including negative or inconclusive
   results.
-- Adapt a focused stack or translation edition in a fork, then contribute
-  generally useful improvements upstream.
+- Use the [edition starter](resources/fork-an-edition.md) to adapt a focused
+  team, stack, translation, or benchmark fork, then contribute generally useful
+  improvements upstream.
 
 Large stack-specific or organization-specific variants usually belong in a
 fork. Keep the upstream guide focused on reusable engineering decisions.

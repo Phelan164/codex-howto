@@ -22,7 +22,7 @@ DevOps, security, and multi-agent orchestration.
 [Measure the loop](resources/engineering-loop-measurement.md) ·
 [Explore the living wiki](knowledge/index.md) ·
 [Run a community benchmark](https://github.com/Phelan164/codex-howto/issues/16) ·
-[Fork an edition](https://github.com/Phelan164/codex-howto/fork) ·
+[Fork an edition](resources/fork-an-edition.md) ·
 [Present this guide](PRESENTING.md) ·
 [Join the community](COMMUNITY.md)
 
@@ -419,7 +419,7 @@ If the guide is useful, choose the action that creates the most value:
 - try the playground and report a reproducible gap;
 - [contribute anonymized engineering-loop measurements](https://github.com/Phelan164/codex-howto/issues/8);
 - [test the Living Wiki against normal repository search](https://github.com/Phelan164/codex-howto/issues/16);
-- [fork it into a tested stack, team, or translation edition](https://github.com/Phelan164/codex-howto/fork);
+- [fork it into a tested stack, team, translation, or benchmark edition](resources/fork-an-edition.md);
 - share it with one relevant developer community; or
 - star it so you can find it again.
 
