@@ -11,6 +11,8 @@ DevOps, security, and multi-agent orchestration.
 [![Validate](https://github.com/Phelan164/codex-howto/actions/workflows/validate.yml/badge.svg)](https://github.com/Phelan164/codex-howto/actions/workflows/validate.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![skills.sh](https://skills.sh/b/phelan164/codex-howto)](https://skills.sh/phelan164/codex-howto)
+[![Engineering Loop security](https://skillstore.io/badges/skills/phelan164-engineering-loop/security.svg)](https://skillstore.io/skills/phelan164-engineering-loop)
+[![Engineering Loop score](https://skillstore.io/badges/skills/phelan164-engineering-loop/score.svg)](https://skillstore.io/skills/phelan164-engineering-loop)
 
 [Start learning](modules/00-mental-model/README.md) ·
 [Choose a track](LEARNING-ROADMAP.md) ·
