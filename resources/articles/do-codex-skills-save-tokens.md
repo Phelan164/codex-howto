@@ -24,6 +24,11 @@ Disclosure: I maintain
 repository containing the skill, fixtures, evaluator, and measurements used
 here.
 
+Use the
+[interactive benchmark explorer](https://codex-howto-benchmark.nguyenvantamdk2.chatgpt.site)
+to switch between task sizes, inspect proportional token use, and follow each
+result back to its source measurement.
+
 ## The claim I wanted to test
 
 The repository treats generated code as an intermediate result. Its
