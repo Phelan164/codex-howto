@@ -15,24 +15,37 @@ DevOps, security, and multi-agent orchestration.
 [![Engineering Loop score](https://skillstore.io/badges/skills/phelan164-engineering-loop/score.svg)](https://skillstore.io/skills/phelan164-engineering-loop)
 
 [Start learning](modules/00-mental-model/README.md) ·
-[Choose a track](LEARNING-ROADMAP.md) ·
-[Browse skills](#engineering-skill-catalog) ·
-[Install from skills.sh](https://skills.sh/phelan164/codex-howto) ·
-[Find verified listings on SkillStore](https://skillstore.io/search?q=phelan164) ·
-[Try the playground](labs/engineering-playground/README.md) ·
-[Use the quick reference](QUICK_REFERENCE.md) ·
-[Measure the loop](resources/engineering-loop-measurement.md) ·
-[Explore the benchmark](https://codex-howto-benchmark.nguyenvantamdk2.chatgpt.site) ·
-[Explore the living wiki](knowledge/index.md) ·
-[Run a community benchmark](https://github.com/Phelan164/codex-howto/issues/16) ·
-[Calibrate third-party workflows](resources/third-party-workflow-profiles.md) ·
-[Fork an edition](resources/fork-an-edition.md) ·
-[Present this guide](PRESENTING.md) ·
-[Join the community](COMMUNITY.md)
+[Try the engineering loop](#try-the-engineering-loop) ·
+[See measured results](#what-the-seed-measurements-show) ·
+[Browse all skills](#engineering-skill-catalog) ·
+[Contribute](#contributing)
 
 > **Status:** community preview. Content was checked against official Codex
 > documentation on 2026-07-31. Codex changes quickly; verify settings and
 > commands through the links marked **Official source**.
+
+## Try the engineering loop
+
+Install the flagship skill with the community
+[skills.sh installer](https://skills.sh/phelan164/codex-howto):
+
+```bash
+npx skills add Phelan164/codex-howto --skill engineering-loop -g -a codex -y
+```
+
+Start a new Codex task in a small, version-controlled project:
+
+```text
+$engineering-loop Implement this change end to end. Continue through focused
+tests, required checks, diff review, and verified fixes. Report the commands
+run, evidence produced, and anything that remains unverified.
+```
+
+Expect a baseline, a bounded implementation, focused and required checks, a
+final diff review, and an evidence handoff—not just generated code. Inspect the
+[skill source](skills/engineering-loop/SKILL.md) before installing it, or use
+the dependency-free
+[five-minute playground](labs/engineering-playground/README.md) first.
 
 ## See the engineering loop
 
@@ -305,11 +318,11 @@ This repository includes nine installable starter skills:
 | [`orchestrate-engineering`](skills/orchestrate-engineering/SKILL.md) | Coordinate bounded agents while protecting context and avoiding edit conflicts |
 | [`maintain-codex-wiki`](skills/maintain-codex-wiki/SKILL.md) | Query, capture, ingest, archive, lint, and promote review-first Codex knowledge |
 
-Install a flagship skill through the
+The [quick start](#try-the-engineering-loop) installs `engineering-loop`.
+Install the Living Wiki maintainer through the same
 [open agent skills ecosystem](https://skills.sh/phelan164/codex-howto):
 
 ```bash
-npx skills add Phelan164/codex-howto --skill engineering-loop -g -a codex -y
 npx skills add Phelan164/codex-howto --skill maintain-codex-wiki -g -a codex -y
 ```
 
