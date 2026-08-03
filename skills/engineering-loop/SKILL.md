@@ -28,11 +28,15 @@ resists the first evidence-driven pass, use
 2. Choose the smallest coherent change and the evidence that will prove it.
 3. Add a failing regression test first when practical.
 4. Implement one bounded change and run the narrowest relevant check.
-5. Classify failures as product, test, environment, or assumption failures;
+5. Pause before expanding into an unplanned subsystem, public contract,
+   migration, or external system. Record why the original scope is
+   insufficient and obtain any authority the expansion requires.
+6. Classify failures as product, test, environment, or assumption failures;
    fix the cause and rerun the affected check.
-6. Run repository-required broader checks after focused checks pass.
-7. Inspect the complete diff and perform a fresh findings-first review.
-8. Fix consequential findings and rerun checks affected by those fixes.
+7. Run repository-required broader checks after focused checks pass.
+8. Review the complete diff first for task-contract compliance, then for code
+   quality, regressions, security, and maintainability.
+9. Fix consequential findings and rerun checks affected by those fixes.
 
 Keep a compact ledger of confirmed facts, changed files, commands, outcomes,
 and the next decision. Return concise diagnostics instead of full logs.
@@ -41,6 +45,9 @@ and the next decision. Return concise diagnostics instead of full logs.
 
 - If the same command fails twice for the same reason, stop retrying and
   re-check the environment, target, permissions, and underlying assumption.
+- Stop recursive discovery when each new finding redefines the same task
+  boundary. Freeze the discovered scope or return for a scope decision instead
+  of repeatedly recataloging the repository.
 - Stop and report a blocker when progress requires missing authority, secrets,
   unavailable infrastructure, destructive action, or a product decision.
 - Never make a failing check pass by weakening assertions, deleting coverage,
@@ -56,5 +63,5 @@ Report:
 2. changed files and important design decisions;
 3. regression proof or acceptance evidence;
 4. focused and broader commands with outcomes;
-5. review findings fixed or explicitly unresolved;
+5. task-contract and code-quality findings fixed or explicitly unresolved;
 6. unrun checks, residual risks, and blockers.
