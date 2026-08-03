@@ -265,6 +265,10 @@ Use the complete, publication-ready
 controlled setup, both result tables, the task-size hypothesis, limitations,
 and the replication protocol.
 
+For Viblo or another Vietnamese developer publication, start from the complete
+[Vietnamese edition](articles/do-codex-skills-save-tokens.vi.md). Keep the
+measurements, disclosure, limitations, and canonical-English link intact.
+
 Publish the useful explanation in the destination itself. Do not turn it into
 an empty teaser that requires a GitHub click. Update only channel-specific
 frontmatter, the cover-image URL, and the public interactive-benchmark link;
