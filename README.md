@@ -25,6 +25,7 @@ DevOps, security, and multi-agent orchestration.
 [Explore the benchmark](https://codex-howto-benchmark.nguyenvantamdk2.chatgpt.site) ·
 [Explore the living wiki](knowledge/index.md) ·
 [Run a community benchmark](https://github.com/Phelan164/codex-howto/issues/16) ·
+[Calibrate third-party workflows](resources/third-party-workflow-profiles.md) ·
 [Fork an edition](resources/fork-an-edition.md) ·
 [Present this guide](PRESENTING.md) ·
 [Join the community](COMMUNITY.md)
@@ -104,6 +105,24 @@ The standalone
 [measurement article](resources/articles/do-codex-skills-save-tokens.md)
 explains the setup, results, boundary hypothesis, and replication protocol
 without requiring a repository click.
+
+## Measure workflows instead of collecting them
+
+Established community projects already provide strong engineering methods.
+[`mattpocock/skills`](https://github.com/mattpocock/skills) emphasizes small,
+composable workflows for real engineering.
+[`obra/superpowers`](https://github.com/obra/superpowers) provides a more
+prescriptive design, planning, TDD, review, and verification lifecycle.
+
+This repository does not vendor or rename those catalogs. It provides
+[comparison profiles](resources/third-party-workflow-profiles.md) and a common
+[measured task receipt](examples/templates/measured-task-receipt.md) so teams
+can compare no skill, the lean Codex loop, and selected third-party workflows
+under the same task contract.
+
+The useful question is not “which catalog is best?” It is “which minimum
+workflow improves acceptance, evidence, or safety enough to justify its
+context, checkpoints, time, and total tokens for this task class?”
 
 ## Five-minute engineering demo
 
@@ -401,6 +420,12 @@ The skill-system refinements were inspired by the original
 [mattpocock/skills](https://github.com/mattpocock/skills) repository. Its
 invocation, routing, debugging, and review ideas were adapted to Codex without
 copying its skills.
+
+The workflow-calibration profiles also study
+[obra/superpowers](https://github.com/obra/superpowers), particularly its
+design gates, worktree isolation, verification discipline, staged review, and
+skill-behavior testing. `codex-howto` links to both MIT-licensed upstream
+projects rather than vendoring their catalogs.
 
 The living-wiki pattern was inspired by
 [Karpathy's LLM Wiki idea](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f).

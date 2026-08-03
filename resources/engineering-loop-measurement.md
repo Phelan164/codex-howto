@@ -5,6 +5,13 @@ cost. Compare the model alone, the v0.2 full skill, and the current lean skill.
 The goal is not to prove that one prompt wins once; it is to detect whether
 workflow instructions improve repeatable, quality-gated completion.
 
+The published seed experiment uses three variants. A new task set can use the
+same controls to compare `no_skill`, the current lean skill, and one external
+workflow profile, or add more isolated profiles when the run budget permits.
+See [Third-party workflow calibration](third-party-workflow-profiles.md). Do
+not mix external profiles into the published seed result table or describe an
+upstream project as better from one task.
+
 ## Hypothesis
 
 Write the hypothesis before running either variant:
@@ -83,6 +90,11 @@ Record quality before efficiency:
 | `false_positives` | Reported findings rejected by the evaluator as unsupported or non-actionable |
 | `retries` | Repeated attempts that did not add new evidence |
 | `human_corrections` | Human interventions that changed code, tests, requirements, or the next technical action |
+| `files_read` | Distinct files read when the surface exposes this reliably |
+| `files_changed` | Distinct files changed by the run |
+| `unexpected_files_changed` | Changed files outside the approved task scope |
+| `scope_expansions` | Approved changes to the original paths, subsystems, acceptance criteria, or external systems |
+| `human_checkpoints` | Required design, scope, permission, or integration approvals |
 | `elapsed_seconds` | Wall-clock time from submitted prompt to final report, including tool execution and human waits |
 | `total_tokens` | Total input plus output tokens when the surface exposes them |
 | `total_cost_usd` | Total run cost when the surface exposes it |
@@ -90,6 +102,12 @@ Record quality before efficiency:
 
 Define acceptance criteria and counting rules before the run. Leave unavailable
 optional measurements blank; do not estimate hidden token or cost data.
+
+For a profile comparison, create one
+[measured task receipt](../examples/templates/measured-task-receipt.md) per run.
+The receipt extends the stable CSV seed schema with scope, workflow revision,
+and budget evidence. Keep the existing CSV columns unchanged so published seed
+summaries remain reproducible.
 
 ## Record and summarize
 
@@ -123,6 +141,10 @@ Prefer the lean skill when it preserves the full skill's quality with lower
 token use, latency, or retries. Prefer no skill when quality is unchanged and
 both skill variants add overhead. “Higher quality but slower,” “faster but less
 reliable,” and “no observed difference” are valid outcomes.
+
+For an external profile, retain only the smallest set of upstream components
+that produced the measured gain. A complete catalog is not one indivisible
+variant.
 
 ## Threats to validity
 

@@ -11,6 +11,7 @@ Goal:
 User-visible behavior:
 In scope:
 Out of scope:
+Planned paths or subsystems:
 Constraints:
 Acceptance criteria:
 Relevant repository guidance:
@@ -18,6 +19,7 @@ Baseline command and result:
 Focused verification:
 Required broader checks:
 External systems or side effects:
+Optional budgets for time, tokens, retries, and scope expansions:
 ```
 
 Unknown acceptance criteria or an ambiguous execution environment is a planning
@@ -36,6 +38,20 @@ Next evidence-producing action:
 
 Replace superseded assumptions instead of accumulating a long history in the
 main context.
+
+## Scope expansion gate
+
+Before changing an unplanned path, subsystem, public contract, migration, or
+external system:
+
+1. show the evidence that makes the expansion necessary;
+2. classify it as required, optional, or unrelated;
+3. state the added verification and risk;
+4. obtain approval when it changes the authorized task or side effects; and
+5. update the contract once instead of rediscovering the boundary repeatedly.
+
+Generated files named by an approved build step do not require a new gate, but
+their source and necessity must remain explainable.
 
 ## Failure classification
 
@@ -69,9 +85,15 @@ level is unavailable or irrelevant.
 
 ## Review gate
 
-Before completion, answer:
+Review in two passes. First check specification compliance:
 
-- Does the diff implement only the requested behavior?
+- Does the diff implement every acceptance criterion?
+- Does it stay inside the approved scope?
+- Does it add behavior, dependencies, or abstractions the task did not need?
+- Are unverified or partial outcomes labeled accurately?
+
+Then check code quality:
+
 - Are boundary, failure, authorization, and data-integrity cases covered where
   relevant?
 - Did any fix change a public contract, migration requirement, or operational
