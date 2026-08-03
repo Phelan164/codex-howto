@@ -117,7 +117,9 @@ in CI so the shareable view remains traceable to the repository measurements.
 The standalone
 [measurement article](resources/articles/do-codex-skills-save-tokens.md)
 explains the setup, results, boundary hypothesis, and replication protocol
-without requiring a repository click.
+without requiring a repository click. A complete
+[Vietnamese edition](resources/articles/do-codex-skills-save-tokens.vi.md)
+preserves the same measurements and limitations for local publication.
 
 ## Measure workflows instead of collecting them
 
