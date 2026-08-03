@@ -18,6 +18,7 @@ DevOps, security, and multi-agent orchestration.
 [Try the engineering loop](#try-the-engineering-loop) ·
 [See measured results](#what-the-seed-measurements-show) ·
 [Browse all skills](#engineering-skill-catalog) ·
+[Fork a tested edition](resources/fork-an-edition.md) ·
 [Contribute](#contributing)
 
 > **Status:** community preview. Content was checked against official Codex
