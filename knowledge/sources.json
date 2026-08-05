@@ -101,6 +101,17 @@
       ]
     },
     {
+      "id": "ecc-loop-controls",
+      "title": "affaan-m/everything-claude-code loop controls",
+      "kind": "community",
+      "url": "https://github.com/affaan-m/everything-claude-code",
+      "last_verified": "2026-08-05",
+      "revision": "ff15079b9f9852c385ac3a506f8ec3a26be4f563",
+      "affected_pages": [
+        "knowledge/topics/engineering-loop-evidence.md"
+      ]
+    },
+    {
       "id": "local-orchestration-matrix",
       "title": "Orchestration decision matrix",
       "kind": "repository",

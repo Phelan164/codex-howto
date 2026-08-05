@@ -89,6 +89,8 @@ Record quality before efficiency:
 | `actionable_findings` | Unique consequential issues found during final review |
 | `false_positives` | Reported findings rejected by the evaluator as unsupported or non-actionable |
 | `retries` | Repeated attempts that did not add new evidence |
+| `iterations_to_green` | Bounded build-judge cycles through the first accepted judge result |
+| `first_judge_passed` | Whether the first predefined judge satisfied its success predicate without another code change |
 | `human_corrections` | Human interventions that changed code, tests, requirements, or the next technical action |
 | `files_read` | Distinct files read when the surface exposes this reliably |
 | `files_changed` | Distinct files changed by the run |
@@ -108,6 +110,22 @@ For a profile comparison, create one
 The receipt extends the stable CSV seed schema with scope, workflow revision,
 and budget evidence. Keep the existing CSV columns unchanged so published seed
 summaries remain reproducible.
+
+## Reliability across repetitions
+
+One accepted run demonstrates feasibility, not reliability. For each task
+class and workflow profile, repeat independent runs from the same starting
+state and report:
+
+- acceptance rate across all attempted runs, including stopped and failed runs;
+- first-judge pass rate;
+- median iterations to green among accepted runs;
+- the number of consecutive accepted runs at the frozen revision.
+
+Choose the repetition count before running the experiment. Do not reset a
+consecutive-run series after a failure or omit runs that exhaust their loop
+budget. Compare reliability only when the judge, success predicate, model,
+reasoning effort, repository state, and tool permissions are held constant.
 
 ## Record and summarize
 

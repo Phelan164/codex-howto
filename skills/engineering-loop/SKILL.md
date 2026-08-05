@@ -18,6 +18,9 @@ agent and this skill alone unless a specialist changes a material decision.
 
 For a long, cross-stack, or high-risk change, use the templates and failure
 rules in [references/loop-contract.md](references/loop-contract.md).
+When a task is expected to need repeated autonomous iterations or has an
+explicit retry, time, token, or cost limit, also use
+[references/loop-policy.md](references/loop-policy.md).
 When a defect is intermittent, performance-related, difficult to reproduce, or
 resists the first evidence-driven pass, use
 [references/hard-debugging.md](references/hard-debugging.md).
@@ -50,6 +53,8 @@ and the next decision. Return concise diagnostics instead of full logs.
   of repeatedly recataloging the repository.
 - Stop and report a blocker when progress requires missing authority, secrets,
   unavailable infrastructure, destructive action, or a product decision.
+- When an explicit loop budget is exhausted, stop with the latest judge
+  evidence instead of silently expanding the budget.
 - Never make a failing check pass by weakening assertions, deleting coverage,
   hiding errors, or silently changing acceptance criteria.
 - Do not query production, deploy, migrate, merge, or publish unless the user

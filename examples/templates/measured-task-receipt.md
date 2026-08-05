@@ -14,6 +14,8 @@ task:
   out_of_scope: []
   planned_paths: []
   acceptance_checks: []
+  judge:
+  success_predicate:
 
 run:
   profile:
@@ -29,6 +31,7 @@ budgets:
   elapsed_seconds:
   total_tokens:
   retries:
+  iterations:
   scope_expansions:
   human_checkpoints:
 
@@ -43,6 +46,8 @@ outcome:
   unexpected_files_changed:
   scope_expansions:
   retries:
+  iterations_to_green:
+  first_judge_passed:
   human_corrections:
   human_checkpoints:
   elapsed_seconds:
@@ -51,6 +56,7 @@ outcome:
 
 evidence:
   baseline:
+  last_judge:
   focused_checks: []
   required_checks: []
   review:
@@ -69,6 +75,12 @@ decision:
 - `scope_expansions` counts approved changes to the original in-scope paths,
   subsystems, acceptance criteria, or external systems.
 - `retries` counts repeated attempts that add no new evidence.
+- `iterations` counts repository changes followed by the predefined judge.
+  Baseline reproduction does not count; temporary diagnostic changes do.
+- `iterations_to_green` counts bounded build-judge cycles through the first
+  accepted judge result. Leave it blank when the run never reaches green.
+- `first_judge_passed` is true only when the first predefined judge satisfies
+  its success predicate without another code change.
 - `human_corrections` counts interventions that change code, tests,
   requirements, or the next technical action.
 - `human_checkpoints` includes required design, scope, permission, and
@@ -78,3 +90,7 @@ decision:
 
 Record the counting policy before comparing runs. A receipt is an auditable
 run record, not a universal productivity score.
+
+For a stopped or resumed run, add a compact checkpoint under `evidence` with
+confirmed facts, disproved hypotheses, the current diff, budget remaining, and
+the next evidence-producing action. Do not copy the full transcript.
