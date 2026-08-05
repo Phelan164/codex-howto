@@ -19,17 +19,24 @@ Baseline command and result:
 Focused verification:
 Required broader checks:
 External systems or side effects:
-Optional budgets for time, tokens, retries, and scope expansions:
+Judge command or observation:
+Success predicate:
+Optional budgets for iterations, no-new-evidence retries, time, tokens, cost,
+scope expansions, and human checkpoints:
 ```
 
 Unknown acceptance criteria or an ambiguous execution environment is a planning
 gap, not permission to guess.
+
+For a repeated autonomous loop, define the judge and apply the damping,
+stop-loss, and resume rules in [loop-policy.md](loop-policy.md).
 
 ## Progress ledger
 
 ```text
 Phase:
 Confirmed facts:
+Failed hypotheses that require new evidence before retry:
 Changed files:
 Command and outcome:
 Current blocker or uncertainty:

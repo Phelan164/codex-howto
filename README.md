@@ -443,6 +443,12 @@ design gates, worktree isolation, verification discipline, staged review, and
 skill-behavior testing. `codex-howto` links to both MIT-licensed upstream
 projects rather than vendoring their catalogs.
 
+Bounded autonomous-loop controls were informed by
+[affaan-m/everything-claude-code](https://github.com/affaan-m/everything-claude-code),
+especially its plan-build-judge, evaluation, context-budget, and cost-tracking
+workflows. The Codex adaptation remains optional and is measured as a focused
+component rather than importing the full harness.
+
 The living-wiki pattern was inspired by
 [Karpathy's LLM Wiki idea](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f).
 The review-first Codex adaptation also studies

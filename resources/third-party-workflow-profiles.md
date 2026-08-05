@@ -6,7 +6,7 @@ whether a workflow improves a representative Codex task enough to justify its
 context, latency, and human-review cost.
 
 These profiles describe community projects, not official OpenAI behavior. They
-were reviewed on 2026-08-03. Follow each upstream repository's current
+were reviewed on 2026-08-05. Follow each upstream repository's current
 installation and usage instructions before running a comparison.
 
 ## Why profiles instead of vendoring
@@ -73,6 +73,29 @@ Do not treat mandatory ceremony as free. Record design interactions, human
 checkpoints, subagent count, and total tokens across every participating
 thread.
 
+## Profile D: Everything Claude Code loop controls
+
+The community project
+[`affaan-m/everything-claude-code`](https://github.com/affaan-m/everything-claude-code)
+is a broad agent harness with skills, agents, commands, hooks, rules, and
+cross-platform installation paths. Its loop-related material includes
+plan-build-judge design, evaluation harnesses, context budgets, and cost
+tracking.
+
+Use this profile when the experiment specifically needs to compare:
+
+- a predefined machine-decidable judge;
+- bounded iterations and stop-loss behavior;
+- resumable state that prevents disproved hypotheses from being retried;
+- explicit context or cost budgets when the Codex surface exposes them.
+
+Do not install or benchmark the entire catalog as one indivisible workflow.
+Select only the loop components required by the task and record their exact
+upstream revision. The bounded policy in this repository was informed by these
+ideas but adapted to the existing lean Codex loop rather than copied or
+vendored. The revision reviewed for this adaptation was
+[`ff15079`](https://github.com/affaan-m/everything-claude-code/commit/ff15079b9f9852c385ac3a506f8ec3a26be4f563).
+
 ## Choose before running
 
 | Task shape | Candidate starting profile |
@@ -81,6 +104,7 @@ thread.
 | Medium feature crossing implementation and tests | Minimal loop |
 | Domain-heavy work requiring durable terminology or tickets | Matt Pocock chain |
 | Ambiguous, high-impact, or multi-stage feature | Superpowers lifecycle |
+| Repeated autonomous task with an explicit judge and budget | ECC loop controls |
 | Independent specialist investigations | Add measured orchestration to one profile |
 
 This table is a hypothesis, not a ranking. Local measurements should override
@@ -142,10 +166,11 @@ changes agent behavior under pressure.
 
 ## Attribution and reuse
 
-Both upstream repositories publish MIT licenses:
+The profiled upstream repositories publish MIT licenses:
 
 - [`mattpocock/skills` license](https://github.com/mattpocock/skills/blob/main/LICENSE)
 - [`obra/superpowers` license](https://github.com/obra/superpowers/blob/main/LICENSE)
+- [`affaan-m/everything-claude-code` license](https://github.com/affaan-m/everything-claude-code/blob/main/LICENSE)
 
 This repository links to and analyzes their public workflows. It does not
 vendor their skill text. If a future contribution copies or modifies upstream

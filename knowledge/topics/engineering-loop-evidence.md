@@ -1,8 +1,8 @@
 # Engineering-loop evidence
 
 > Status: experimental
-> Last updated: 2026-07-31
-> Sources: `local-engineering-loop-measurement`
+> Last updated: 2026-08-05
+> Sources: `local-engineering-loop-measurement`, `ecc-loop-controls`
 
 ## Current understanding
 
@@ -35,3 +35,8 @@ representative work.
 
 The workflow is published, while its efficiency claim remains experimental.
 Future run data should update this page before changing the recommendation.
+
+For repeated autonomous tasks, the loop now defines an optional judge,
+iteration and retry budgets, stop-loss rules, and a resumable checkpoint.
+Measurements should include stopped runs, first-judge pass rate, and iterations
+to green so one eventual success is not mistaken for reliable control.
