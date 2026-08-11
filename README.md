@@ -171,6 +171,9 @@ no-skill, full-skill, and lean-skill runs without treating one demo as proof.
 For a larger implementation exercise, use the
 [dependency-free 2048 benchmark](labs/2048-game-benchmark/README.md) and inspect
 the [GPT-5.6-sol seed measurement](examples/measurements/gpt-5.6-sol-2048-game-2026-07-31.md).
+To measure a genuinely partitioned large task, compare one agent with bounded
+backend/frontend ownership in the
+[incident-response orchestration benchmark](labs/incident-response-benchmark/README.md).
 Use [PRESENTING.md](PRESENTING.md) for a 15-minute talk track, demo checklist,
 and copy-ready announcement.
 

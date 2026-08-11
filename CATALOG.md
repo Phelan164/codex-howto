@@ -58,8 +58,10 @@
 - [Dependency-aware ticket set](examples/templates/dependency-aware-tickets.md)
 - [Engineering handoff](examples/templates/engineering-handoff.md)
 - [Measured task receipt](examples/templates/measured-task-receipt.md)
+- [Orchestration run receipt](examples/templates/orchestration-run-receipt.md)
 - [Edition manifest](examples/templates/edition-manifest.md)
 - [Engineering-loop run record](examples/measurements/engineering-loop-runs.csv)
+- [Incident orchestration smoke run](examples/measurements/incident-orchestration-smoke-2026-08-11.md)
 - [Local plugin marketplace](examples/plugin-marketplace/.agents/plugins/marketplace.json)
 - [Stop-hook example](examples/hooks/validate-on-stop/hooks.json)
 - [Explicit-only workflow router](examples/skills/choose-engineering-flow/SKILL.md)
@@ -78,6 +80,9 @@
 - [Engineering playground](labs/engineering-playground/README.md) — a
   dependency-free frontend, backend, and deployment fixture with seeded defects
   for the end-to-end loop and its specialist workflows.
+- [Incident-response orchestration benchmark](labs/incident-response-benchmark/README.md)
+  — a partitionable full-stack task for controlled single-agent versus
+  orchestrated implementation runs.
 - [Developer presentation guide](PRESENTING.md) — a 15-minute talk track,
   live-demo script, measurement plan, and copy-ready announcement.
 - [Engineering-loop measurement protocol](resources/engineering-loop-measurement.md)

@@ -76,7 +76,11 @@ Freeze shared interfaces first. If workers need the same file, run sequentially.
 
 ## Exercise
 
-Install [`orchestrate-engineering`](../../skills/orchestrate-engineering/SKILL.md), use it to run [the orchestrated review prompt](../../examples/prompts/orchestrated-review.md), then compare the result with one `/review` pass.
+Install [`orchestrate-engineering`](../../skills/orchestrate-engineering/SKILL.md),
+use it to run [the orchestrated review prompt](../../examples/prompts/orchestrated-review.md),
+then compare the result with one `/review` pass. For an implementation
+comparison with exclusive write surfaces and a system evaluator, run the
+[incident-response benchmark](../../labs/incident-response-benchmark/README.md).
 
 ```bash
 mkdir -p .agents/skills

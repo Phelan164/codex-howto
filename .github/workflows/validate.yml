@@ -59,3 +59,4 @@ jobs:
           python3 -m compileall -q
           scripts
           labs/engineering-playground/backend
+          labs/incident-response-benchmark
