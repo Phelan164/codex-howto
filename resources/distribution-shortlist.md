@@ -228,7 +228,7 @@ sponsorship as a substitute for product fit.
 
 ## Recommended order
 
-1. Keep the `v0.5.0` release, skills.sh catalog, and SkillStore audit pages
+1. Keep the `v0.6.0` release, skills.sh catalog, and SkillStore audit pages
    healthy.
 2. Answer feedback on the existing OpenAI Codex Show and tell.
 3. Maintain the pending Awesome Codex CLI, Awesome Codex Skills, and HOL

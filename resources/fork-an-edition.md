@@ -22,7 +22,7 @@ checks, and explain how it will stay current.
 3. Create an edition branch from the release you actually tested:
 
    ```bash
-   git switch -c edition/YOUR-EDITION v0.5.0
+   git switch -c edition/YOUR-EDITION v0.6.0
    cp examples/templates/edition-manifest.md EDITION.md
    ```
 
