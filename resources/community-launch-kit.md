@@ -39,7 +39,7 @@ Verify these settings before each release:
   release and replication request.
 - **Release:** tag the merged `main` commit and use the matching file under
   `resources/release-notes-v*.md`. The current release is
-  [`v0.5.0`](https://github.com/Phelan164/codex-howto/releases/tag/v0.5.0).
+  [`v0.6.0`](https://github.com/Phelan164/codex-howto/releases/tag/v0.6.0).
 - **Trust evidence:** verify the public SkillStore audit links and badge
   endpoints before displaying them.
 
@@ -305,6 +305,8 @@ Record data after 24 hours, 7 days, and 30 days:
 | 2026-08-02 | HOL Codex Plugin Marketplace | [PR #341](https://github.com/hashgraph-online/awesome-codex-plugins/pull/341) | Plugin marketplace PR | — | — | 1 | 0 | 1 | — | One alphabetized Development & Workflow entry; source scanner CI passes the required ≥80/no-high gate |
 | 2026-08-11 | GitHub Traffic | [Repository](https://github.com/Phelan164/codex-howto) | Pre-orchestration-update baseline | — | — | 2 | 1 | 4 open | — | Public GitHub API baseline immediately before distribution; target remains 1,000 stars and 200 forks |
 | 2026-08-11 | OpenAI Codex GitHub Discussions | [Orchestration benchmark update](https://github.com/openai/codex/discussions/36262#discussioncomment-17970755) | Technical replication request | — | — | 2 | 1 | [PR #36](https://github.com/Phelan164/codex-howto/pull/36) | — | Existing Show-and-tell updated without duplicating a new post; asks for evaluator critique and paired replications, not votes |
+| 2026-08-11 | GitHub Releases | [v0.6.0](https://github.com/Phelan164/codex-howto/releases/tag/v0.6.0) | Release | — | — | 2 | 1 | 3 open | — | Published from merged commit `78209a9`; both retained candidates passed 6/6 evaluator groups, but incomparable timing and unavailable aggregate token totals prevent an efficiency claim; 0 subscribers at baseline |
+| 2026-08-11 | OpenAI Codex GitHub Discussions | [v0.6.0 release update](https://github.com/openai/codex/discussions/36262#discussioncomment-17971002) | Technical replication request | — | — | 2 | 1 | 3 open | — | Linked the public release and requested at least three fresh sequential pairs with alternated order and controller-plus-worker token totals; no vote request |
 | 2026-08-11 | Everything Claude Code | [PR #2761](https://github.com/affaan-m/ECC/pull/2761) | Native evaluator contribution | — | — | 2 | 1 | 1 upstream PR | — | Adds an orchestration-efficiency evidence scenario with pinned attribution; contribution-first discovery rather than a directory listing or vote request |
 | 2026-08-11 | Matt Pocock Skills | [Issue #826 response](https://github.com/mattpocock/skills/issues/826#issuecomment-5248892813) | Technical support and measurement guidance | — | — | 2 | 1 | 1 community response | — | Diagnoses a reported 1.5M-token fan-out, distinguishes current `/to-tickets` behavior from orchestration-layer expansion, and links the bounded smoke receipt with an explicit no-efficiency-claim caveat |
 | 2026-08-11 | GitHub Traffic | [Repository](https://github.com/Phelan164/codex-howto) | Pre-Show-HN 14-day baseline | 328 | 65 unique | 2 | 1 | 4 open | — | 487 clones from 174 unique cloners; top unique referrers were GitHub 30, the benchmark site 16, OpenAI Community 7, Google 2, and ChatGPT 1; no HN referrer yet |
