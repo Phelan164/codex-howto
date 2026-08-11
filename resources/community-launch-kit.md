@@ -303,6 +303,8 @@ Record data after 24 hours, 7 days, and 30 days:
 | 2026-08-02 | GitHub Traffic | [Repository](https://github.com/Phelan164/codex-howto) | 14-day baseline | 114 | 11 | 1 | 0 | — | — | 223 clones from 104 unique cloners; likely includes automated registry and scanner traffic |
 | 2026-08-02 | SkillStore | [Engineering Loop](https://skillstore.io/skills/phelan164-engineering-loop) | Independent audit | 0 | — | 1 | 0 | — | 3 downloads | Approved, audit complete, signed artifact available, quality score 75 |
 | 2026-08-02 | HOL Codex Plugin Marketplace | [PR #341](https://github.com/hashgraph-online/awesome-codex-plugins/pull/341) | Plugin marketplace PR | — | — | 1 | 0 | 1 | — | One alphabetized Development & Workflow entry; source scanner CI passes the required ≥80/no-high gate |
+| 2026-08-11 | GitHub Traffic | [Repository](https://github.com/Phelan164/codex-howto) | Pre-orchestration-update baseline | — | — | 2 | 1 | 4 open | — | Public GitHub API baseline immediately before distribution; target remains 1,000 stars and 200 forks |
+| 2026-08-11 | OpenAI Codex GitHub Discussions | [Orchestration benchmark update](https://github.com/openai/codex/discussions/36262#discussioncomment-17970755) | Technical replication request | — | — | 2 | 1 | [PR #36](https://github.com/Phelan164/codex-howto/pull/36) | — | Existing Show-and-tell updated without duplicating a new post; asks for evaluator critique and paired replications, not votes |
 
 Use GitHub traffic and referral data while available. Compare channels by
 meaningful actions—completed demos, useful issues, repeat visitors, and
