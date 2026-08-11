@@ -305,6 +305,7 @@ Record data after 24 hours, 7 days, and 30 days:
 | 2026-08-02 | HOL Codex Plugin Marketplace | [PR #341](https://github.com/hashgraph-online/awesome-codex-plugins/pull/341) | Plugin marketplace PR | — | — | 1 | 0 | 1 | — | One alphabetized Development & Workflow entry; source scanner CI passes the required ≥80/no-high gate |
 | 2026-08-11 | GitHub Traffic | [Repository](https://github.com/Phelan164/codex-howto) | Pre-orchestration-update baseline | — | — | 2 | 1 | 4 open | — | Public GitHub API baseline immediately before distribution; target remains 1,000 stars and 200 forks |
 | 2026-08-11 | OpenAI Codex GitHub Discussions | [Orchestration benchmark update](https://github.com/openai/codex/discussions/36262#discussioncomment-17970755) | Technical replication request | — | — | 2 | 1 | [PR #36](https://github.com/Phelan164/codex-howto/pull/36) | — | Existing Show-and-tell updated without duplicating a new post; asks for evaluator critique and paired replications, not votes |
+| 2026-08-11 | Everything Claude Code | [PR #2761](https://github.com/affaan-m/ECC/pull/2761) | Native evaluator contribution | — | — | 2 | 1 | 1 upstream PR | — | Adds an orchestration-efficiency evidence scenario with pinned attribution; contribution-first discovery rather than a directory listing or vote request |
 
 Use GitHub traffic and referral data while available. Compare channels by
 meaningful actions—completed demos, useful issues, repeat visitors, and
