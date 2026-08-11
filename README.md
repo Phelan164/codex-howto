@@ -25,6 +25,20 @@ DevOps, security, and multi-agent orchestration.
 > documentation on 2026-07-31. Codex changes quickly; verify settings and
 > commands through the links marked **Official source**.
 
+### Use it, verify it, improve it
+
+1. **Use it:** [install the flagship loop](#try-the-engineering-loop) or run the
+   [dependency-free playground](labs/engineering-playground/README.md).
+2. **Verify it:** inspect the [raw task receipts](examples/measurements/engineering-loop-runs.csv)
+   before trusting an efficiency claim.
+3. **Improve it:** [fork the repository](https://github.com/Phelan164/codex-howto/fork),
+   run the same evaluator on your stack, and contribute a sanitized result.
+
+If the workflow saves you a failed iteration, [star the repository](https://github.com/Phelan164/codex-howto)
+to follow new measurements. A fork is most useful when it produces a
+reproducible task, evaluator, correction, translation, or workflow profile—not
+just another copy.
+
 ## Try the engineering loop
 
 Install the flagship skill with the community
@@ -171,6 +185,9 @@ no-skill, full-skill, and lean-skill runs without treating one demo as proof.
 For a larger implementation exercise, use the
 [dependency-free 2048 benchmark](labs/2048-game-benchmark/README.md) and inspect
 the [GPT-5.6-sol seed measurement](examples/measurements/gpt-5.6-sol-2048-game-2026-07-31.md).
+To measure a genuinely partitioned large task, compare one agent with bounded
+backend/frontend ownership in the
+[incident-response orchestration benchmark](labs/incident-response-benchmark/README.md).
 Use [PRESENTING.md](PRESENTING.md) for a 15-minute talk track, demo checklist,
 and copy-ready announcement.
 

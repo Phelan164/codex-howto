@@ -49,10 +49,12 @@ Complete Tracks A and B, then:
 3. [Context and token efficiency](modules/10-context-and-token-efficiency/README.md)
 4. Install `orchestrate-engineering`.
 5. Run the orchestrated review exercise in [examples/prompts/orchestrated-review.md](examples/prompts/orchestrated-review.md).
-6. Compare a single-agent and delegated pass on the
-   [engineering playground](labs/engineering-playground/README.md).
+6. Compare a single-agent and delegated implementation of the
+   [incident-response benchmark](labs/incident-response-benchmark/README.md).
 
-**Exit test:** divide a review into independent read-only tasks, collect evidence summaries, deduplicate findings, and compare the result with a single-agent review.
+**Exit test:** freeze component contracts, give writers exclusive ownership,
+integrate the result, pass one system evaluator, and compare elapsed time,
+total tokens, conflicts, rework, and evidence with a single-agent run.
 
 ## Track E: Knowledge maintainer
 
