@@ -510,7 +510,7 @@ step, and official sources.
 If the guide is useful, choose the action that creates the most value:
 
 - try the playground and report a reproducible gap;
-- [contribute anonymized engineering-loop measurements](https://github.com/Phelan164/codex-howto/issues/8);
+- [submit an anonymized benchmark replication](https://github.com/Phelan164/codex-howto/issues/new?template=benchmark-replication.yml);
 - [test the Living Wiki against normal repository search](https://github.com/Phelan164/codex-howto/issues/16);
 - [fork it into a tested stack, team, translation, or benchmark edition](resources/fork-an-edition.md);
 - share it with one relevant developer community; or

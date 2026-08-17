@@ -38,8 +38,9 @@ and security-scanner activity may contribute to clone counts.
 1. Add a top-of-README decision table that routes developers to the minimum
    useful workflow: direct testing/review guidance, the engineering loop,
    bounded orchestration, or the Living Wiki.
-2. Pin [issue #23](https://github.com/Phelan164/codex-howto/issues/23) and add a
-   v0.6.0 replication recipe. Do not create a duplicate benchmark issue.
+2. Pin [issue #23](https://github.com/Phelan164/codex-howto/issues/23), add a
+   v0.6.0 replication recipe, and provide a structured replication issue form.
+   Do not create a duplicate benchmark issue.
 3. Send one maintainer-ready follow-up to the green
    [ECC contribution](https://github.com/affaan-m/ECC/pull/2761). Do not add
    promotional comments to unrelated issues.
