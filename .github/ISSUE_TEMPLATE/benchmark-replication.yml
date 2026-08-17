@@ -1,0 +1,93 @@
+name: Benchmark replication
+description: Submit a sanitized, reproducible workflow or orchestration measurement.
+title: "[Replication]: "
+labels:
+  - experiment
+  - feedback
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Negative and neutral results are welcome. Remove private source, prompts, credentials, paths, customer data, and proprietary cost records before submitting.
+  - type: dropdown
+    id: benchmark
+    attributes:
+      label: Task or benchmark
+      options:
+        - Backend boundary task
+        - 2048 browser game
+        - Incident-response orchestration task
+        - Sanitized real engineering task
+        - Other reproducible task
+    validations:
+      required: true
+  - type: input
+    id: revision
+    attributes:
+      label: Starting revision
+      description: Repository commit or Codex How To tag used by every condition.
+      placeholder: v0.6.0 or a full commit SHA
+    validations:
+      required: true
+  - type: input
+    id: runtime
+    attributes:
+      label: Model and runtime
+      description: Model, reasoning effort, Codex surface, operating system, and relevant tool versions.
+      placeholder: GPT-5.6-sol, medium reasoning, Codex CLI, macOS
+    validations:
+      required: true
+  - type: checkboxes
+    id: conditions
+    attributes:
+      label: Conditions compared
+      options:
+        - label: No repository skill or single-agent baseline
+        - label: Engineering-loop or other named workflow
+        - label: Bounded multi-agent orchestration
+    validations:
+      required: true
+  - type: textarea
+    id: task_contract
+    attributes:
+      label: Frozen task contract
+      description: State the goal, constraints, acceptance criteria, and what remained identical across conditions.
+    validations:
+      required: true
+  - type: textarea
+    id: verification
+    attributes:
+      label: Verification evidence
+      description: List evaluator commands, focused and required checks, observable behavior, failures, and unverified items.
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: measurements
+    attributes:
+      label: Measurements
+      description: Report each run separately, including tokens when exposed, wall time, retries, corrections, coordination overhead, conflicts, and rework.
+      placeholder: |
+        condition,run,accepted,total_tokens,wall_seconds,human_corrections,notes
+        single_agent,1,true,unavailable,420,0,...
+        orchestrated,1,true,unavailable,390,0,...
+    validations:
+      required: true
+  - type: textarea
+    id: interpretation
+    attributes:
+      label: Interpretation and limitations
+      description: Separate observed results from conclusions. Explain ordering, sample size, missing telemetry, and validity threats.
+    validations:
+      required: true
+  - type: checkboxes
+    id: disclosure
+    attributes:
+      label: Submission checks
+      options:
+        - label: I removed private source, prompts, credentials, paths, customer data, and proprietary cost records.
+          required: true
+        - label: I included failed, neutral, and negative runs rather than selecting only favorable results.
+          required: true
+        - label: I identified missing telemetry and anything that remains unverified.
+          required: true

@@ -25,6 +25,22 @@ DevOps, security, and multi-agent orchestration.
 > documentation on 2026-07-31. Codex changes quickly; verify settings and
 > commands through the links marked **Official source**.
 
+## Choose the smallest workflow that fits
+
+Do not install every skill by default. Start with the minimum guidance that can
+change the outcome of your task:
+
+| Your task | Start here | Use it when |
+|---|---|---|
+| Learn Codex from first principles | [Mental model](modules/00-mental-model/README.md) | You need the progressive course, sandbox model, prompts, tools, and verification basics |
+| Fix one bounded defect | [Testing and review](modules/07-testing-and-review/README.md) | The scope and acceptance check are already clear; a lifecycle skill may add more context than value |
+| Deliver a multi-surface feature | [`engineering-loop`](skills/engineering-loop/SKILL.md) | Implementation, testing, review, and evidence must stay connected through one verified loop |
+| Split a large task safely | [Orchestration decision matrix](resources/orchestration-decision-matrix.md) | Work has genuinely independent ownership surfaces and integration checks |
+| Preserve team know-how | [Codex Living Wiki](knowledge/README.md) | Repeated research and decisions should become reviewed, source-grounded repository knowledge |
+
+Unsure? Run the [five-minute playground](labs/engineering-playground/README.md)
+before installing anything globally.
+
 ### Use it, verify it, improve it
 
 1. **Use it:** [install the flagship loop](#try-the-engineering-loop) or run the
@@ -494,7 +510,7 @@ step, and official sources.
 If the guide is useful, choose the action that creates the most value:
 
 - try the playground and report a reproducible gap;
-- [contribute anonymized engineering-loop measurements](https://github.com/Phelan164/codex-howto/issues/8);
+- [submit an anonymized benchmark replication](https://github.com/Phelan164/codex-howto/issues/new?template=benchmark-replication.yml);
 - [test the Living Wiki against normal repository search](https://github.com/Phelan164/codex-howto/issues/16);
 - [fork it into a tested stack, team, translation, or benchmark edition](resources/fork-an-edition.md);
 - share it with one relevant developer community; or
