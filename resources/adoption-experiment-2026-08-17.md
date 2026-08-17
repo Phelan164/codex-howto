@@ -48,6 +48,15 @@ and security-scanner activity may contribute to clone counts.
 5. Capture the same API snapshot on 2026-08-24 and record the result, including
    neutral or negative outcomes.
 
+## Execution log
+
+| Date | Action | Evidence |
+|---|---|---|
+| 2026-08-17 | Published the README routing and baseline as a draft change | [PR #39](https://github.com/Phelan164/codex-howto/pull/39); repository validation, wiki lint, and plugin scanning passed |
+| 2026-08-17 | Pinned the existing replication request and added the v0.6.0 large-task recipe | [Issue #23 update](https://github.com/Phelan164/codex-howto/issues/23#issuecomment-5311881984) |
+| 2026-08-17 | Sent one maintainer-ready status summary for the green ECC contribution | [ECC PR #2761 update](https://github.com/affaan-m/ECC/pull/2761#issuecomment-5311884726) |
+| 2026-08-17 | Reviewed existing directory submissions | No new directory PR opened and no repeated follow-up posted |
+
 ## Decision criteria
 
 Primary evidence is one independent benchmark replication, a substantive issue
