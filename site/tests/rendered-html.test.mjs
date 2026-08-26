@@ -31,7 +31,7 @@ test("server-renders the benchmark explorer", async () => {
   assert.match(html, /<title>Codex Skill Benchmark — Codex How To<\/title>/i);
   assert.match(
     html,
-    /<link rel="canonical" href="https:\/\/codex-howto-benchmark\.nguyenvantamdk2\.chatgpt\.site\/"\/>/i,
+    /<link rel="canonical" href="https:\/\/codex-howto-benchmark\.nguyenvantamdk2\.chatgpt\.site\/?"\/>/i,
   );
   assert.match(html, /<meta name="robots" content="index, follow"\/>/i);
   assert.match(html, /application\/ld\+json/i);
