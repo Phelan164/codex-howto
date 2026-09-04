@@ -22,16 +22,33 @@ The fixtures contain seeded correctness, accessibility, security, and
 operational defects. Do not read [the rubric](rubric.md) until after your first
 review.
 
+## First trial: one backend defect
+
+Start with **Setup**, **Lab 1**, and the **First-trial completion check** below.
+The remaining labs are optional; you do not need to complete the curriculum
+or install the entire skill catalog to try the workflow.
+
+Prerequisites: a local copy of this repository, Python 3, Git, and Codex already
+available. The five-minute demo is a target for an already configured
+environment, not a measured completion-time guarantee. Codex usage may consume
+your account allowance; the fixture itself needs no third-party packages.
+
 ## Setup
 
-Copy the playground to a disposable, version-controlled directory:
+From the `codex-howto` repository root, copy the playground and only the
+`engineering-loop` skill to a fresh disposable directory. This does not change
+your global skills or install packages:
 
 ```bash
-cp -R labs/engineering-playground /tmp/codex-howto-playground
-cd /tmp/codex-howto-playground
+demo_root="$(mktemp -d)"
+cp -R labs/engineering-playground "$demo_root/playground"
+mkdir -p "$demo_root/playground/.agents/skills"
+cp -R skills/engineering-loop "$demo_root/playground/.agents/skills/"
+cd "$demo_root/playground"
 git init
 git add .
 git commit -m "baseline intentionally flawed playground"
+pwd
 ```
 
 If Git identity is not configured, the commit is optional; keep a clean copy so
@@ -48,18 +65,33 @@ seeded boundary defect.
 
 ## Lab 1: backend regression
 
-Install `engineering-loop`, `test-software`, and `build-backend` as described in
-[Module 05](../../modules/05-engineering-skills/README.md), then ask:
+Open the directory printed by `pwd` as a new Codex task, then ask:
 
 ```text
-$engineering-loop $build-backend $test-software Inspect the inventory
+$engineering-loop Inspect the inventory
 reservation contract, reproduce an uncovered input-boundary defect, add the
 smallest regression test, implement the fix, run the required checks, and
-review the final diff. Work only in this disposable playground.
+review the final diff. Change only backend files in this disposable playground.
+Do not read rubric.md or fix frontend and infrastructure defects.
 ```
 
 Confirm that the loop records the failing regression before it changes the
 implementation.
+
+### First-trial completion check
+
+- The original backend tests passed before any edits.
+- A new regression test failed before the implementation changed.
+- The same test and the complete backend suite pass after the fix.
+- The final diff changes only backend files, with no weakened existing tests.
+- The handoff includes exact commands, results, and anything not verified.
+
+Stop here for the first trial. If the skill is not discovered or a step fails,
+record that as onboarding feedback; do not install more skills to work around
+an unexplained failure. [Share a short trial report](../../COMMUNITY.md#first-trial-feedback).
+
+For the optional labs below, install only the named skills you want to try as
+described in [Module 05](../../modules/05-engineering-skills/README.md).
 
 ## Lab 2: frontend behavior and accessibility
 
@@ -148,7 +180,7 @@ python3 scripts/summarize_engineering_loop.py \
 Repeat with the frontend and infrastructure tasks before drawing a directional
 conclusion. Do not read the rubric between variant runs.
 
-## Completion check
+## Full-playground completion check (optional)
 
 - A new test fails before the backend fix and passes afterward.
 - Frontend verification covers keyboard use, labels, announcements, and safe
