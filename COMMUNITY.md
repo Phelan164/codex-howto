@@ -23,6 +23,48 @@ Stars are useful signals that the guide should remain discoverable. Forks are
 most valuable when they produce a tested adaptation, not when they merely copy
 the repository.
 
+## First-trial feedback
+
+New here? Try just [one backend defect](labs/engineering-playground/README.md#first-trial-one-backend-defect)
+before considering a benchmark or a team rollout. A failed setup is useful
+feedback too. No star, fork, public endorsement, or full-session transcript is
+required.
+
+Use the [workflow feedback form](https://github.com/Phelan164/codex-howto/issues/new?template=workflow-feedback.yml).
+Select **Engineering loop**, set the task class to **Playground first trial**,
+and describe the expected outcome as **Regression fails, then fix passes**.
+Keep the remaining fields brief using these sanitized details:
+
+```text
+Environment: operating system, Codex surface, model if known
+Outcome: completed / stopped at [step]
+Evidence: baseline passed? regression failed before fix? final tests passed?
+Friction: one instruction that was unclear, unnecessary, or missing
+```
+
+Do not include credentials, private code, personal paths, or account details.
+Elapsed time is optional; one first-time trial cannot establish token savings
+or prove that the skill is better than no skill.
+
+### Invitation for a small developer trial
+
+Maintainers can adapt this invitation for a community where participation
+requests are welcome. Disclose your affiliation and follow that community's
+rules; do not mass-message developers.
+
+> I maintain Codex How To and am looking for three developers to test its
+> first-run instructions. Try one local Python defect with the supplied
+> engineering-loop skill; no global skill installation or production access
+> is needed. Stop after the backend exercise and tell me where you got stuck
+> or which evidence was missing. A failed attempt is as useful as a success.
+> This is an onboarding test, not a claim that skills save tokens.
+>
+> [Start the trial](https://github.com/Phelan164/codex-howto/tree/main/labs/engineering-playground#first-trial-one-backend-defect).
+
+Count completed or blocked trial reports, not reactions, as the immediate
+adoption signal. Ask the contributor's permission before quoting their
+experience or identifying them in a case study.
+
 ## Useful fork paths
 
 ### Team edition
