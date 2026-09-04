@@ -26,7 +26,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Scan Codex plugin
-        uses: hashgraph-online/ai-plugin-scanner-action@4d3669481def205d3f995ed9d927d55e60dcc9ba # v1
+        uses: hashgraph-online/ai-plugin-scanner-action@fc91f16ca4e6c0c919e807238f27b329dd828cbe # v1
         with:
           plugin_dir: "."
           mode: scan
