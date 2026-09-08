@@ -56,7 +56,49 @@ limits, and negative results.
 
 ## Official sources
 
-- [GPT-5.6 prompting best practices](https://developers.openai.com/api/docs/guides/model-guidance?model=gpt-5.6#prompting-best-practices)
-- [Build focused skills](https://developers.openai.com/plugins/build/skills#define-the-workflow-boundary)
+- [GPT-6 Astra prompting and migration guidance](https://developers.openai.com/api/docs/guides/latest-model#prompting-best-practices)
+- [Build focused skills](https://learn.chatgpt.com/docs/build-skills)
 
-Last verified: 2026-07-31.
+Last verified: 2026-09-08. The latest-model URL described GPT-6 Astra on this date.
+
+## GPT-6 Astra compatibility review
+
+OpenAI documents stronger instruction following, possible unnecessary
+clarification pauses, less delegation than a workflow may want, and excessive
+verification for small changes. Audit both `SKILL.md` and conditional
+references alongside applicable `AGENTS.md` files: contradictory guidance in a
+rarely loaded reference can still change execution.
+
+Our engineering-loop adaptation is a community practice informed by that
+guidance, not a measured Astra efficiency improvement:
+
+- Carry existing authorization forward and distinguish an implementation-plan
+  change from expanded task scope. Resolve routine gaps using repository
+  evidence; surface material unanswered decisions.
+- When a skill causes a pause, identify the exact instruction and check whether
+  the user has already supplied the required authority.
+- Finish after acceptance evidence and required checks pass. Additional checks
+  need a new change, failure, or unresolved concern to justify them.
+- Start with one agent. Use authorized delegation for independent subtasks
+  when expected time savings or coverage justify the coordination cost.
+- Preserve regression evidence, review, explicit budgets, and accurate handoff.
+  Avoid duplicating model-host instructions unless a workflow-specific decision
+  needs clarification.
+
+Before claiming an improvement, compare three conditions on GPT-6 Astra:
+no engineering-loop, the pre-adaptation skill, and the revised skill. Record
+the exact commit for each skill; use the same starting task state, reasoning
+effort, tools, permissions, and acceptance checks in fresh sessions. Disable
+engineering-loop in the control, since omission from the prompt does not
+prevent automatic selection. Keep other available skills constant.
+
+Record unnecessary approval pauses, human corrections, checks repeated without
+new evidence, acceptance outcomes, elapsed time, and reported tokens across all
+participating agents. Include unsuccessful runs. Repeat paired comparisons
+and alternate run order; a single successful run proves neither efficiency nor
+generality. Use the existing measurement protocol and receipt, with additional
+observations in the evidence notes.
+
+Retain historical GPT-5.6 results with their original model and skill revisions.
+They do not establish Astra performance. This documentation update does not
+change model defaults or enable new runtime capabilities.
