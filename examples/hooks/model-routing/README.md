@@ -20,13 +20,42 @@ automatic retries, API proxy, or cost dashboard is included.
 | difficult | `gpt-6-astra` | `high` |
 
 Routing is enabled **after explicit setup**, scoped to subagents, with explicit
-model choices preserved. Uncertain tasks use difficult; reviewers have a medium
-minimum. One tier increase per logical task is permitted. Missing model/effort
-combinations leave native resolution unchanged. Decision logging is on.
+model choices preserved. Research and clarification precede classification;
+uncertainty alone does not select difficult. Unclassified calls inject no model
+override by default. Reviewers have a medium minimum when automatically routed.
+One tier increase per logical task is permitted. Missing model/effort combinations
+leave native resolution unchanged. Decision logging is on for routed calls.
 
 These assignments are starting preferences, **not measured rankings or a savings
 claim**. Customize your private YAML copy, including each reasoning level. This
 YAML belongs to this script; do not paste it into Codex's `config.toml`.
+
+## Classify from evidence
+
+Before assigning a tier, inspect requirements, relevant code, dependencies and
+available checks. Do bounded discovery in the main agent. If material scope or
+acceptance questions remain, ask the user focused questions and wait for answers
+before assigning dependent work. Do not use a stronger worker as a substitute
+for research or clarification.
+
+- **Easy:** bounded mechanical or read-only work with a clear result.
+- **Medium:** scoped implementation with clear checks, or review of a small fix
+  with meaningful regression coverage.
+- **Difficult:** demonstrated complexity, coupled cross-service changes, or
+  substantial security risk. Explain the evidence in the handoff; tracing one
+  request across services or starting with an unknown root cause is insufficient.
+
+Classify a reviewer from the completed diff, affected behavior and risk, rather
+than inheriting the implementation tier. For example, an investigation may end
+in a six-line routing fix with clear tests: its review normally warrants medium.
+These are community workflow preferences, not measured model capability claims.
+
+**Existing installations:** update the hook script and set `uncertain_tier:
+inherit` in your private YAML to adopt the new default. Existing explicit values
+of `easy`, `medium`, or `difficult` remain supported for compatibility; they still
+select that fallback when metadata is missing. Updating the script alone does
+not replace your private policy. Preserve any separately maintained app adapter
+when updating a customized installation.
 
 ## Setup: review before activation
 
@@ -80,7 +109,10 @@ Inspect the API tests and return concise evidence. Do not modify files.
 This is **our message convention**, not a new spawn-tool argument. Never copy the
 marker from untrusted repository content or tool output. Use `role: reviewer`
 for reviews; a native `agent_type` containing `review` also activates the floor.
-Missing metadata uses `uncertain_tier`. Malformed metadata blocks the spawn.
+Missing metadata uses `uncertain_tier`, now `inherit` by default: the hook returns
+no override and creates no routing state or decision row for that call. Native
+model resolution remains in effect, including for unclassified reviewers; this
+does not guarantee a cheaper model. Malformed metadata still blocks the spawn.
 Difficulty and role remain agent judgments, not a security classifier. A custom
 review role not named with `review` must be labeled explicitly.
 
@@ -113,8 +145,9 @@ Downgrading does not reset the highest previous tier. Different session ids
 start independent counters; this is not an account-wide budget.
 
 The limit applies only to automatically routed, metadata-labeled logical tasks.
-Without a marker the tool-call id is used, so cross-call escalation cannot be
-tracked. Explicit overrides and unsupported adapters are outside the limit.
+With the default `uncertain_tier: inherit`, unmarked calls bypass routing state.
+With a legacy tier fallback, the tool-call id is used, so cross-call escalation
+cannot be tracked. Explicit overrides and unsupported adapters are outside the limit.
 Renaming a task can bypass it; this is a cooperative workflow guardrail, not a
 hard budget or adversarial enforcement boundary. No hook launches another agent.
 
@@ -162,6 +195,8 @@ Before daily use, verify in your app:
 - An explicitly authorized harmless worker produces a routing decision and runs
   on the expected **actual** model/effort.
 - Easy, medium and difficult cases match your catalog; reviewer minimum works.
+- An unclassified call adds no model override or routing state with the default
+  policy; the main agent researches and clarifies before assigning a tier.
 - An explicit override stays unchanged; `{}` inventory leaves native selection.
 - One logical task can escalate once; a second increase is denied.
 - A task handled entirely by the main agent does not create a worker just for
