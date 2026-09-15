@@ -1,0 +1,30 @@
+{
+  "description": "Experimental subagent routing. Replace absolute paths and verify runtime support before trusting.",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"/absolute/path/to/codex-howto/.venv-routing/bin/python\" \"/absolute/path/to/codex-howto/scripts/model_route_hook.py\" --config \"/absolute/path/to/private-routing/routing.yaml\" --available-models \"/absolute/path/to/private-routing/models.json\" --state \"/absolute/path/to/private-routing/state.sqlite3\"",
+            "timeout": 10,
+            "statusMessage": "Loading subagent routing policy"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "^(spawn_agent|Agent)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"/absolute/path/to/codex-howto/.venv-routing/bin/python\" \"/absolute/path/to/codex-howto/scripts/model_route_hook.py\" --config \"/absolute/path/to/private-routing/routing.yaml\" --available-models \"/absolute/path/to/private-routing/models.json\" --state \"/absolute/path/to/private-routing/state.sqlite3\"",
+            "timeout": 10,
+            "statusMessage": "Selecting subagent model"
+          }
+        ]
+      }
+    ]
+  }
+}

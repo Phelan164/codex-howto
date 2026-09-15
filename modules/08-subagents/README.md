@@ -1,5 +1,9 @@
 # 08 · Subagents
 
+Optional experiment: [model-routing hooks](../../examples/hooks/model-routing/README.md)
+apply configurable difficulty tiers to supported native spawn calls. Read the
+compatibility limits and verify the actual child model before relying on them.
+
 ## Outcome
 
 Delegate narrow work to isolated agent threads without losing control of scope or evidence.
