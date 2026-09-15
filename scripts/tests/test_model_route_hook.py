@@ -82,7 +82,7 @@ class ModelRouteTest(unittest.TestCase):
                 self.assertEqual(self.run_hook(event), {})
                 self.assertEqual(event, original)
                 self.assertFalse(self.state.exists())
-        self.assertEqual(self.run_hook(self.event(call="classified"))["hookSpecificOutput"]["updatedInput"]["model"], "gpt-5.6-luna")
+        self.assertEqual(self.run_hook(self.event(call="classified"))["hookSpecificOutput"]["updatedInput"]["model"], "gpt-5.6-sol")
 
     def test_unmarked_explicit_overrides_preserved(self):
         event = self.event()
