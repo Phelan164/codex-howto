@@ -30,6 +30,9 @@ explicit retry, time, token, or cost limit, also use
 When a defect is intermittent, performance-related, difficult to reproduce, or
 resists the first evidence-driven pass, use
 [references/hard-debugging.md](references/hard-debugging.md).
+For complex or higher-risk changes where independent coverage is useful, or
+when the user requests a separate reviewer, use
+[references/independent-review.md](references/independent-review.md).
 
 ## Run the loop
 

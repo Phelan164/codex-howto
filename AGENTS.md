@@ -17,6 +17,11 @@ Maintain an accurate, engineering-first learning guide for OpenAI Codex.
 - Treat wiki queries as read-only unless the user explicitly requests capture,
   ingest, archive, or promotion.
 
+## Pull requests
+
+This personal open-source repository does not require Jira tickets. Use a
+descriptive branch and PR title; link relevant GitHub issues when applicable.
+
 ## Validation
 
 Run:
