@@ -15,8 +15,8 @@ automatic retries, API proxy, or cost dashboard is included.
 
 | Tier | Model | Reasoning |
 | --- | --- | --- |
-| easy | `gpt-5.6-luna` | `low` |
-| medium | `gpt-5.6-sol` | `high` |
+| easy | `gpt-5.6-sol` | `medium` |
+| medium | `gpt-6-astra` | `low` |
 | difficult | `gpt-6-astra` | `high` |
 
 Routing is enabled **after explicit setup**, scoped to subagents, with explicit
@@ -219,6 +219,10 @@ skills or main model need reverting.
   coverage, `updatedInput`, and failure behavior.
 - [Official subagents](https://developers.openai.com/codex/multi-agent): model
   inheritance, reasoning settings, and custom-agent precedence.
+- [GPT-5.6 Sol](https://developers.openai.com/api/docs/models/gpt-5.6-sol) and
+  [GPT-6 Astra](https://developers.openai.com/api/docs/models/gpt-6-astra):
+  official reasoning-effort options. Verify that each combination is available
+  in your target Codex runtime before enabling it.
 - [ECC model-route](https://github.com/affaan-m/ecc/blob/main/commands/model-route.md):
   inspiration for a transparent difficulty-tier recommendation; this example
   adds a deterministic spawn-hook adapter, not a copied automatic runtime.
