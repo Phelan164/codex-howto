@@ -94,3 +94,44 @@ run record, not a universal productivity score.
 For a stopped or resumed run, add a compact checkpoint under `evidence` with
 confirmed facts, disproved hypotheses, the current diff, budget remaining, and
 the next evidence-producing action. Do not copy the full transcript.
+
+## Optional independent review
+
+When a separate reviewer participates, add this section to the receipt. Use
+one entry per attempt, including attempts that fail or stop before a verdict.
+
+```yaml
+independent_review:
+  attempts:
+    - reviewer_id:
+      model:
+      context_separation: # fresh, inherited, or unknown
+      base_revision:
+      reviewed_revision:
+      status: # completed, failed, or stopped
+      findings:
+        - id:
+          disposition: # confirmed, rejected, duplicate, or unresolved
+          validated_by: # builder, test, human, or unresolved
+          evidence:
+      elapsed_seconds:
+      total_tokens:
+      total_cost_usd:
+      human_adjudication_seconds:
+  final_candidate_revision:
+  last_reviewed_revision:
+  uncovered_changes: []
+```
+
+An empty `findings` list means no findings were recorded; check `status` before
+interpreting it. Record zero only when observed, and leave unavailable numeric
+values blank. A requested skill or role is not evidence that a review ran.
+
+Review tokens and cost are components of the overall `outcome` totals, not
+additional amounts to add again. Concurrent review durations must not be
+summed into task wall time. Report partial telemetry coverage in
+`evidence.unverified`; do not present a known subtotal as a complete total.
+
+Revision equality alone is insufficient for a dirty working tree. Record an
+immutable snapshot identifier when uncommitted changes are reviewed. Any later
+edit makes prior review evidence stale for that candidate.
