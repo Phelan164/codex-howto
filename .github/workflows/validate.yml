@@ -43,9 +43,14 @@ jobs:
           -s labs/engineering-playground/backend
           -p "test_*.py"
 
-      - name: Run measurement utility tests
+      - name: Install routing example test dependency
+        run: |
+          python3 -m venv .venv-routing
+          .venv-routing/bin/python -m pip install -r examples/hooks/model-routing/requirements.txt
+
+      - name: Run measurement and routing utility tests
         run: >-
-          python3 -m unittest discover
+          .venv-routing/bin/python -m unittest discover
           -s scripts/tests
           -p "test_*.py"
 

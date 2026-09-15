@@ -1,0 +1,22 @@
+routing:
+  enabled: true
+  scope: subagents
+  preserve_explicit_model: true
+
+  tiers:
+    easy:
+      model: gpt-5.6-luna
+      reasoning_effort: low
+    medium:
+      model: gpt-5.6-sol
+      reasoning_effort: high
+    difficult:
+      model: gpt-6-astra
+      reasoning_effort: high
+
+  policy:
+    uncertain_tier: difficult
+    reviewer_minimum_tier: medium
+    max_escalations_per_task: 1
+    unavailable_model: inherit
+    log_decisions: true
