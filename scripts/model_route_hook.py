@@ -25,10 +25,22 @@ EFFORTS = {"none", "minimal", "low", "medium", "high", "xhigh", "max", "ultra"}
 MARKER = "MODEL_ROUTE "
 PROMPT = """Optional model routing is enabled for eligible native subagents only.
 Do not spawn an agent just to route a trivial task. Respect delegation authority.
-For an authorized independent subtask, classify difficulty AND risk: easy for
-bounded mechanical/read-only work, medium for scoped implementation with clear
-checks, difficult for ambiguity, cross-service changes or security-sensitive work.
-When uncertain use {uncertain}. Reviewers have a minimum tier of {reviewer}.
+Before classifying an authorized independent subtask, research its requirements,
+relevant code, dependencies and available checks. Uncertainty is a reason to
+investigate, not evidence that a task is difficult. Do bounded discovery locally;
+do not spawn an expensive implementation agent just to discover the scope.
+If research leaves material scope or acceptance questions unresolved, ask the
+user focused questions and wait for answers before assigning dependent work.
+Then classify difficulty AND risk from evidence: easy for bounded mechanical or
+read-only work; medium for scoped implementation with clear checks; difficult
+only for demonstrated complexity, coupled cross-service changes or substantial
+security risk. Merely tracing a request across services does not make it difficult.
+Assess each reviewer independently from the completed diff, behavior and risk;
+do not inherit the implementation tier. A small scoped fix with clear regression
+checks normally warrants medium review. Reviewers have a minimum tier of {reviewer}.
+Explain the evidence for a difficult classification in the handoff. Research and
+clarify before routing. Missing routing metadata uses the configured fallback
+({uncertain}); inherit means no automatic model override, not a classification.
 Prefix the subagent message with exactly one JSON metadata line, for example:
 MODEL_ROUTE {{"task":"stable-subtask-id","tier":"easy","role":"worker"}}
 Use role reviewer for any review. Keep the same task id across retries/escalations
@@ -81,7 +93,7 @@ def load_policy(path: Path) -> dict:
     policy = cfg["policy"]
     keys(policy, ["uncertain_tier", "reviewer_minimum_tier", "max_escalations_per_task",
                   "unavailable_model", "log_decisions"])
-    if policy["uncertain_tier"] not in TIERS or policy["reviewer_minimum_tier"] not in TIERS:
+    if policy["uncertain_tier"] not in (*TIERS, "inherit") or policy["reviewer_minimum_tier"] not in TIERS:
         raise ValueError("invalid tier")
     if type(policy["max_escalations_per_task"]) is not int or policy["max_escalations_per_task"] < 0:
         raise ValueError("invalid escalation limit")
@@ -133,6 +145,8 @@ def route(event: dict, cfg: dict, available: dict, state: Path) -> dict:
             # Malformed metadata must not accidentally downgrade a task.
             return {"hookSpecificOutput": {"hookEventName": kind, "permissionDecision": "deny",
                     "permissionDecisionReason": "Invalid MODEL_ROUTE metadata; correct it before spawning."}}
+    if tier == "inherit":
+        return {}
     if role == "reviewer" and TIERS.index(tier) < TIERS.index(policy["reviewer_minimum_tier"]):
         tier, reason = policy["reviewer_minimum_tier"], "reviewer_floor"
     chosen = cfg["tiers"][tier]

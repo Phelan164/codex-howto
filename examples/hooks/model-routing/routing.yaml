@@ -15,7 +15,7 @@ routing:
       reasoning_effort: high
 
   policy:
-    uncertain_tier: difficult
+    uncertain_tier: inherit
     reviewer_minimum_tier: medium
     max_escalations_per_task: 1
     unavailable_model: inherit

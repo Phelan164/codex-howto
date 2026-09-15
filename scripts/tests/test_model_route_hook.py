@@ -41,7 +41,7 @@ class ModelRouteTest(unittest.TestCase):
             "tiers": {"easy": {"model": "gpt-5.6-luna", "reasoning_effort": "low"},
                       "medium": {"model": "gpt-5.6-sol", "reasoning_effort": "high"},
                       "difficult": {"model": "gpt-6-astra", "reasoning_effort": "high"}},
-            "policy": {"uncertain_tier": "difficult", "reviewer_minimum_tier": "medium",
+            "policy": {"uncertain_tier": "inherit", "reviewer_minimum_tier": "medium",
                        "max_escalations_per_task": 1, "unavailable_model": "inherit", "log_decisions": True}})
 
     def test_each_tier_preserves_other_arguments(self):
@@ -60,9 +60,34 @@ class ModelRouteTest(unittest.TestCase):
         out = result["hookSpecificOutput"]
         self.assertEqual(set(out), {"hookEventName", "additionalContext"})
         self.assertIn("minimum tier of medium", out["additionalContext"])
+        self.assertIn("research its requirements", out["additionalContext"])
+        self.assertIn("user focused questions", out["additionalContext"])
+        self.assertIn("Assess each reviewer independently", out["additionalContext"])
+        self.assertNotIn("When uncertain use", out["additionalContext"])
         self.assertFalse(self.state.exists())
 
-    def test_unmarked_task_uses_difficult(self):
+    def test_unmarked_task_inherits_without_creating_routing_state(self):
+        for agent_type in ("default", "security-reviewer"):
+            with self.subTest(agent_type=agent_type):
+                event = self.event(call=agent_type)
+                event["tool_input"] = {"message": "Investigate this", "agent_type": agent_type}
+                original = copy.deepcopy(event)
+                self.assertEqual(self.run_hook(event), {})
+                self.assertEqual(event, original)
+                self.assertFalse(self.state.exists())
+        self.assertEqual(self.run_hook(self.event(call="classified"))["hookSpecificOutput"]["updatedInput"]["model"], "gpt-5.6-luna")
+
+    def test_unmarked_explicit_overrides_preserved(self):
+        event = self.event()
+        event["tool_input"] = {"message": "Investigate this", "model": "user-choice", "reasoning_effort": "medium"}
+        original = copy.deepcopy(event)
+        self.assertEqual(self.run_hook(event), {})
+        self.assertEqual(event, original)
+
+    def test_legacy_uncertain_tier_remains_explicitly_configurable(self):
+        config = self.directory / "legacy.yaml"
+        config.write_text(CONFIG.read_text().replace("uncertain_tier: inherit", "uncertain_tier: difficult"))
+        self.cfg = load_policy(config)
         event = self.event()
         event["tool_input"]["message"] = "Investigate this"
         self.assertEqual(self.run_hook(event)["hookSpecificOutput"]["updatedInput"]["model"], "gpt-6-astra")
@@ -200,6 +225,7 @@ class ModelRouteTest(unittest.TestCase):
     def test_policy_rejects_typos_types_duplicates_and_unsafe_yaml(self):
         source = CONFIG.read_text()
         for text in [source.replace("scope: subagents", "scope: main"),
+                     source.replace("uncertain_tier: inherit", "uncertain_tier: unknown"),
                      source.replace("enabled: true", 'enabled: "true"'),
                      source.replace("max_escalations_per_task: 1", "max_escalations_per_task: -1"),
                      source.replace("enabled: true", "enabled: true\n  enabled: false"),
