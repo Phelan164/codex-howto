@@ -16,6 +16,7 @@ from model_route_hook import load_policy, route
 
 ROOT = Path(__file__).resolve().parents[2]
 CONFIG = ROOT / "examples/hooks/model-routing/routing.yaml"
+MODEL_INVENTORY = ROOT / "examples/hooks/model-routing/models.example.json"
 SCRIPT = ROOT / "scripts/model_route_hook.py"
 
 
@@ -26,7 +27,7 @@ class ModelRouteTest(unittest.TestCase):
         self.directory = Path(self.temp.name)
         self.state = self.directory / "routing.sqlite3"
         self.cfg = load_policy(CONFIG)
-        self.available = {v["model"]: [v["reasoning_effort"]] for v in self.cfg["tiers"].values()}
+        self.available = json.loads(MODEL_INVENTORY.read_text())
 
     def event(self, tier="easy", role="worker", task="one", call="call-1"):
         return {"hook_event_name": "PreToolUse", "tool_name": "spawn_agent", "session_id": "session-1",
@@ -38,11 +39,17 @@ class ModelRouteTest(unittest.TestCase):
 
     def test_exact_requested_defaults(self):
         self.assertEqual(self.cfg, {"enabled": True, "scope": "subagents", "preserve_explicit_model": True,
-            "tiers": {"easy": {"model": "gpt-5.6-luna", "reasoning_effort": "low"},
-                      "medium": {"model": "gpt-5.6-sol", "reasoning_effort": "high"},
+            "tiers": {"easy": {"model": "gpt-5.6-sol", "reasoning_effort": "medium"},
+                      "medium": {"model": "gpt-6-astra", "reasoning_effort": "low"},
                       "difficult": {"model": "gpt-6-astra", "reasoning_effort": "high"}},
             "policy": {"uncertain_tier": "difficult", "reviewer_minimum_tier": "medium",
                        "max_escalations_per_task": 1, "unavailable_model": "inherit", "log_decisions": True}})
+
+    def test_each_default_tier_exists_in_example_model_inventory(self):
+        inventory = json.loads(MODEL_INVENTORY.read_text())
+        for tier, spec in self.cfg["tiers"].items():
+            with self.subTest(tier=tier):
+                self.assertIn(spec["reasoning_effort"], inventory.get(spec["model"], []))
 
     def test_each_tier_preserves_other_arguments(self):
         for tier, spec in self.cfg["tiers"].items():
@@ -71,7 +78,9 @@ class ModelRouteTest(unittest.TestCase):
         for marker, agent in [("reviewer", "default"), ("worker", "security-reviewer")]:
             event = self.event(role=marker, call=agent)
             event["tool_input"]["agent_type"] = agent
-            self.assertEqual(self.run_hook(event)["hookSpecificOutput"]["updatedInput"]["model"], "gpt-5.6-sol")
+            routed = self.run_hook(event)["hookSpecificOutput"]["updatedInput"]
+            self.assertEqual(routed["model"], "gpt-6-astra")
+            self.assertEqual(routed["reasoning_effort"], "low")
 
     def test_preserves_explicit_model_and_effort(self):
         for field, value in [("model", "user-choice"), ("reasoning_effort", "high")]:
@@ -83,10 +92,10 @@ class ModelRouteTest(unittest.TestCase):
         self.cfg["preserve_explicit_model"] = False
         event = self.event()
         event["tool_input"]["model"] = "old-choice"
-        self.assertEqual(self.run_hook(event)["hookSpecificOutput"]["updatedInput"]["model"], "gpt-5.6-luna")
+        self.assertEqual(self.run_hook(event)["hookSpecificOutput"]["updatedInput"]["model"], "gpt-5.6-sol")
 
     def test_unavailable_model_or_effort_inherits(self):
-        for inventory in [{}, {"gpt-5.6-luna": ["high"]}]:
+        for inventory in [{}, {"gpt-5.6-sol": ["high"]}]:
             self.available = inventory
             self.assertEqual(self.run_hook(self.event(call=str(inventory))), {})
 
@@ -152,7 +161,7 @@ class ModelRouteTest(unittest.TestCase):
     def test_agent_alias_routes(self):
         event = self.event()
         event["tool_name"] = "Agent"
-        self.assertEqual(self.run_hook(event)["hookSpecificOutput"]["updatedInput"]["model"], "gpt-5.6-luna")
+        self.assertEqual(self.run_hook(event)["hookSpecificOutput"]["updatedInput"]["model"], "gpt-5.6-sol")
 
     def test_state_symlink_rejected(self):
         target = self.directory / "other"
