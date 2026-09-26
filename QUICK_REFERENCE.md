@@ -1,5 +1,7 @@
 # Quick Reference
 
+For problem-based examples, see [10 practical Codex tips](resources/codex-tips.md).
+
 ## Prompt contract
 
 ```text
