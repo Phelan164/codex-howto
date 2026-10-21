@@ -1,0 +1,27 @@
+name: Code Tender same-chat pilot
+
+on:
+  pull_request:
+    paths:
+      - "examples/code-tender-pilot.txt"
+      - ".github/workflows/code-tender-same-chat-pilot.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  code-tender-same-chat-pilot:
+    name: code-tender-same-chat-pilot
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Assert continuation fixture
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          assert Path("examples/code-tender-pilot.txt").read_bytes() == b"status: continued\n"
+          PY
